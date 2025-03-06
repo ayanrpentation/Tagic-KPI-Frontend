@@ -1,0 +1,9 @@
+tr td mat-icon.only-show-on-hover {
+    visibility: hidden;
+  }
+tr:hover td mat-icon.only-show-on-hover  {
+visibility: visible;
+}
+*{
+  font-size: 10pt;
+}

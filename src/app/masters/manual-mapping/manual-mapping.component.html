@@ -1,0 +1,294 @@
+<notifier-container></notifier-container>
+<div style="padding:3%; margin-top: 1%; ">
+    <div class="row">
+        <div class="col-6">
+
+            <h2 class="page-title">Manual Mappping</h2>
+        </div>
+        <div class="col-6 text-right">
+
+            <button   type="button" class="btnlink" (click)="getLog();openModal(logModal);">
+                <span>View Log</span>
+            </button>
+        </div>
+    </div>
+    <div class="row" style="height:90%;">
+        <!-- <div class="col-12" style="padding: 1%; padding-bottom: 0; ">
+
+            <div class="row">
+                <div class="col-3">
+                    <label>Map Module</label>
+                </div>
+                <div class="col-4">
+                    <select class="form-control" [(ngModel)]="module_name" >
+                        <option value="">Select Module</option>
+                        <option *ngFor="let module of module_List" value="{{module.id}}">{{module.moduleName}}</option>
+                    </select>
+                </div>
+                <div class="col-5">
+
+                </div>
+    
+                <div class="col-3"></div>
+                <div class="col-4" style="display: flex; justify-content: right;">
+                    <button type="button" class="btnlink" [disabled]="mappingFile" (click)="mapfiledata()">Map File</button>
+                </div>
+                <div class="col-5">
+                    
+                </div>
+            </div>
+    
+            <hr>
+        
+        </div> -->
+
+        <div class="col-12" style="padding: 1%; ">
+
+            <div class="row">
+
+                <div class="col-3">
+                    <label>KPI Year</label>
+                </div>
+
+                <div class="col-4">
+
+                    <select class="form-control" [(ngModel)]="kpi_year"  (change)="getVerticals(); channelWiseMappingDetails()" >
+                        <option value="">Select Year</option>
+                        <option *ngFor="let yr of fYearList" value="{{yr}}">{{yr}}</option>
+                    </select>
+                </div>
+
+                <div class="col-5"></div>
+
+
+
+
+
+                <div class="col-3">
+                    <label>KPI Month</label>
+                </div>
+                <div class="col-4">
+
+                    <select class="form-control" [(ngModel)]="kpi_month" (change)="getVerticals(); channelWiseMappingDetails()" >
+                        <option value="">Select Month</option>
+                        <option value="{{m.id}}" *ngFor="let m of monthList">{{m.name}}</option>
+                    </select>
+                </div>
+                <div class="col-5"></div>
+
+            </div>
+
+
+
+
+            <div class="row ">
+
+                <div class="col-3">
+                    <label>KPI Channel</label>
+                </div>
+
+                <div class="col-4">
+                    <select class="form-control" [(ngModel)]="channelNew" (change)="getVerticals(); channelWiseMappingDetails()"  [disabled]="selectedDefaultChannelName != 'all' && userLevel != '4'">
+
+                        <option value="all">Select Channel</option>
+
+                        <option value="{{channel.id}}" *ngFor="let channel of channelNewList">{{channel.channelNewName}}
+                        </option>
+
+                    </select>
+                </div>
+                <div class="col-5"></div>
+
+
+
+                <!-- <div class="col-3">
+                    <label>Sub-Channel</label>
+                </div>
+                <div class="col-4">
+
+                    <select class="form-control" [(ngModel)]="subchannel">
+                        
+                        <option value="">Select Sub Channel</option>
+                        <option value="{{channel.id}}" *ngFor="let channel of channelNewList">{{channel.channelNewName}}
+                        </option>
+                    </select>
+                </div>
+                <div class="col-5"></div> -->
+
+
+                <div class="col-3">
+                    <label>Vertical Name</label>
+                </div>
+                <div class="col-4">
+
+                    <select class="form-control" [(ngModel)]="verticalName" >
+
+
+                        <option value="">Select Vertical</option>
+                        <option value="{{vertical.verticalName}}" *ngFor="let vertical of verticalList">
+                            {{vertical.verticalName}}</option>
+                    </select>
+                </div>
+                <div class="col-5"></div>
+
+            </div>
+
+            
+
+            <div class="row">
+
+                <div class="col-3">
+                    <label>File Type</label>
+                </div>
+
+                <div class="col-4" >
+                    <ng-container class="fileTypeMultiList">
+                    <ng-multiselect-dropdown 
+                        [placeholder]="'Select File Type'"
+                        [(ngModel)]="selectedFileTypeList" 
+                        [settings]="dropdownSettingsFileType" 
+                        [data]="fileTypeList"
+                        style="width:100%; background-color: #ffffff;"
+                        
+                        >
+                    </ng-multiselect-dropdown> 
+                </ng-container>
+                    <!-- <select name="" id="" class="form-control" [(ngModel)]="mappingFileTypeId">
+                        <option value="">Select File Type</option>
+                        <option value= "{{fileType.id}}" *ngFor="let fileType of fileTypeList">{{fileType.details_description}}</option>
+                    
+                    </select> -->
+                </div>
+                <div class="col-5"></div>
+
+            </div>
+
+            <div class="row" style="padding-top:2%">
+
+                <div class="col-3"></div>
+
+                <div class="col-4" style="display: flex; justify-content: right;">
+
+                    <!-- <button  *ngIf="!mapping" type="button" class="btnlink" (click)="savekpiManually()">
+                        <span>Map</span>
+                    </button> -->
+                    <button  *ngIf="!mapping" type="button" class="btnlink" (click)="mappingCall()">
+                        <span>Map</span>
+                    </button>
+
+                    <!-- <button *ngIf="mapping" type="button" class="btnlink" [disabled]="true" style="opacity: 0.5;">
+                        <span>Mapping</span>
+                    </button> -->
+                </div>
+                <div class="col-5"></div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+
+
+
+<ng-template #logModal>
+    <div class="modal-content modalcolor">
+        <div class="modal-header mod-head">
+            <h4 class="modal-title" style="color: #ffffff;">View Mapping Log</h4>
+            <button type="button" class="modalclosebtn" (click)="closeModal()">
+                <mat-icon class="matico">close</mat-icon>
+            </button>
+        </div>
+        <div class="modal-body mod-body">
+            <!-- <div class="row pt-2 logheader"> -->
+                <div class="row logheader pl-2">
+                    <div class="col-2">
+                        <span class="">Channel: </span>
+                    </div>
+                    <div class="col-10">
+                        <span class="details">{{mappingFileList[0].channel_new_name}}</span>
+                    </div>
+
+                 <!-- &nbsp;&nbsp;&nbsp;  -->
+            </div>
+            <div class="row logheader pl-2">
+                <div class="col-2">
+                    <span class="">Vertical: </span>
+                </div>
+                <div class="col-10">
+                    <span class="details">{{mappingFileList[0].vertical}}</span>
+                </div>
+                <!-- <span class="">Vertical: </span> &nbsp;&nbsp;&nbsp; <span class="details">{{mappingFileList[0].vertical}}</span> -->
+            </div>
+                <div class="row logheader pl-2">
+                    <div class="col-2">
+                        <span class="">For the Month: </span>
+                    </div>
+                    <div class="col-10">
+                        <span class="details">{{monthData[mappingFileList[0].month]}} {{mappingFileList[0].year}}</span>
+                    </div>
+                <!-- <span class="">For the Month: </span> &nbsp;&nbsp;&nbsp; <span class="details">{{monthData[mappingFileList[0].month]}} {{mappingFileList[0].year}}</span> -->
+            </div>
+            <!-- </div> -->
+            <div class="row pl-2 pr-2" style="padding-top:2%; ">
+                
+                <table class="table logtable">
+                    <thead>
+                    <tr style="background: transparent -webkit-linear-gradient( 174deg, rgb(13 53 148 / 30%), #35d3e114) 0 0 no-repeat padding-box;">
+                        <th>Sr No.</th>
+                        <!-- <th>Channel</th> -->
+                        <!-- <th>Vertical</th> -->
+    
+                    
+                        <th>File Type</th>
+                        <!-- <th>Month Year</th> -->
+                        <th>Start Time</th>
+                        <th>End Time</th>
+                        <th></th>
+
+
+
+                        
+    
+    
+                    </tr>
+                </thead>
+                    <tbody>
+                        
+                        <ng-container *ngFor="let file of mappingFileList; let i = index;">
+                            <tr>
+    
+    
+                                <td>{{i+1}}</td>
+                                <!-- <td>{{file.channel_new_name}}</td> -->
+                                <!-- <td>{{file.vertical}}</td> -->
+                                <td>{{file.file_type}}</td>
+                                <!-- <td>{{file.month}}-{{file.year}}</td> -->
+                                <td>{{file.create_at}}</td>
+                                <td>{{file.end_at}}</td>
+                                <td class="status">
+                                    <i class="fa fa-clock-o" *ngIf="file.status == 1" style="color: #8d8c8c;" aria-hidden="true"></i>
+                                    <i class="fa fa-check-circle" *ngIf="file.status == 2" style="color: green;" aria-hidden="true"></i>
+                                    <i class="fa fa-exclamation-circle" *ngIf="file.status == 3" style="color: red;" aria-hidden="true" title="{{file.errorMsg}}"></i>
+                                    <ng-container *ngIf="file.status == 3"> &nbsp;&nbsp;</ng-container>
+                                    <i class="fa fa-repeat" *ngIf="file.status == 3"  style="color: #636161;cursor: pointer;" aria-hidden="true" title="Rerun" (click)="rerunFile(file)"></i>
+                                </td>
+
+    
+                                <!-- <i class="fas fa-redo"></i> -->
+                                
+                               
+                            </tr>
+                            
+                        </ng-container>
+                        
+                        
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="modal-footer mod-foot">
+            
+        </div>
+    </div>
+</ng-template>

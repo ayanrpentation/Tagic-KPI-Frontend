@@ -1,0 +1,156 @@
+<!-- <p>parameter-sequence works!</p> -->
+
+<!-- <p>uploaded-files-new works!</p> -->
+<!-- <p>viewkpi works!</p> -->
+<notifier-container></notifier-container>
+<div class="container-fluid">
+    <div class="row">
+
+        <div class="col" style="padding: 1%; margin-left: 5px;">
+    
+            <div class="row" style="padding-top:3%">
+                <div class="col" style="padding:0px !important;">
+                    <div class="row" style="padding:0px !important;" >
+                        <div class="col-6" style="padding:0px !important;">
+                            <h2 class="page-title">Parameter Sequence</h2>
+                        </div>
+
+                        <div class="col-6">
+                            <button class="btnlink" style="width: 35px; height:35px;border-radius: 50%; float: right;"  (click)="gotoMappedKpiPage()" title="go back to Mapped KPI page">
+                                <i class="fa fa-arrow-left" aria-hidden="true" ></i>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- <h2 class="page-title">Parameter Sequence</h2> -->
+                    <div class="row">
+    
+                        
+
+                        <div class="col-2">
+                            <label>Year
+                            </label>
+                            
+                            <select class="form-control" [(ngModel)]="year"  >
+                                <option value="all">Select Year</option>
+                                <option value="{{yr}}" *ngFor="let yr of YearList">{{yr}}</option>
+                            </select>
+                        </div>
+
+                        <div class="col-2">
+                            <label>Month
+                            </label>
+
+                            <select class="form-control" [(ngModel)]="month" >
+                                <option value="all">Select Month</option>
+                                <option value="{{mon.id}}" *ngFor="let mon of monthList">{{mon.name}}</option>
+                            </select>
+                        </div>
+
+                        <div class="col-2">
+                            <label>Channel
+                            </label>
+    
+                            <select class="form-control" [(ngModel)]="channelId"   >
+    
+                                <option value="all">Select All</option>
+                                <option value="{{channel.id}}" *ngFor="let channel of channelNewList">{{channel.channelNewName}}</option>
+                            </select>
+                        </div>
+    
+                        <div class="col-2">
+                            <button class="btnlink" (click)="getParamSeqData()" style="position: absolute; bottom: 0; right: 0;">Search</button>
+                        </div>
+                     
+    
+                    </div>
+    
+                </div>
+            </div>
+            <div class="row " style="padding-top: 2%">
+                <table class="table">
+                    <thead>
+                        <tr
+                            style="color:rgb(94, 93, 93);background: transparent -webkit-linear-gradient( 174deg, rgb(13 53 148 / 30%), #35d3e114) 0 0 no-repeat padding-box;">
+                            
+                            <th>Sr No.</th>
+                            <th>Channel</th>
+                            <th>Month-Year</th>
+                            <th>Parameter Channel</th>
+                            <th >Sequence</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr  *ngFor="let obj of paramSeqDataList; let i = index;">
+                            <td>{{i+1}}</td>
+                            <td>{{obj.channelName}}</td>
+
+                            <!-- month show -->
+                            <td *ngIf="obj.month == null">{{obj.year}}</td>
+
+                            <td *ngIf="obj.month == 1">January-{{obj.year}}</td>
+                            <td *ngIf="obj.month == 2">February-{{obj.year}}</td>
+                            <td *ngIf="obj.month == 3">March-{{obj.year}}</td>
+                            <td *ngIf="obj.month == 4">April-{{obj.year}}</td>
+                            <td *ngIf="obj.month == 5">May-{{obj.year}}</td>
+                            <td *ngIf="obj.month == 6">June-{{obj.year}}</td>
+                            <td *ngIf="obj.month == 7">July-{{obj.year}}</td>
+                            <td *ngIf="obj.month == 8">August-{{obj.year}}</td>
+                            <td *ngIf="obj.month == 9">September-{{obj.year}}</td>
+                            <td *ngIf="obj.month == 10">October-{{obj.year}}</td>
+                            <td *ngIf="obj.month == 11">November-{{obj.year}}</td>
+                            <td *ngIf="obj.month == 12">December-{{obj.year}}</td>
+
+
+
+                            <td>{{obj.parameterChannel}}</td>
+
+
+                            <td  >
+
+                                <div >
+
+                                    {{obj.seq_no}}
+                                    
+                                    <a style="cursor:pointer; margin-left: 25px;" title="Edit" (click)="showEditInput(i,obj.parameterChannelId)">
+                                        <i style="font-size: 16px;color: blue;" class="fa fa-edit"
+                                            aria-hidden="true"></i>
+
+                                            
+                                    </a>
+                                </div>
+
+
+                                <div *ngIf="index_editrow == i && parameterChannelId_editrow == obj.parameterChannelId && showEditSection_status== true" style="display: flex;">
+
+                                    <input class="form-control" style="max-width: 100px; max-height: 32px;" type="number" [(ngModel)]="paramSeq_edit">
+                                    <button class="btnlink" style="height: 32px; width: 45px; margin-left: 5px;" (click)="editParamSeq(i,obj.parameterChannelId, obj.channelId, obj.seq_no,obj.month, obj.year); ">Edit</button>
+
+                                    <button class="btnlink" style="height: 32px; width: 45px; margin-left: 5px;" (click)="offEditInput(i,obj.parameterChannelId); "><i style="font-size: 16px;color: white;" class="fa fa-close"
+                                        aria-hidden="true"></i></button>
+                                    
+                                </div>
+
+
+                                
+                                
+
+                                    
+                                
+
+                                
+                            </td>
+                        </tr>
+                        
+                    </tbody>
+                </table>
+                
+            </div>
+            
+            
+    
+        </div>
+    </div>
+</div>
+
+

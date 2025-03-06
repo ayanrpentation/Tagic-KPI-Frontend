@@ -1,0 +1,86 @@
+<div class="container-fluid">
+    <div style="margin-top: 2%; padding:2%">
+        <div class="row" style="padding-left:1%">
+            <h2 class="page-title">Add Scheduler</h2>
+        </div>
+        <div class="row">
+            <div class="col-3">
+                <label>Channel Name</label>
+
+                <select class="form-control" [(ngModel)]="channelId">
+                    <option value="">Select All</option>
+                <option value="{{item.id}}" *ngFor="let item of channelList">{{item.details_description}}</option>
+                </select>
+            </div>
+            <div class="col-3">
+                <label>File Type Name</label>
+
+                <select class="form-control" [(ngModel)]="fileTypeId">
+                    <option value="">Select All</option>
+                <option value="{{item.id}}" *ngFor="let item of filTypeList">{{item.details_description}}</option>
+                </select>
+            </div>
+
+            <div class="col-3">
+                <label>Last date of Upload</label>
+                <input type="number" class="form-control" placeholder="Enter Last date of Upload" [(ngModel)]="lastDayOfUpload">
+            </div>
+            <div class="col-3">
+                <label>Enter mail Id</label>
+                <input type="text" class="form-control" placeholder="Enter mail Id" [(ngModel)]="mailId" ng-list=","/>
+            </div>
+            <div class="col-6">
+                <label>Enter mail Text for Success</label>
+                <input type="text" class="form-control" placeholder="Enter mail body" [(ngModel)]="successMail">
+            </div>
+            <div class="col-6">
+                <label>Enter mail Text for Failure</label>
+                <input type="text" class="form-control" placeholder="Enter mail body" [(ngModel)]="failureMail">
+            </div>
+
+            <!-- <div class="row">
+                <div class="col-2">
+                    <label>Set Reminder</label>
+                <input type="number" #box class="form-control" placeholder="Enter Number of Reminder"
+                (keyup)="create(box.value)">
+            </div>
+            <div class="col-10">
+                <div class="row abc">
+            </div>
+            </div>
+            </div> -->
+        
+            <div class="col-3">
+                <label>Set Number of Reminder</label>
+                <input type="number" class="form-control" placeholder="Enter Number of Reminder" [(ngModel)]="reminderNumber">
+            </div>
+            <div class="col-3">
+                <label>Reminder days</label>
+                <input type="text" class="form-control" placeholder="Enter Number of Reminder" [(ngModel)]="reminderDays">
+            </div>
+            <div class="col-3">
+                <label>Maker Name</label>
+
+                <select class="form-control" [(ngModel)]="makerId">
+                    <option value="">Select All</option>
+                <option value="{{item.user_id}}" *ngFor="let item of userList">{{item.name}}</option>
+                </select>
+            </div>
+            <div class="col-3">
+                <label>Chaker Name</label>
+
+                <select class="form-control" [(ngModel)]="chakerId">
+                    <option value="">Select All</option>
+                <option value="{{item.user_id}}" *ngFor="let item of userList">{{item.name}}</option>
+                </select>
+            </div>
+            
+        </div>
+        <div class="row" style="padding-top:2%">
+            <div class="col ">        
+                
+                <button type="button" class="btnlink" (click)="saveSchedule()">Save</button>
+            </div>
+        </div>
+    </div>
+</div>

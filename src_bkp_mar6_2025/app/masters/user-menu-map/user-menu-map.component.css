@@ -1,0 +1,10 @@
+.mat-button-toggle-checked {
+    box-shadow: 0 0 30px #000 !important;
+  border: 1px #000 solid !important;
+  border-radius: 5px !important;
+  background-color: #FFF !important;
+}
+
+*{
+  font-size: 10pt;
+}

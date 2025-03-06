@@ -1,0 +1,754 @@
+<!-- <p>kpi-scoring works!</p> -->
+<!-- <p>viewkpi works!</p> -->
+<div class="row" style="position: -webkit-sticky!important; position: sticky!important; top: 50px!important; padding-left: 3%; background-color: #fafafa; z-index: 8; padding-top: 20px;padding-bottom: 10px;">
+    <div class="col-6"><h2 class="page-title">KPI Score</h2></div>
+    <div class="col-6 text-right">
+        <!-- <button type="button" class="btnlink"  (click)="getAllkpiScore()"
+        style="width: 150px !important">Show All Data</button> -->
+        <!-- <mat-slide-toggle [(ngModel)]="periodical" class="btnlink" style="height:32px;padding-top: 0px;">Periodical Score</mat-slide-toggle> -->
+    </div>
+</div>
+<div class="row">
+
+    <div class="col" style="padding: 3%; margin-left: 0px; padding-top: 0%;">
+        
+        <div class="row" style="padding-top:1%">
+            <div class="col" style="padding:0px !important;">
+
+                <!-- <div class="row" style="position: -webkit-sticky!important; position: sticky!important; top: 50!important;">
+                    <div class="col-6"><h2 class="page-title">KPI Score</h2></div>
+                    <div class="col-6 text-right">
+                        
+                    </div>
+                </div> -->
+                
+
+                <div class="row" style="border-radius: 5px; background-color: #ececec52; padding: 10px; padding-bottom: 20px;">
+
+                    <!-- <div class="col-12">
+                        <mat-slide-toggle [(ngModel)]="periodical" >
+                            <span *ngIf="periodical==false">Monthly Score</span>
+                            <span *ngIf="periodical==true">Periodical Score</span>
+                        </mat-slide-toggle>
+                    </div> -->
+                    <div class="col-2">
+                        <label for="">Period</label>
+
+                        <select class="form-control" [(ngModel)]="periodType">
+                            <option value="">Select Period</option>
+                            <option value="{{period.id}}" *ngFor="let period of periodTypeList">{{period.name}}
+                            </option>
+        
+                        </select> 
+                    </div>
+
+                    <div class="col-2">
+                        <label>
+                            <span  *ngIf="periodType=='month'">Year</span>
+                            <span  *ngIf="periodType!='month'"> Financial Year</span>
+                        </label>
+        
+                        <select  *ngIf="periodType=='month'" class="form-control" [(ngModel)]="year" >
+                           
+                            <option value="all">Select All</option>
+                            <option value="{{year}}" *ngFor="let year of yearList">{{year}}</option>
+                        </select>
+
+                        <select  *ngIf="periodType!='month'" class="form-control" [(ngModel)]="financialYear" >
+   
+                            <option value="">Select</option>
+                            <option value="{{fyear}}" *ngFor="let fyear of fYList">{{fyear}}</option>
+                        </select>
+                    </div>
+
+                    <div class="col-2">                    
+                        <label>
+                            <!-- <span *ngIf="periodical==false">Month</span>
+                            <span *ngIf="periodical==true">Period</span>
+                            &nbsp; -->
+                            <!-- <mat-slide-toggle [(ngModel)]="periodical" style="margin-top: -2px;">
+                                <span *ngIf="periodical==false">Month</span>
+                                <span *ngIf="periodical==true">Period</span>
+                            </mat-slide-toggle> -->
+
+
+                            <span *ngIf="periodType=='ytd'">Up to Month</span>
+                            <span *ngIf="periodType=='quarter'">Quarter</span>
+                            <span *ngIf="periodType=='month'">Month</span>
+                        </label>
+
+                        <div class="multi"  *ngIf="periodType!='quarter'"  style="margin-top: -3px;">
+                            <ng-multiselect-dropdown 
+                            [(ngModel)]="month" 
+                            [settings]="dropdownSettings_month" 
+                            [data]="monthList"
+                            class="multi"
+                            
+
+                            >
+                            </ng-multiselect-dropdown>    
+                        </div>
+
+
+                        <select class="form-control" [(ngModel)]="period"  *ngIf="periodType =='quarter'"  style="margin-top: -3px;">
+                            <option value="">Select Quarter</option>
+                            <option value="{{period.id}}" *ngFor="let period of periodList">{{period.name}}
+                            </option>
+        
+                        </select> 
+                    </div>
+
+                    <!-- <div class="col-2" *ngIf="periodical==true">                    
+                        <label>Period</label>
+
+                        <select class="form-control" [(ngModel)]="month">
+                            <option value="">Select Period</option>
+                            <option value="{{period.id}}" *ngFor="let period of periodList">{{period.name}}
+                            </option>
+        
+                        </select>    
+                    </div> -->
+
+
+                    <div class="col-2">                    
+                        <label>Channel Name
+                        </label>
+        
+                        <select class="form-control" [(ngModel)]="channelNew" (change)="getVerticals()"  [disabled]="selectedDefaultChannelName != 'all' && userLevel != '4'">
+                            <option value="all">Select All</option>
+                            <option value="{{channel.id}}" *ngFor="let channel of channelNewList">{{channel.channelNewName}}
+                            </option>
+        
+                        </select>
+
+                        <!-- <ng-multiselect-dropdown 
+                        [(ngModel)]="channelNew"
+                        [settings]="dropdownSettings_channel" 
+                        [data]="channelNewList"
+                        style="width:100%; background-color: #ffffff;"
+                        (change)="getVerticals()"                      
+                        >
+                        </ng-multiselect-dropdown>  -->
+                    </div>
+
+                    <div class="col-2" (click)="checkChannelSelected()"  title="Channel Selection Required to get Verticals"    >                    
+                        <label>Verticals
+                        </label>
+        
+                        <select class="form-control" [disabled]="vertical != 'all' && userLevel == 3" [(ngModel)]="vertical" (click)="checkChannelSelected()" (change)="getDesignations()"  title="Channel Selection Required to get Verticals" >
+                            
+                            <option value="all">Select All</option>
+                            <option value="{{vertical.verticalName}}" *ngFor="let vertical of verticalList">{{vertical.verticalName}}</option>       
+                        </select>
+
+                        <!-- <ng-multiselect-dropdown 
+                        [(ngModel)]="vertical" 
+                        [settings]="dropdownSettings_vertical" 
+                        [data]="verticalList"
+                        style="width:100%; background-color: #ffffff;" 
+                        (change)="getDesignations()"                       
+                        >
+                        </ng-multiselect-dropdown>  -->
+                    </div>
+
+                    <div class="col-2" title="Channel Selection Required to get Designation" (click)="checkChannelSelected()">                    
+                        <label>Designation
+                        </label>
+        
+                        <select class="form-control" [(ngModel)]="designation" title="Channel Selection Required to get Designation" (click)="checkChannelSelected()" onclick="checkChannelSelected()">                            
+                            <option value="all">Select All</option>
+                            <option value="{{desig.designation_type}}" *ngFor="let desig of designationList">{{desig.designation_type}}</option>
+                        </select>
+
+                        <!-- <ng-multiselect-dropdown 
+                        [(ngModel)]="designation" 
+                        [settings]="dropdownSettings_designation" 
+                        [data]="designationList"
+                        style="width:100%; background-color: #ffffff;"                        
+                        >
+                        </ng-multiselect-dropdown>  -->
+                    </div>
+
+                    <div class="col-4" title="Channel Selection Required to get Employees" style="padding-top: 5px;">                    
+                        <label>Employees
+                        </label>
+        
+                        <!-- <select class="form-control" [(ngModel)]="employee" >                            
+                            <option value="all">Select All</option>
+                            <option value="{{emp.empCode}}" *ngFor="let emp of employeeList">{{emp.empName}} ({{emp.empCode}})</option>        
+                        </select> -->
+                        <div class="multi"     title="Channel Selection Required to get Employees">
+                            <!-- <ng-multiselect-dropdown 
+                            *ngIf="defaultEmpCode.length == 0"
+                            [(ngModel)]="employee" 
+                            [settings]="dropdownSettings_employee" 
+                            [data]="employeeList"
+                            title="Channel Selection Required to get Employees"                        
+                            >
+                            </ng-multiselect-dropdown>  -->
+
+                            <!-- <ng-multiselect-dropdown 
+                            *ngIf="defaultEmpCode.length != 0"
+                            [(ngModel)]="employee" 
+                            [settings]="dropdownSettings_employee" 
+                            [data]="employeeListForLevel3"
+                            title="Channel Selection Required to get Employees"
+                            >
+                            </ng-multiselect-dropdown>  -->
+                            <ng-multiselect-dropdown 
+                            [disabled]="userLevel == 3"
+                            
+                            [(ngModel)]="employee" 
+                            [settings]="dropdownSettings_employee" 
+                            [data]="employeeList"
+                            title="Channel Selection Required to get Employees"
+                            >
+                            </ng-multiselect-dropdown> 
+
+                            <!-- {{employee}} -->
+
+
+                            <!-- <select class="form-control" [(ngModel)]="employee" *ngIf="defaultEmpCode.length != 0">                            
+                                <option value="all">Select All</option>
+                                <option value="{{emp.empCode}}" *ngFor="let emp of empCodeListLevel3">{{emp.nameCode}}</option>        
+                            </select> -->
+                        </div>
+                        
+                    </div>
+
+                    
+
+
+
+                    <!-- <div class="col-3">                    
+                        <label>Employee Name
+                        </label>
+        
+                        <select class="form-control" [(ngModel)]="employee_code" >
+                            <option value="all">Select All</option>
+                           
+                            <option value="{{employee.empCode}}" *ngFor="let employee of employeeList">{{employee.empName}} ({{employee.empCode}})</option>
+                        </select>
+                    </div> -->
+
+                </div>
+                <div class="col-12">
+                    <div class="text-right" style="padding-top: 5px;display: flex; justify-content:right">
+                        <button type="button" class="btnlink scoringBtn"  (click)="refreshMainSearch()">
+                            
+                            <i class="fa fa-refresh"></i>
+                            Refresh
+                        </button>
+                        &nbsp;&nbsp;
+                        <button type="button" class="btnlink scoringBtn"  (click)="getkpiScore()">
+                            
+                            <i class="fa fa-search"></i>
+                            Search
+                        </button>
+
+                        <div>
+                            &nbsp;
+                            <button type="button" class="btnlink scoringBtn"  (click)="downloadScore(0)"style="">
+                                
+                                <i class="fa fa-download"></i>
+                                Get Excel
+                            </button>
+                        </div>
+
+                        <!-- <div>
+                            &nbsp;
+                            <button type="button" class="btnlink scoringBtn"  (click)="downloadScore(1)"style="">
+                                
+                                <i class="fa fa-envelope"></i>
+                                Mail
+                            </button>
+                        </div> -->
+                        
+                    </div>
+                </div>
+
+                
+
+                <!-- <div *ngIf="kpiScoreDetails.length!=0" class="row" style="padding-top: 20px;">
+                    
+                    <div class="col-2">
+                        <label>Employee Name</label>
+
+                        <div class="row">
+                            <input class="form-control" type="text" [(ngModel)]="EmpName"  placeholder="Search Here"  (keyup)="searchEmployee()">
+                            
+                        </div>
+        
+                        
+
+                    </div>
+                </div> -->
+
+                
+
+                
+                <!-- <span style="font-weight: bold; color:rgb(129, 129, 129)">Mapped KPI for Year 2022-2023 :</span> -->
+                <!-- <div style="position: absolute;
+                bottom: 0;
+                right: 2px; ">
+
+                    <button type="button" class="btnlink"  (click)="downloadKpi(0)"
+                        >Download</button>
+                        &nbsp;&nbsp;
+                    <button type="button" class="btnlink"  
+                    (click)="downloadKpi(1)">Send To Mail</button>
+                </div> -->
+                
+            </div>
+        </div>
+
+        <!-- <div class="row " style="padding-top: 2%">
+
+        </div> -->
+
+
+
+
+        <div class="row " style="padding-top: 2%">
+            <table class="table" >
+                <thead style="position: -webkit-sticky!important; position: sticky!important; top: 120px!important; z-index: 8;background-color: #ffffff;">
+                <tr style="color:rgb(94, 93, 93);background: transparent -webkit-linear-gradient( 174deg, rgb(13 53 148 / 30%), #35d3e114) 0 0 no-repeat padding-box;">
+                    
+                    <th style="width:15%">Employee Code</th>
+                    <th style="width:15%">Employee Name</th>
+                    <th style="width:8%">Designation</th>
+                    <!-- <th>Branch</th> -->
+                    <!-- <th>Sub Channel</th> -->
+                    <th style="width:15%">Channel</th>
+                    <th style="width:13%">Vertical</th>
+
+                    <th *ngIf="report_period_Type != 'month'" style="width:10%;  text-align: left;">F Year</th>                    
+                    <th *ngIf="report_period_Type == 'month'" style="width:10%;  text-align: left;">Year</th>
+
+                    <th *ngIf="report_period_Type == 'month'" style="width:10%">Month</th>
+                    <th *ngIf="report_period_Type == 'ytd'" style="width:10%">YTD Month</th>
+                    <th  *ngIf="report_period_Type == 'quarter'" >Quarter</th>
+
+                    
+
+
+                    <th style="width:8%; text-align: right;">Score</th>
+                    <th style="width:6%"></th>
+
+
+
+
+
+                </tr>
+                </thead>
+
+                
+                
+
+                <tbody>
+
+                    <tr  *ngIf="noDataVsbl" >
+                        <span style="color: red"> *</span>
+                        &nbsp;
+                        <span style="color: #264a9f">No Data to Show.</span>
+                    </tr>
+  
+                    <tr *ngIf="!noDataVsbl && searchBoxes == true"  style="position: -webkit-sticky!important; position: sticky!important; top: 163px!important; z-index: 8;background-color: #fafafa;">
+                       <td style="width:15%">
+                            <input class="form-control" type="text" [(ngModel)]="EmpCode"  placeholder="Search Code"  (keyup)="searchEmployee()">
+                       </td> 
+                       <td style="width:15%">
+                            <input class="form-control" type="text" [(ngModel)]="EmpName"  placeholder="Search Name"  (keyup)="searchEmployee()">
+                        </td>
+                       <td style="width:8%">
+                            <input class="form-control" type="text" [(ngModel)]="EmpDesig"  placeholder="Search Designation"  (keyup)="searchEmployee()">
+                       </td>
+                       <td style="width:15%">
+                            <input class="form-control" type="text" [(ngModel)]="EmpSubChannel"  placeholder="Search Channel"  (keyup)="searchEmployee()">
+                       </td>
+                       <td style="width:13%">
+                            <input class="form-control" type="text" [(ngModel)]="EmpVertical"  placeholder="Search Vertical"  (keyup)="searchEmployee()">
+                       </td>
+
+                       <td style="width:10%"  *ngIf="report_period_Type == 'month'" >
+                            <input class="form-control" type="text" [(ngModel)]="EmpYear"  placeholder="Search Year"  (keyup)="searchEmployee()">
+                       </td>
+                       <td style="width:10%"  *ngIf="report_period_Type != 'month'"  >
+                            <input class="form-control" type="text" [(ngModel)]="EmpFy"  placeholder="Search Financial Year"  (keyup)="searchEmployee()">
+                        </td>
+                       <td style="width:10%"  *ngIf="report_period_Type != 'quarter'" >
+                            <input class="form-control" type="text" [(ngModel)]="EmpMonth"  placeholder="Search Month"  (keyup)="searchEmployee()">
+                        </td>
+
+                        <td style="width:10%"  *ngIf="report_period_Type == 'quarter'" >
+                            <input class="form-control" type="text" [(ngModel)]="EmpQuarter"  placeholder="Search Quarter"  (keyup)="searchEmployee()">
+                        </td>
+
+                        <td style="width:8%"></td>
+                       <td style="width:6%">
+                        <button class="" (click)="clearSearchFields()" style="border:none; background-color: transparent; ">
+                            <!-- Clear -->
+                            <i class="fa fa-refresh" style="font-size: 18px;"></i>
+                        </button>
+                       </td>
+                    </tr>
+
+                    <ng-container *ngFor="let kpiscore of kpiScoreDetails">
+                        <ng-container *ngIf="viewDetails == false">
+                            <tr >
+                                <!-- {{kpiscore}} -->
+                               <td>{{kpiscore.empCode}}</td>
+                               <td>{{kpiscore.empName}}</td>
+                               <td>{{kpiscore.designationType}} {{kpiscore.HOMO_Mapping}}</td>
+                               <!-- <td>{{kpiscore.branchName}}</td> -->
+                               <td> {{kpiscore.channelNewName}}</td>
+                               <td> {{kpiscore.verticalName}}</td>
+
+
+                               <!-- <td>{{kpiscore.Total_Premium}}</td> -->
+                               
+
+
+                               <td *ngIf="report_period_Type != 'month'"  style="text-align: left;">{{kpiscore.fYear}}</td>
+                               <td *ngIf="report_period_Type == 'month'"  style="text-align: left;">{{kpiscore.targetYear}}</td>
+
+                               <td *ngIf="report_period_Type == 'month'" ><span>{{kpiscore.targetMonth}}</span></td>
+                               <td *ngIf="report_period_Type == 'ytd'" ><span>YTD {{kpiscore.targetMonth}}</span></td>
+                               <td *ngIf="report_period_Type == 'quarter'" ><span>{{kpiscore.quarter | uppercase }}</span></td>
+
+
+                               <td  style="text-align: right;">{{kpiscore.totalScore}}</td>
+                               <td class="text-center">
+                                <a  (click)="getDetailsScore(kpiscore.empCode, kpiscore.targetMonth,kpiscore.targetYear, kpiscore.designationType, kpiscore.verticalName, kpiscore.channelNewName,kpiscore.quarter, kpiscore.fYear)" title="view details"><i class="fa fa-eye"></i></a>
+    
+                                <!-- <a *ngIf="viewDetails == true && vieDetails_emp_code == kpiscore.emp_code" (click)="hideDetailsScore()"><i class="fa fa-eye-slash"></i></a> -->
+                                <!-- {{viewDetails}} -->
+                            </td>
+                            </tr>
+
+                        </ng-container>
+                        <ng-container *ngIf="viewDetails == true && vieDetails_emp_code == kpiscore.empCode && vieDetails_emp_month == kpiscore.targetMonth && vieDetails_emp_year == kpiscore.targetYear"  >
+                        <tr >
+                            <!-- {{kpiscore}} -->
+                           <!-- <td>{{kpiscore.empCode}}</td>
+                           <td>{{kpiscore.empName}}</td>
+                           <td>{{kpiscore.designation}}</td>
+                           <td>{{kpiscore.branch}}</td>
+                           <td> {{kpiscore.state_bifurcation}}</td>
+
+                           <td>{{kpiscore.Total_Premium}}</td>
+                           <td>{{kpiscore.year}}</td>
+                           <td> {{kpiscore.month}}</td>
+                           <td>{{kpiscore.Score}}</td> -->
+
+                           <td>{{kpiscore.empCode}}</td>
+                               <td>{{kpiscore.empName}}</td>
+                               <td>{{kpiscore.designationType}}</td>
+                               <!-- <td>{{kpiscore.branchName}}</td> -->
+                               <td> {{kpiscore.channelNewName}}</td>
+                               <td> {{kpiscore.verticalName}}</td>
+
+
+                               <!-- <td>{{kpiscore.Total_Premium}}</td> -->
+                               <!-- <td>{{kpiscore.targetYear}}</td>
+                               <td> {{kpiscore.targetMonth}}</td> -->
+
+                               <td *ngIf="report_period_Type != 'month'"  style="text-align: right;">{{kpiscore.fYear}}</td>
+                               <td *ngIf="report_period_Type == 'month'"  style="text-align: right;">{{kpiscore.targetYear}}</td>
+                               <td *ngIf="report_period_Type != 'quarter'" ><span>{{kpiscore.targetMonth}}</span></td>
+                               <td *ngIf="report_period_Type == 'quarter'" ><span>{{kpiscore.quarter | uppercase }}</span></td>
+                               
+                               <td>{{kpiscore.totalScore}}</td>
+                           <td>
+                            <!-- <a *ngIf="viewDetails == false || vieDetails_emp_code != kpiscore.emp_code" (click)="getDetailsScore(kpiscore.emp_code)"><i class="fa fa-eye"></i></a> -->
+
+                            <a (click)="hideDetailsScore()" title="hide details"><i class="fa fa-eye-slash"></i></a>
+                            <!-- {{viewDetails}} -->
+                        </td>
+                
+                        </tr>
+                    </ng-container>
+                    </ng-container>
+
+                </tbody>
+            </table>
+
+        </div>
+
+        <div class="row " style="padding-top: 2%" *ngIf="viewDetails == true">
+            <table class="table" >
+                <thead>
+                <tr style="color:rgb(94, 93, 93);background: transparent -webkit-linear-gradient( 174deg, rgb(13 53 148 / 30%), #35d3e114) 0 0 no-repeat padding-box;">
+                    
+                    <th>KPI Parameter Channel</th>
+                    <!-- <th style="text-align: right;">Unit</th> -->
+                    <th style="text-align: right;"> <span style=" padding-right:25px;">Target</span>  </th>
+                    <th style="text-align: right;"> <span style=" padding-right:25px;">Achievement</span></th>
+                    <th style="text-align: right; ">Achievement %</th>
+                    <th style="text-align: right;">Min</th>
+                    <th style="text-align: right;">Max</th>
+                    <th style="text-align: right;">Weightage</th>
+                    <!-- <th>State</th> -->
+                    
+
+                    <!-- <th>Weightage(%)</th> -->
+
+                    <th style="text-align: right;">Score</th>
+                    <!-- <th></th> -->
+
+                </tr>
+                </thead>
+                <tbody>
+                    <ng-container *ngFor="let score of empWisekpiScoreDetails; let i = index;">
+            
+                            <tr *ngIf="score.mainChannel_id != 3" [ngClass]="channelRow(i,score.target,score.mainChannel_id)" id="detailrow">
+                                <!-- {{kpiscore}} -->
+                               <td>{{score.kpiParamChannel}}</td>
+                               <!-- <td></td> -->
+                               <td style="text-align: right;">
+                                {{score.targetValue}}
+                                <!-- &nbsp;&nbsp;
+                                <i *ngIf="report_period_Type=='month'" class="fa fa-download" aria-hidden="true" id="download" (click)="downloadTargetAchievement('target',score.kpiParamChannel)"></i> -->
+                                </td>
+
+                               <td style="text-align: right;">
+                                {{score.achievementValue}}
+                                <!-- &nbsp;&nbsp;
+                                <i *ngIf="report_period_Type=='month'" class="fa fa-download" aria-hidden="true" id="download" (click)="downloadTargetAchievement('achievement',score.kpiParamChannel)"></i> -->
+                                </td>
+                               <td style="text-align: right;">{{score.baseParam}}</td>
+                               <td style="text-align: right;">{{score.minimumValue}}</td>
+                               <td style="text-align: right;">{{score.maximumValue}}</td>
+                               <td style="text-align: right;">{{score.weightage}}</td>
+
+                               <!-- <td>{{score.state}}</td> -->
+
+                               <!-- <td> {{score.weightage}}%</td> -->
+
+                               <td style="text-align: right;">{{score.kpiScore}}</td>
+                               <!-- <td (click)="getChannelDetails(score.emp_code, score.mainChannel_id,score.month, score.year, detailsModal)" title="view details">	<i class="fa fa-angle-right"></i><i class="fa fa-angle-right"></i><i class="fa fa-angle-right"></i></td> -->
+                             
+                            </tr>
+                            <!-- <tr *ngIf="score.mainChannel_id == 3" [ngClass]="channelRow(i,score.target,score.mainChannel_id)">
+                                <td>{{score.mainChannel_name}}</td>
+                               <td>-</td>
+                               <td>-</td>
+                               <td>-</td>
+                               <td>0%</td>
+                               <td>5%</td>
+
+                               <td> 2.5% + 2.5%  </td>
+
+                               <td>{{score.score_channel}}</td>
+                               <td (click)="getChannelDetails(score.emp_code, score.mainChannel_id,score.month, score.year, detailsModal)" title="view details">	<i class="fa fa-angle-right"></i><i class="fa fa-angle-right"></i><i class="fa fa-angle-right"></i></td>
+
+                            </tr> -->
+
+                        
+                    </ng-container>
+
+                </tbody>
+            </table>
+
+        </div>
+
+    </div>
+</div>
+<ng-template #detailsModal>
+    <div class="modal-confirm">
+        <div class="modal-content modalcolor">
+            <div class="text-right">
+
+                <a class="float-right cross-btn" (click)="closeModal()"
+                style="font-size:18px;">x</a>
+            </div>
+            <div class="modal-header flex-column" style="padding-top: 0px !important">
+                <h2>Channel wise Score Details</h2>
+            </div>
+            <div class="container-fluid">
+                <div class="card customcardcolor mt-3">
+                    <div class="card-body">
+                        <table class="table table-hover table-responsive" style="max-height: 400px;">
+                            <tr >
+                                <th *ngFor="let col of channelDetails_column">{{col}}</th>
+                             </tr>
+                             <tr *ngFor="let obj of channelDetails_data; let i = index;">
+                                 <ng-container *ngFor="let col of channelDetails_column">
+     
+                                     <td>{{obj[col]}}</td>
+                                    
+                                 </ng-container>
+                             </tr>
+                             <tr *ngIf="!(channelDetails_data.length > 0)">
+                                 <td colspan="3" class="text-center">
+                                     No details found
+                                 </td>
+                             </tr>
+                        </table>
+                        </div>
+                    </div>
+                </div>
+
+            
+        </div>
+    </div>
+</ng-template>
+<!-- 
+<ng-template #detailsModal>
+    <div class="modal-confirm">
+        <div class="modal-content modalcolor">
+            <div class="text-right">
+
+                <a class="float-right cross-btn" (click)="closeModal()"
+                style="font-size:18px;">x</a>
+            </div>
+            <div class="modal-header flex-column" style="padding-top: 0px !important">
+                <h2>Channel wise Score Details</h2>
+            </div>
+            <div class="container-fluid">
+                <div class="card customcardcolor mt-3">
+                    <div class="card-body">
+                        <table class="table table-hover table-responsive" style="max-height: 400px;">
+                            <tr >
+                                <th *ngFor="let col of channelDetails_column">{{col}}</th>
+                             </tr>
+                             <tr *ngFor="let obj of channelDetails_data; let i = index;">
+                                 <ng-container *ngFor="let col of channelDetails_column">
+     
+                                     <td>{{obj[col]}}</td>
+                                    
+                                 </ng-container>
+                             </tr>
+                             <tr *ngIf="!(channelDetails_data.length > 0)">
+                                 <td colspan="3" class="text-center">
+                                     No details found
+                                 </td>
+                             </tr>
+                        </table>
+                        </div>
+                    </div>
+                </div>
+
+            
+        </div>
+    </div>
+</ng-template> -->
+<!-- <ng-template #deleteModal>
+    <div class="modal-confirm">
+        <div class="modal-content modalcolor">
+            <div class="modal-header flex-column">
+                <div class="icon-box">
+                    <i class="material-icons">&#xE5CD;</i>
+                </div>
+                <h4 class="modal-title w-100">Are you sure?</h4>
+      
+            </div>
+            <div class="modal-body">
+                <p>Do you really want to delete these records? This process cannot be undone.</p>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-secondary" (click)="closeModal()">Cancel</button>
+                <button type="button" class="btn btn-danger" (click)="changeValue(deleteId, 1)">Delete</button>
+            </div>
+        </div>
+    </div>
+</ng-template> -->
+
+
+<div *ngIf="errormsgstatus" style="z-index: 11; width: 100%; height:100%; background-color: rgba(0, 0, 0, 0); position: fixed; top:0%; left: 0%">
+    <div class="container" style=" width: 30%; height: 30%; background-color: #ffffff; position: fixed; top:35%; left: 35%; border-radius: 2px; box-shadow: 1px 1px 10px 5px #88888895; padding:0px; overflow: hidden; align-items: center!important;">
+
+        <div class="row" style=" justify-content: right; display: flex; background: transparent -webkit-linear-gradient(174deg, rgba(13, 53, 148, .898039), #35d3e1) 0 0 no-repeat padding-box; min-height: 50px; padding: 10px;align-items: center!important;">
+            <button style="border-radius: 50%; border-style: none;text-align: center;background-color: #ffffff; width:20px; height: 20px;" (click)="errormsgstatus=!errormsgstatus">
+                <span style="color: rgb(0, 65, 109); font-size: 14px; font-weight: 500; cursor: pointer;">X</span>
+            </button>
+            
+        </div>
+        
+
+        <div class="row" style=" justify-content: center; display: flex;padding-top: 5%;">
+            <!-- <span style="color: rgb(0, 167, 0); font-size: bold;font-size: 40px;">
+                
+                <i class="fa fa-check" aria-hidden="true"></i>
+            </span> -->
+            <br>
+        </div>
+
+        <div class="row" style=" justify-content: center; display: flex;padding-top: 5%;">
+            <span style="color: rgb(0, 106, 177); font-size: 16px;">
+                
+            </span>
+        </div>
+        <div  class="row text-center" style=" justify-content: center; display: flex;padding-top: 1%;">
+            <span style="color: rgb(0, 26, 43); font-size: 13px;">
+                {{errormsg}}
+            </span>
+        </div>
+    </div>
+</div>
+
+
+
+<div *ngIf="selectChannelStatus" style="z-index: 11; width: 100%; height:100%; background-color: rgba(0, 0, 0, 0); position: fixed; top:0%; left: 0%">
+    <div class="container" style=" width: 30%; height: 30%; background-color: #ffffff; position: fixed; top:35%; left: 35%; border-radius: 2px; box-shadow: 1px 1px 10px 5px #88888895; padding:0px; overflow: hidden; align-items: center!important;">
+
+        <div class="row" style=" justify-content: right; display: flex; background: transparent -webkit-linear-gradient(174deg, rgba(13, 53, 148, .898039), #35d3e1) 0 0 no-repeat padding-box; min-height: 50px; padding: 10px;align-items: center!important;">
+            <button style="border-radius: 50%; border-style: none;text-align: center;background-color: #ffffff; width:20px; height: 20px;" (click)="selectChannelStatus=!selectChannelStatus">
+                <span style="color: rgb(0, 65, 109); font-size: 14px; font-weight: 500; cursor: pointer;">X</span>
+            </button>
+            
+        </div>
+        
+
+        <div class="row" style=" justify-content: center; display: flex;padding-top: 5%;">
+            <!-- <span style="color: rgb(0, 167, 0); font-size: bold;font-size: 40px;">
+                
+                <i class="fa fa-check" aria-hidden="true"></i>
+            </span> -->
+            <br>
+        </div>
+
+        <div class="row" style=" justify-content: center; display: flex;padding-top: 5%;">
+            <span style="color: rgb(0, 106, 177); font-size: 16px;">
+                
+            </span>
+        </div>
+        <div  class="row text-center" style=" justify-content: center; display: flex;padding-top: 1%;">
+            <span style="color: rgb(0, 26, 43); font-size: 13px;">
+                Channel Selection Required
+            </span>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="selectVerticalStatus" style="z-index: 11; width: 100%; height:100%; background-color: rgba(0, 0, 0, 0); position: fixed; top:0%; left: 0%">
+    <div class="container" style=" width: 30%; height: 30%; background-color: #ffffff; position: fixed; top:35%; left: 35%; border-radius: 2px; box-shadow: 1px 1px 10px 5px #88888895; padding:0px; overflow: hidden; align-items: center!important;">
+
+        <div class="row" style=" justify-content: right; display: flex; background: transparent -webkit-linear-gradient(174deg, rgba(13, 53, 148, .898039), #35d3e1) 0 0 no-repeat padding-box; min-height: 50px; padding: 10px;align-items: center!important;">
+            <button style="border-radius: 50%; border-style: none;text-align: center;background-color: #ffffff; width:20px; height: 20px;" (click)="selectVerticalStatus=!selectVerticalStatus">
+                <span style="color: rgb(0, 65, 109); font-size: 14px; font-weight: 500; cursor: pointer;">X</span>
+            </button>
+            
+        </div>
+        
+
+        <div class="row" style=" justify-content: center; display: flex;padding-top: 5%;">
+            <!-- <span style="color: rgb(0, 167, 0); font-size: bold;font-size: 40px;">
+                
+                <i class="fa fa-check" aria-hidden="true"></i>
+            </span> -->
+            <br>
+        </div>
+
+        <div class="row" style=" justify-content: center; display: flex;padding-top: 5%;">
+            <span style="color: rgb(0, 106, 177); font-size: 16px;">
+                
+            </span>
+        </div>
+        <div  class="row text-center" style=" justify-content: center; display: flex;padding-top: 1%;">
+            <span style="color: rgb(0, 26, 43); font-size: 13px;">
+                Select Verticals to get Designation
+            </span>
+        </div>
+    </div>
+</div>

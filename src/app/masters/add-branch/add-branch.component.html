@@ -1,0 +1,64 @@
+<div class="container-fluid">
+    <div style="margin-top: 2%; padding:2%">
+        <div class="row" style="float: right; position: relative; padding: auto;">
+            <mat-icon style="cursor: pointer; font-size:20px;color: #185EC4;" (click)="back()">keyboard_backspace</mat-icon>
+        </div>
+        <div class="row" style="padding-left:1%">
+            <h2 class="page-title">Add Branch</h2>
+        </div>
+        <div class="row">
+            <div class="col-3">
+                <label>Branch Code</label>
+                <input type="number" class="form-control" placeholder="Enter Branch Code" [(ngModel)]="branchCode" maxlength="6">
+            </div>
+            <div class="col-3">
+                <label>Branch Name</label>
+                <input type="text" class="form-control" placeholder="Enter Branch Name" [(ngModel)]="branchName">
+            </div>
+            <div class="col-3">
+                <label>Tagic Location Type</label>
+                <input type="text" class="form-control" placeholder="Enter Tagic Location Type" [(ngModel)]="tagicLocationType">
+            </div>
+            <div class="col-3">
+                <label>Tagic Location Type Commercial</label>
+                <input type="text" class="form-control" placeholder="Enter Tagic Location Type Commercial" [(ngModel)]="tagicLocationTypCommercial">
+            </div>
+            <div class="col-3">
+                <label>Tagic Zone</label>
+                <input type="text" class="form-control" placeholder="Enter Tagic Zone" [(ngModel)]="tagicZone">
+            </div>
+            <div class="col-3">
+                <label>Tagic State</label>
+                <select class="form-control" [(ngModel)]="tagicStateId" (change)="getStateCode(this.tagicStateId)">
+                    <!-- <option value="">Select All</option> -->
+                    <option value="{{item.id}}" *ngFor="let item of stateList">{{item.state_name}}</option>
+                </select>
+            </div>
+            <div class="col-3">
+                <label>Tagic State Code</label>
+                <input type="text" class="form-control" placeholder="Enter Tagic State Code" [(ngModel)]="stateCd" [disabled]="true">
+            </div>
+            <div class="col-3">
+                <label>CL Zone</label>
+                <input type="text" class="form-control" placeholder="Enter CL Zone" [(ngModel)]="clZone">
+            </div>
+            <div class="col-3">
+                <label>Vertical</label>
+                <input type="text" class="form-control" placeholder="Enter Vertical" [(ngModel)]="vertical">
+            </div>
+            <div class="col-3">
+                <label>Zone</label>
+                <input type="text" class="form-control" placeholder="Enter Zone" [(ngModel)]="zone">
+            </div>
+            <div class="col-3">
+                <label>Cluster</label>
+                <input type="text" class="form-control" placeholder="Enter Cluster" [(ngModel)]="cluster">
+            </div>
+        </div>
+        <div class="row" style="padding-top:2%">
+            <div class="col">
+                <button type="button" class="btnlink" (click)="saveData()">Save</button>
+            </div>
+        </div>
+    </div>
+</div>

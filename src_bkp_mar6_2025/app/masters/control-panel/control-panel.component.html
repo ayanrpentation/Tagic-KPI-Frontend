@@ -1,0 +1,412 @@
+<!-- <p>control-panel works!</p> -->
+
+<notifier-container></notifier-container>
+<div>
+
+    <div style="margin-top: 2%; padding:2%">
+
+        <div class="row" style="padding-left:1%; ">
+    
+            <div class="col-6" style="padding: 0;">
+    
+                <h2 class="page-title">Manage Tasks</h2>
+    
+            </div>
+    
+            <div class="col-6" style="display: flex; justify-content: right;">
+    
+                <!-- <button class="btnlink" style=" width:150px; height: 35px;" (click)="openModal(newBatchmodal)">Create New Batch</button> -->
+    
+            </div>
+        </div>
+
+        <div class="row" style="padding-left:1%; ">
+
+            <div class="col-3">
+                <label for="">Year</label>
+                <select class="form-control" [(ngModel)]="uploadYear" (change)="getAllTask()" >
+
+                    <option value='all'>Select Year</option>
+                    <option value="{{year}}" *ngFor="let year of yearList">{{year}}</option>
+
+
+                </select>
+            </div>
+
+            <div class="col-3">
+                <label for="">Month</label>
+                <select class="form-control" [(ngModel)]="uploadMonth"  (change)="getAllTask()" >
+
+                    <option value='all'>Select Month</option>
+                    <option value="{{mon.id}}" *ngFor="let mon of monthList">{{mon.name}}</option>
+
+
+                </select>
+            </div>
+    
+            <div class="col-3">
+                <label for="">Channel Name</label>
+                <select class="form-control" [(ngModel)]="channelNew" (change)="getAllTask()"  [disabled]="selectedDefaultChannelName != 'all' && userLevel != '4'">
+
+                    <option value='all'>Select Channel</option>
+                    <option value="{{channel.id}}" *ngFor="let channel of channelNewList">{{channel.channelNewName}}
+                    </option>
+
+                </select>
+            </div>
+
+            <!-- <div class="col-3">
+                <label for="">Search Task Details</label>
+                <input class="form-control" type="text" (keyup)="searchRows()" [(ngModel)]="searchedfiledetails">
+            </div> -->
+
+            <div class="col-3">
+                <label for="">Task Type</label>
+                <select class="form-control" [(ngModel)]="taskType" (change)="getAllTask()" >
+
+                    <option value='all'>Select Task</option>
+                    <option value='upload'>Upload</option>
+                    <option value='mapping'>Mapping</option>
+                    <option value='score generation'>Score Generation</option>
+
+                </select>
+            </div>
+
+
+
+        </div>
+    
+    <!-- <div class="row">
+        <div class="col-2">
+            <label>Seq No.
+            </label>
+
+            <input type="number"  class="form-control" placeholder="Enter Seq No." [(ngModel)]="seqNo">
+            
+        </div>
+
+        <div class="col-2">
+            <label>Task Type
+            </label>
+
+            
+            <select class="form-control" [(ngModel)]="taskType" (change)="getAllTask()">
+                <option value="upload" >Upload</option>
+                <option value="mapping" >Mapping</option>
+                <option value="scoregeneration" >Score Generation</option>
+
+
+            </select>
+        </div>
+        <div class="col-2">
+            <label>Task Details
+            </label>
+
+            
+            <input type="text"  class="form-control" placeholder="Enter Task Details" [(ngModel)]="taskDetails">
+        </div>
+        <div class="col-2">
+            <label>File Type
+            </label>
+
+            
+            <select class="form-control" [(ngModel)]="fileTypeId" (change)="getAllTask()">
+                   <option value="{{fileType.id}}" *ngFor="let fileType of fileTypeList">{{fileType.details_description}}</option>
+                
+
+
+            </select>
+        </div>
+
+        <div class="col-2">
+            <label>User Type
+            </label>
+
+            
+            <select class="form-control" [(ngModel)]="userType" (change)="getAllTask()">
+                <option value="1" >Admin</option>
+                <option value="2" >Normal User</option>
+                <option value="3" >Checker</option>
+
+
+            </select>
+        </div>
+        <div class="col-2">
+            <label>Email Id 
+            </label>
+
+            
+            <input type="text"  class="form-control" placeholder="Enter Email Id" [(ngModel)]="emailId">
+        </div>
+
+        
+        
+        <div class="col-2">
+            <label>Last Day of Month
+            </label>
+
+            
+            <input type="number" min="1" max="28"  class="form-control" placeholder="Enter Last Day" [(ngModel)]="dayWithin">
+        </div>
+
+        
+
+        <div class="col-2">
+            
+                    <button type="button" class="btnlink" (click)="addTask()" style="position: absolute;
+                    bottom: 0;
+                    left: 2px; 
+                ">Add</button>
+        </div>
+
+
+    </div> -->
+   
+    <div > 
+        <div class="row" style="padding-top:2%; padding-left:1%; padding-right: 1%;">
+            <div class="tableArea">
+                <table class="table">
+                    <thead>
+                    <tr style="background: transparent -webkit-linear-gradient( 174deg, rgb(13 53 148 / 30%), #35d3e114) 0 0 no-repeat padding-box;">
+                        <th>Seq No.</th>
+                        <!-- <th>Month Year</th> -->
+                        <th>Channel Name</th>
+                        <th>File Type</th>
+                        <th>Task Type</th>
+
+                        <th>Task Details</th>
+                        <th>User Type</th>
+                        <!-- <th>Email Id</th>
+                        <th>Last Day </th> -->
+
+                        <th>Month-Year</th>
+
+
+                        <th>Uploaded</th>
+                        <th>Approved</th>
+
+
+                        <th>Status</th>
+                        <th>Action</th>
+
+
+
+                        
+
+
+                    </tr>
+                </thead>
+                    <tbody>
+                        
+                        <ng-container *ngFor="let task of taskList; let i = index" >
+                            <tr>
+
+                                <td>{{task.seqNo}}</td>
+                                <!-- <td>--</td> -->
+                                <td>{{task.channelNewName}}</td>
+                                <td>{{task.fileType}}</td>
+                                <td>{{task.taskType | titlecase}}</td>
+                                <td>{{task.taskDetails}}</td>
+
+                                <td>
+                                    <span *ngIf="task.userTypeId == 1">Admin</span>
+                                    <span *ngIf="task.userTypeId == 2">Normal User</span>
+                                    <span *ngIf="task.userTypeId == 3">Checker</span>
+
+                                </td>
+
+                                <!-- <td>{{task.emailId}}</td>
+                                <td>{{task.dayWithin}}</td> -->
+
+
+                                <!-- <td>{{task.month}}-{{task.year}}</td> -->
+                                <td *ngIf="task.month == 1">January - {{task.year}}</td>
+                                <td *ngIf="task.month == 2">February - {{task.year}}</td>
+                                <td *ngIf="task.month == 3">March - {{task.year}}</td>
+                                <td *ngIf="task.month == 4">April - {{task.year}}</td>
+                                <td *ngIf="task.month == 5">May - {{task.year}}</td>
+                                <td *ngIf="task.month == 6">June - {{task.year}}</td>
+                                <td *ngIf="task.month == 7">July - {{task.year}}</td>
+                                <td *ngIf="task.month == 8">August - {{task.year}}</td>
+                                <td *ngIf="task.month == 9">September - {{task.year}}</td>
+                                <td *ngIf="task.month == 10">October - {{task.year}}</td>
+                                <td *ngIf="task.month == 11">November - {{task.year}}</td>
+                                <td *ngIf="task.month == 12">December - {{task.year}}</td>
+                                <td *ngIf="!task.month"> - </td>
+                                
+
+                                <td>
+                                    <span *ngIf="task.is_uploaded == 1" style="color:green">Yes</span>
+                                    <span *ngIf="task.is_uploaded == 0">No</span>
+                                    
+                                </td>
+                                <td>
+                                    <span *ngIf="task.is_approved == 1" style="color:green">Yes</span>
+                                    <span *ngIf="task.is_approved == 0">No</span>
+                                    
+                                </td>
+                                <td>
+                                    <span *ngIf="task.taskStatus == 1" style="color:green">Done</span>
+                                    <span *ngIf="task.taskStatus == 0">Pending</span>
+
+                                </td>
+
+                                
+
+                                <td>
+                                    <!-- <a class="mr-4" style="font-size:20px;color: #185EC4;" ><i
+                                        class="fa fa-pencil-square-o" aria-hidden="true"></i></a> -->
+                                    
+                                            
+                                            <a style="font-size:20px;color: #185EC4;" (click)="openResetModal(task.taskId, task.seqNo,task.channelNewId, resetTaskmodal)" *ngIf="task.taskStatus == 1" title="start from this point" ><i
+                                        class="fa fa-refresh" aria-hidden="true" ></i></a>
+
+
+                                        <a style="font-size:20px;color: #185EC4;" (click)="openRoutingModule(task.fileTypeId, task.channelNewId, task.is_uploaded, task.is_approved, task.taskType)" *ngIf="task.taskStatus != 1" title="go to pending page" >
+                                            <i class="fa fa-arrow-right" aria-hidden="true" ></i>
+                                        </a>
+
+                                        
+                                </td>
+                                
+                            </tr>
+                            
+                        </ng-container> 
+                        
+                        
+                    </tbody>
+                </table>
+            </div>   
+                
+        </div>
+    </div>
+    </div>
+
+   
+</div>
+
+
+<ng-template #resetTaskmodal>
+    
+    <div class="modal-confirm">
+        <div class="modal-content modalcolor">
+         
+            <div class="modal-body">
+               <span style="color:black">Do you really want to reset all from this task? 
+                <span style="color:red">This action will remove all the data captured from the below completed processes.</span>
+                 Do you want to proceed?</span>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-secondary" (click)="closeModal()">No</button>
+                <button *ngIf="resetting_status == false" type="button" class="btn btnyes" (click)="resetTask()">Yes</button>
+                <button *ngIf="resetting_status == true" type="button" class="btn btnyes" style="opacity: 0.5" >Resetting...</button>
+            </div>
+        </div>
+    </div>
+
+</ng-template>
+
+
+
+<ng-template #newBatchmodal>
+    
+    <div class="modal-confirm">
+        <div class="modal-content modalcolor">
+         
+            <div class="modal-body">
+               <span style="color:black">Do you really want to create new batch? 
+                <span style="color:red">This action will remove all the data captured from the previous batch.</span>
+                 Do you want to proceed?</span>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-secondary" (click)="closeModal()">No</button>
+                <button type="button" class="btn btnyes" (click)="createNewBatch()">Yes</button>
+            </div>
+        </div>
+    </div>
+
+</ng-template>
+
+
+
+
+
+
+
+
+
+
+<div *ngIf="openRoutingModuleStatus==true" style="z-index: 11; width: 100%; height:100%; background-color: rgba(0, 0, 0, 0); position: fixed; top:0%; left: 0%" >
+    <div class="container" style=" width: 40%; height: 40%; background-color: #ffffff; position: fixed; top:30%; left: 30%; border-radius: 2px; box-shadow: 1px 1px 10px 5px #88888895; padding:0px; overflow: hidden; align-items: center!important;min-height: 260px;">
+
+        <div class="row" style=" justify-content: right; display: flex; background: transparent -webkit-linear-gradient(174deg, rgba(13, 53, 148, .898039), #35d3e1) 0 0 no-repeat padding-box; min-height: 50px; padding: 10px;align-items: center!important;text-align: left; padding-right: 20px;">
+
+            <span style="color:#ffffff; width:92%; font-size: 16px;font-weight: 500; ">Settings</span>
+
+            <button style="border-radius: 50%; border-style: none;text-align: center;background-color: #ffffff; width:20px; height: 20px;" (click)="openRoutingModuleStatus = false">
+                <span style="color: rgb(0, 65, 109); font-size: 14px; font-weight: 500; cursor: pointer;">X</span>
+            </button>
+            
+        </div>
+        
+
+        <div class="row" style=" justify-content: center; display: flex;padding-top: 5%;">
+        </div>
+
+        <div *ngIf="taskTypeToRoute.toLowerCase()== 'upload'" class="row" style="padding-top: 2%;padding-left: 10px;padding-right: 10px">
+
+            <div class="col-6">
+                <span style="color: #264a9f; font-size: 13px;display: flex; justify-content: left; margin-top: 8px;">
+                    Go to Upload Page                   
+                </span>
+            </div>
+            <div class="col-6" style="display: flex; justify-content: left;"> 
+                <button [ngClass]="uploadStatusToRoute == 1? 'disable':''" class="btnlink" (click)="goToPendingUploadPage()"  [disabled]="uploadStatusToRoute == 1">Go</button>
+            </div>
+
+
+            <div class="col-6" style="padding-top: 30px;display: flex; justify-content: left;">
+                <span style="color: #264a9f; font-size: 13px; margin-top: 8px;">
+                    Go to Approve Page                    
+                </span>
+            </div>
+            <div class="col-6" style="padding-top: 30px; display: flex; justify-content: left;">
+                <button [ngClass]="uploadStatusToRoute == 0? 'disable':''" class="btnlink" (click)="goToApprovePage()" [disabled]="uploadStatusToRoute == 0">Go</button>
+            </div>   
+        </div>
+
+
+        <div *ngIf="taskTypeToRoute.toLowerCase()== 'mapping'" class="row" style="padding-top: 2%;padding-left: 10px;padding-right: 10px">
+
+            <div class="col-6" style="padding-top: 30px;display: flex; justify-content: left;">
+                <span style="color: #264a9f; font-size: 13px; margin-top: 8px;">
+                    Go to Mapping Page                    
+                </span>
+            </div>
+            <div class="col-6" style="padding-top: 30px; display: flex; justify-content: left;"> 
+                <button  class="btnlink" (click)="goToMappingPage()" >Go</button>
+            </div>
+        
+        
+        </div>
+
+        <div *ngIf="taskTypeToRoute.toLowerCase()== 'score generation'" class="row" style="padding-top: 2%;padding-left: 10px;padding-right: 10px">
+
+            <div class="col-6" style="padding-top: 30px;display: flex; justify-content: left;">
+                <span style="color: #264a9f; font-size: 13px; margin-top: 8px;">
+                    Go to Generate Score Page                    
+                </span>
+            </div>
+            <div class="col-6" style="padding-top: 30px; display: flex; justify-content: left;"> 
+                <button  class="btnlink" (click)="goToGenerateScorePage()" >Go</button>
+            </div>
+        
+        
+        </div>
+        
+    </div>
+</div>
+
+
+
+

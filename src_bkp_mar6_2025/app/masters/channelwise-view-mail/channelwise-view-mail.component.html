@@ -1,0 +1,150 @@
+<notifier-container></notifier-container>
+<div class="container-fluid" style="margin-top: 1%; padding-top:3%">
+    <div class="col-md-12" style="padding-left: 0;">
+        <div class="row">
+            <div class="col-md-3">
+                <h2 class="page-title">Channel Wise Mail Conf</h2>
+            </div>
+            <div class="col-md-4 align-self-start">
+                <input type="search" id="user" class="form-control" placeholder="search by Channel Name"
+                    aria-label="Search" style="border-radius: 50px;" [(ngModel)]="searchChannel"
+                    (keyup)="viewChannelWiseMail()">
+            </div>
+            <div class="col-md-2">
+                <button class="btnlink" style="float:left;" (click)="viewChannelWiseMail()">Search</button>
+            </div>
+            <div class="col-md-3">
+                <button class="btnlink" style="float:right;" (click)="addModalFun(addModal)">Add Mail</button>
+            </div>
+        </div>
+    </div>
+    <div class="card customcardcolor mt-3">
+        <div class="card-body">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Sl No.</th>
+                        <th>Channel Name</th>
+                        <th>To mail</th>
+                        <th>Cc Mail</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let ch of allDataList, let i=index">
+                        <td>{{i+1}}</td>
+                        <td>{{ch.channelNewName}}</td>
+                        <td>{{ch.toMail_Id}}</td>
+                        <td>{{ch.ccMail_Id}}</td>
+                        <td>
+                            <a class="mr-4" style="font-size:20px;color: #185EC4;" (click)="editModalFun(editModal,ch.channelNewName, ch.toMail_Id, ch.ccMail_Id)"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                            <!-- <a style="font-size:20px;color: #FF6262;" (click)="openDeleteModal(deleteModal, user.user_id)"><i
+                            class="fa fa-trash" aria-hidden="true"></i></a> -->
+                        </td>
+                    </tr>
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+</div>
+<ng-template #addModal>
+    <div class="modal-content">
+        <div class="modal-header mod-head" style="height: 50px;">
+            <h4 class="modal-title" style="color: #ffffff;">Add Mail</h4>
+            <button type="button" class="modalclosebtn" (click)="closeModal()">
+                <mat-icon class="matico">close</mat-icon>
+            </button>
+        </div>
+        <div class="modal-body mod-body">
+            <div class="row">
+                <div class="col-md-12 form-group">
+                    <label>Select Channel Name</label>
+                    <select class="form-control" style ="width: 275px;" [(ngModel)]="channelNewName"><option value="{{channel.channelNewName}}" *ngFor="let channel of channelNewList">{{channel.channelNewName}}
+                    </option></select>
+                </div>
+            </div>
+            <div class="row">
+
+                <div class="col-md-6 form-group">
+                    <label>To Mail Id</label>
+                    <!-- <input type="email" placeholder="Enter to mail id" [(ngModel)]="toMail"> -->
+                    <textarea type="email" placeholder="Enter to mail id" [(ngModel)]="toMail"></textarea>
+                </div>
+                <div class="col-md-6 form-group">
+                    <label>Cc Mail Id</label>
+                    <textarea type="email" placeholder="Enter cc mail id"[(ngModel)]="ccMail"></textarea>
+                </div>
+                <div class="col-md-12 form-group">
+
+                    <label style='content:" *";color: red;'>For separate multiple mail ids use comma (,) </label>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer mod-foot">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <button type="button" class="btnlink" (click)="addMail()">Save</button>
+                        </div>
+                        <div class="col-md-6">
+                            <button type="button" (click)="closeModal()" class="btnlink"
+                                style="background-color: rgba(240, 244, 250) !important;">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #editModal>
+    <div class="modal-content">
+        <div class="modal-header mod-head" style="height: 50px;">
+            <h4 class="modal-title" style="color: #ffffff;">Edit Mail</h4>
+            <button type="button" class="modalclosebtn" (click)="closeModal()">
+                <mat-icon class="matico">close</mat-icon>
+            </button>
+        </div>
+        <div class="modal-body mod-body">
+            <div class="row">
+                <div class="col-md-12 form-group">
+                    <label>Select Channel Name</label>
+                    <select class="form-control" style ="width: 275px;" [(ngModel)]="channelNewNameEdit" disabled><option value="{{channel.channelNewName}}" *ngFor="let channel of channelNewList">{{channel.channelNewName}}
+                    </option></select>
+                </div>
+            </div>
+            <div class="row">
+
+                <div class="col-md-6 form-group">
+                    <label>To Mail Id</label>
+                    <textarea type="email" placeholder="Enter to mail id" [(ngModel)]="toMailEdit"></textarea>
+                </div>
+                <div class="col-md-6 form-group">
+                    <label>Cc Mail Id</label>
+                    <textarea type="email" placeholder="Enter cc mail id"[(ngModel)]="ccMailEdit"></textarea>
+                </div>
+                <div class="col-md-12 form-group">
+
+                    <label style='content:" *";color: red;'>For separate multiple mail ids use comma (,) </label>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer mod-foot">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <button type="button" class="btnlink" (click)="editMail()">Update</button>
+                        </div>
+                        <div class="col-md-6">
+                            <button type="button" (click)="closeModal()" class="btnlink"
+                                style="background-color: rgba(240, 244, 250) !important;">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>

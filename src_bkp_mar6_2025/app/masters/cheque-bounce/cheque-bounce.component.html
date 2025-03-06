@@ -1,0 +1,267 @@
+<div class="container-fluid">
+    <div class="col-md-6 mt-3">
+        <h2 class="page-title">Cheque Bounce (Upload File)</h2>
+        <br>
+        <span style="color: red">{{upload_message}}</span>
+        <br>
+        <span >Last Uploaded At: {{last_uploaded_at}}</span>
+        <br>
+        <span >Last Uploaded By: {{last_uploaded_by}}</span>
+        <br>
+    </div>
+    <div class="text-right">
+
+        <button type="button" class="btnlink"  
+        (click)="downloadTemplate()" style="width: 150px !important">Download Template</button>
+    </div>
+    <div draggable="true" ngClass="{{dragAreaClass}}" [ngClass]="blockUpload == true? 'disablecursor':''">
+        <div class="row">
+            <div class="col-md-12 mt-3 text-center uploadFile">
+                Drag files here
+                <a href="javascript:void(0)" (click)="file.click()">
+                    or Click to browse file
+                </a>
+                <input type="file" #file id="fileUp" [multiple]="false" (change)="uploadFile($event)" style="display:none" [disabled]="blockUpload" />
+                <div class="dragged-files-wrapper" *ngIf="draggedFiles" >
+                    <div class="file mt-2" *ngFor="let file of draggedFiles">
+                        {{file.name}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="error" *ngIf="error">
+        Only one file at time allow
+    </div>
+
+    <div class="card customcardcolor mt-3">
+        <div class="card-body">
+            <table class="table table-hover table-responsive" style="max-height: 400px;">
+                <thead>
+                <tr>
+                    
+                    <th>month name</th>
+                    <th>rcpt branch cd</th>
+                    <th>branch name</th>
+                    <th>receipt no</th>
+                    <th>lob</th>
+                    <th>product cd</th>
+                    <th>product name</th>
+                    <th>receipt date</th>
+                    <th>receipt status</th>
+                    <th>main receipt id</th>
+                    <th>sub receipt id</th>
+                    <th>sub receipt status</th>
+                    <th>hold reason</th>
+                    <th>hold date</th>
+                    <th>producer name</th>
+                    <th>agent cd</th>
+                    <th>creator user id</th>
+                    <th>insured name</th>
+                    <th>receipt total amt</th>
+                    <th>applied amt</th>
+                    <th>rfnd acq merchant cd</th>
+                    <th>received from</th>
+                    <th>received opt type</th>
+                    <th>received client id</th>
+                    <th>deposit bank cd</th>
+                    <th>deposit slip no</th>
+                    <th>deposit slip date</th>
+                    <th>proposal no</th>
+                    <th>policy no</th>
+                    <th>freeze</th>
+                    <th>covernote no</th>
+                    <th>policy type</th>
+                    <th>billed on date</th>
+                    <th>authorization cd</th>
+                    <th>txt remarks</th>
+                    <th>pymt instr date</th>
+                    <th>pymt chk no</th>
+                    <th>receipt type</th>
+                    <th>bounced reason</th>
+                    <th>bounced chk date</th>
+                    <th>payment mode cd</th>
+                    <th>agent rcpt date</th>
+                    <th>debtor id</th>
+                    <th>payin slip no</th>
+                    <th>pymt branch name</th>
+                    <th>policycert no</th>
+                    <th>pymt bank cd</th>
+                    <th>bank name</th>
+                    <th>num instrument amt</th>
+                    <th>txt status</th>
+                    <th>dat entry date</th>
+                    <th>flag</th>
+                    <th>txt receipt flow</th>
+                    <th>cd acc no</th>
+                    <th>channel</th>
+                    <th>phone id</th>
+                    <th>producer email id</th>
+                    <th>txt engine no</th>
+                    <th>txt chasis no</th>
+                    <th>veh no</th>
+                    <th>cancelled user id</th>
+                    <th>cancelled date</th>
+                    <th>confirmed user id</th>
+                    <th>confirmed date</th>
+                    <th>accepted user id</th>
+                    <th>accepted date</th>
+                    <th>deposited user id</th>
+                    <th>deposited date</th>
+                    <th>rejected user id</th>
+                    <th>rejected date</th>
+                    <th>technical bounce userid</th>
+                    <th>technical bounce date</th>
+                    <th>f72</th>
+                    <th>house bank name</th>
+                    <th>deposit bank acc no</th>
+                    <th>data</th>
+                    <th>bounce type</th>
+                    <th>channel new</th>
+                    <th>location type</th>
+                    <th>standard reason</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let val of cheqBounceList">
+                    <!-- <td *ngFor="let arr of val">{{arr}}</td> -->
+                    <td>{{val.month_name}}</td>
+                    <td>{{val.rcpt_branch_cd}}</td>
+                    <td>{{val.branch_name}}</td>
+                    <td>{{val.receipt_no}}</td>
+                    <td>{{val.lob}}</td>
+                    <td>{{val.product_cd}}</td>
+                    <td>{{val.product_name}}</td>
+                    <td>{{val.receipt_date}}</td>
+                    <td>{{val.receipt_status}}</td>
+                    <td>{{val.main_receipt_id}}</td>
+                    <td>{{val.sub_receipt_id}}</td>
+                    <td>{{val.sub_receipt_status}}</td>
+                    <td>{{val.hold_reason}}</td>
+                    <td>{{val.hold_date}}</td>
+                    <td>{{val.producer_name}}</td>
+                    <td>{{val.agent_cd}}</td>
+                    <td>{{val.creator_user_id}}</td>
+                    <td>{{val.insured_name}}</td>
+                    <td>{{val.receipt_total_amt}}</td>
+                    <td>{{val.applied_amt}}</td>
+                    <td>{{val.rfnd_acq_merchant_cd}}</td>
+                    <td>{{val.received_from}}</td>
+                    <td>{{val.received_opt_type}}</td>
+                    <td>{{val.received_client_id}}</td>
+                    <td>{{val.deposit_bank_cd}}</td>
+                    <td>{{val.deposit_slip_no}}</td>
+                    <td>{{val.deposit_slip_date}}</td>
+                    <td>{{val.proposal_no}}</td>
+                    <td>{{val.policy_no}}</td>
+                    <td>{{val.freeze}}</td>
+                    <td>{{val.covernote_no}}</td>
+                    <td>{{val.policy_type}}</td>
+                    <td>{{val.billed_on_date}}</td>
+                    <td>{{val.authorization_cd}}</td>
+                    <td>{{val.txt_remarks}}</td>
+                    <td>{{val.pymt_instr_date}}</td>
+                    <td>{{val.pymt_chk_no}}</td>
+                    <td>{{val.receipt_type}}</td>
+                    <td>{{val.bounced_reason}}</td>
+                    <td>{{val.bounced_chk_date}}</td>
+                    <td>{{val.payment_mode_cd}}</td>
+                    <td>{{val.agent_rcpt_date}}</td>
+                    <td>{{val.debtor_id}}</td>
+                    <td>{{val.payin_slip_no}}</td>
+                    <td>{{val.pymt_branch_name}}</td>
+                    <td>{{val.policycert_no}}</td>
+                    <td>{{val.pymt_bank_cd}}</td>
+                    <td>{{val.bank_name}}</td>
+                    <td>{{val.num_instrument_amt}}</td>
+                    <td>{{val.txt_status}}</td>
+                    <td>{{val.dat_entry_date}}</td>
+                    <td>{{val.flag}}</td>
+                    <td>{{val.txt_receipt_flow}}</td>
+                    <td>{{val.cd_acc_no}}</td>
+                    <td>{{val.channel}}</td>
+                    <td>{{val.phone_id}}</td>
+                    <td>{{val.producer_email_id}}</td>
+                    <td>{{val.txt_engine_no}}</td>
+                    <td>{{val.txt_chasis_no}}</td>
+                    <td>{{val.veh_no}}</td>
+                    <td>{{val.cancelled_user_id}}</td>
+                    <td>{{val.cancelled_date}}</td>
+                    <td>{{val.confirmed_user_id}}</td>
+                    <td>{{val.confirmed_date}}</td>
+                    <td>{{val.accepted_user_id}}</td>
+                    <td>{{val.accepted_date}}</td>
+                    <td>{{val.deposited_user_id}}</td>
+                    <td>{{val.deposited_date}}}</td>
+                    <td>{{val.rejected_user_id}}</td>
+                    <td>{{val.rejected_date}}</td>
+                    <td>{{val.technical_bounce_userid}}</td>
+                    <td>{{val.technical_bounce_date}}</td>
+                    <td>{{val.f72}}</td>
+                    <td>{{val.house_bank_name}}</td>
+                    <td>{{val.deposit_bank_acc_no}}</td>
+                    <td>{{val.data}}</td>
+                    <td>{{val.bounce_type}}</td>
+                    <td>{{val.channel_new}}</td>
+                    <td>{{val.location_type}}</td>
+                    <td>{{val.standard_reason}}</td>
+                   
+                </tr>
+                </tbody>
+            </table>
+
+            <div class="mb-3" *ngIf="cheqBounceList.length > 0">
+                <div class="row float-right">
+                    <div class="col-md-12">
+                        <button class="btn btn-sm pagigbtn mt-2 mb-2" (click)="goPrev()" [disabled]="prevDisable">Previous</button>&nbsp;
+                        <!-- Page {{page+1}} of {{totalPage}}&nbsp; -->
+                        <button class="btn btn-sm pagigbtn mt-2 mb-2" (click)="goNext()" [disabled]="nextDisable">Next</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #deleteModal>
+    <div class="modal-confirm">
+        <div class="modal-content modalcolor">
+            <div class="modal-header flex-column">
+                <div class="icon-box">
+                    <i class="material-icons">&#xE5CD;</i>
+                </div>
+                <h4 class="modal-title w-100">Are you sure?</h4>
+                <!--        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>-->
+            </div>
+            <div class="modal-body">
+                <p>Do you really want to delete these records? This process cannot be undone.</p>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-secondary" (click)="closeModal()">Cancel</button>
+                <button type="button" class="btn btn-danger">Delete</button>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+
+<!-- <p>upload-file works!</p> -->
+
+
+<!-- <p>sales-target works!</p> -->
+
+
+
+<!-- <p>sdm works!</p> -->
+
+
+
+<!-- <p>bankassurance works!</p> -->
+
+
+
+<!-- <p>mapping-master works!</p> -->
+
+
+
+<!-- <p>cheque-bounce works!</p> -->

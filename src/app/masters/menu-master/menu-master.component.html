@@ -1,0 +1,202 @@
+<notifier-container></notifier-container>
+<!-- <div class="container-fluid pt-2">
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-2">
+                <h2 class="page-title">Menu Master</h2>
+            </div>
+            
+        </div>
+      
+    </div>
+    <div class="card customcardcolor mt-3">
+        <div class="card-body">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>Sr No.</th>
+                    <th>Menu</th>
+                
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+              
+                <tr *ngFor="let menu of menu_list; let i = index;">
+                    <td>{{i+1}}</td>
+                    <td>{{menu.menu_name}}</td>
+               
+                    <td>
+                        <a class="mr-4" style="font-size:20px;color: #185EC4;" (click)="edit(editModal)"><i
+                        class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                        <a style="font-size:20px;color: #FF6262;" (click)="openDeleteModal(deleteModal,menu.menu_id)"><i
+                        class="fa fa-trash" aria-hidden="true"></i></a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div> -->
+<!-- <p>misc-header works!</p> -->
+<!-- <p>kpimap works!</p> -->
+<notifier-container></notifier-container>
+<div>
+    <div  style="margin-top: 2%; padding:2%">
+    <div class="row" style="padding-left:1%">
+        <h2 class="page-title">Menu Details</h2>        
+
+    </div>
+    <div class="row">
+        
+        <div class="col-4">
+            <label>Menu Name
+            </label>
+
+            <input type="text"  class="form-control" placeholder="Enter Menu Name" [(ngModel)]="addmenuName">
+        </div>
+        <div class="col-4">
+            <label>Menu Icon
+            </label>
+
+            <input type="text"  class="form-control" placeholder="Enter Menu Icon" [(ngModel)]="menuIcon">
+        </div>
+        
+
+        <div class="col-4">
+            
+                    <button type="button" class="btnlink" (click)="addMenu()" style="    position: absolute;
+                    bottom: 0;
+                    left: 2px; 
+                ">Add Menu</button>
+        </div>
+
+
+    </div>
+   
+    <div > 
+        <div class="row" style="padding-top:2%; padding-left:1%; padding-right: 1%;">
+                
+            <table class="table">
+                <thead>
+                <tr style="background: transparent -webkit-linear-gradient( 174deg, rgb(13 53 148 / 30%), #35d3e114) 0 0 no-repeat padding-box;">
+                    <th>Sr No.</th>
+                    <th>Menu</th>
+                    <th>Menu Icon</th>
+
+                
+                    <th>Action</th>
+                    
+
+
+                </tr>
+            </thead>
+                <tbody>
+                    
+                    <ng-container *ngFor="let menu of menu_list; let i = index;">
+                        <tr>
+
+
+                            <td>{{i+1}}</td>
+                            <td>{{menu.menu_name}}</td>
+                            <td>{{menu.icon}}</td>
+
+
+
+                            <!-- <td *ngIf="isedit == false || editId != header.id">{{header.header_description}}</td>
+                            <td *ngIf="isedit == true && editId == header.id">
+                                <input type="text"  class="form-control"  [(ngModel)]="edit_header_desc" value="edit_header_desc">
+                            </td> -->
+                            
+
+
+                            <td>
+                                <a class="mr-4" style="font-size:20px;color: #185EC4;" ><i
+                                    class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                                    <!-- <a class="mr-4" style="font-size:20px;color: #185EC4;" *ngIf="isedit == true && editId == header.id" (click)="changeValue(header.id, 0)" ><i
+                                        class="fa fa-save" aria-hidden="true"></i></a> -->
+                                        
+                                        <a style="font-size:20px;color: #FF6262;" (click)="openDeleteModal(deleteModal,menu.menu_id)" ><i
+                                    class="fa fa-trash" aria-hidden="true" ></i></a>
+                            </td>
+                            
+                        </tr>
+                        
+                    </ng-container>
+                    
+                    
+                </tbody>
+            </table>
+        </div>
+    </div>
+    </div>
+
+   
+</div>
+<ng-template #editModal>
+    <div class="modal-content modalcolor">
+        <div class="modal-header mod-head">
+            <h4 class="modal-title" style="color: #ffffff;">Edit Menu Master</h4>
+            <button type="button" class="modalclosebtn" (click)="closeModal()">
+                <mat-icon class="matico">close</mat-icon>
+            </button>
+        </div>
+        <div class="modal-body mod-body">
+            <div class="row">
+                <div class="col-md-6 form-group">
+                    <label>Menu Name</label>
+                    <input type="text" class="form-control" placeholder="Enter menu name" [(ngModel)]="menu_name">
+                    <span class="err-msg">{{menuErr}}</span>
+                </div>
+                <div class="col-md-6 form-group">
+                    <label>Menu Status</label>
+                    <div class="select">
+                        <select class="form-control" [(ngModel)]="menu_status">
+                            <option value="1">Active</option>
+                            <option value="2">Inactive</option>
+                        </select>
+                    </div>
+                    <span class="err-msg">{{statusErr}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer mod-foot">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <button type="button" class="btnlink">Update</button>
+                        </div>
+                        <div class="col-md-6">
+                            <button type="button" (click)="closeModal()" class="btnlink" style="background-color: rgba(240, 244, 250) !important;">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #deleteModal>
+    <div class="modal-confirm">
+        <div class="modal-content modalcolor">
+            <div class="modal-header flex-column">
+                <div class="icon-box">
+                    <i class="material-icons">&#xE5CD;</i>
+                </div>
+                <h4 class="modal-title w-100">Are you sure?</h4>
+                <!--        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>-->
+            </div>
+            <div class="modal-body">
+                <p>Do you really want to delete these records? This process cannot be undone.</p>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-secondary" (click)="closeModal()">Cancel</button>
+                <button type="button" class="btn btn-danger" (click)="deleteMenu()">Delete</button>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+
+<!-- <p>menu-master works!</p> -->

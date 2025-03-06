@@ -1,0 +1,172 @@
+<!-- <p>scheduler-details works!</p> -->
+<notifier-container></notifier-container>
+<div>
+    <div  style="margin-top: 2%; padding:2%">
+        <div class="row" style="padding-left:1%">
+            <h2 class="page-title">Scheduler Details</h2>        
+    
+        </div>
+        <div class="row">
+            <!-- <div style="position: absolute;
+                bottom: 0;
+                right: 2px; "> -->
+                <div class="col">
+                    <button type="button" class="btnlink" style="position: absolute;
+                    bottom: 0;
+                    right: 2px; " (click)="openModal('all',reset)"
+                        >Reset</button>
+                    </div>
+            <!-- </div> -->
+            <!-- <div class="col-3">
+                <label>Header
+                </label>
+
+                <select class="form-control" [(ngModel)]="header" (change)="getdetailsdata(header)">
+                   
+                    <option value="{{hd.id}}" *ngFor="let hd of headerDetails">{{hd.header_description}}</option>
+                </select>
+            </div>
+            <div class="col-3">                    
+                <label>Details Code
+                </label>
+
+                <input type="text"  class="form-control" placeholder="Enter details Code" [(ngModel)]="details_code">
+            </div>
+    
+            <div class="col-3">
+                <label>Details Description
+                </label>
+
+                <input type="text"  class="form-control" placeholder="Enter details Desc" [(ngModel)]="details_desc">
+            </div>
+            <div class="col-3">
+                
+                        <button type="button" class="btnlink" (click)="saveDetails()" style="    position: absolute;
+                        bottom: 0;
+                        left: 2px; 
+                    ">Save</button>
+                    
+            </div> -->
+    
+    
+        </div>
+       
+        <div > 
+            <div class="row" style="margin-top:2% !important; padding-left:1%; padding-right: 1%; " >
+                    
+                <table class="table fixed-head">
+                    <thead>
+                    <tr style="background: transparent -webkit-linear-gradient( 174deg, rgb(13 53 148 / 30%), #35d3e114) 0 0 no-repeat padding-box;">
+                        <!-- <th>Branch</th> -->
+                        <th>File Type</th>
+                        <th>Upload Within</th>
+                        <th>File Uploaded</th>
+                        <th>Last Uploaded By</th>
+                        <th>Last Uploaded At</th>
+
+                    
+                        <th>Action</th>
+                        
+    
+    
+                    </tr>
+                </thead>
+                    
+                    <tbody >
+                        <ng-container *ngIf="!(schedulerDetails.length > 0)">
+                            <span> &nbsp; No Scheduler Details Available</span>
+                        </ng-container>
+                        <ng-container *ngFor="let detail of schedulerDetails">
+                            <tr>
+                                <!-- <td>{{detail.branch}}</td> -->
+                                <td>{{detail.fileType}}</td>
+                                <td>{{detail.dayWithin}} th of month</td>
+                                <td>
+                                    <span *ngIf="detail.is_uploaded == 0">No</span>
+                                    <span *ngIf="detail.is_uploaded == 1">Yes</span>
+
+                                </td>
+                                <td>{{detail.NAME}}</td>
+                                <td>{{detail.last_uploaded_at}}</td>
+                                <!-- <td></td> -->
+
+
+                                <!-- <td>{{detail.header_description}}</td>
+                            
+                                <td *ngIf="isedit == false || editId != detail.id">{{detail.details_code}}</td>
+                                <td *ngIf="isedit == true && editId == detail.id">
+                                    <input type="text"  class="form-control"  [(ngModel)]="edit_detail_code" value="edit_detail_code">
+
+                                </td>
+
+                                <td *ngIf="isedit == false || editId != detail.id">{{detail.details_description}}</td>
+                                <td *ngIf="isedit == true && editId == detail.id">
+                                    <input type="text"  class="form-control"  [(ngModel)]="edit_detail_desc" value="edit_detail_desc">
+                                </td>
+                                -->
+
+    
+                                <td>
+                                    <a class="mr-4" title="Reset" (click)="openModal(detail.fileTypeId, reset)">
+                                        <i class="fa fa-refresh"  aria-hidden="true"></i>
+                                    </a>
+
+                                    <a class="mr-4" style="font-size:20px;color: #185EC4;"  ><i
+                                        class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                                       
+                                            
+                                            <a style="font-size:20px;color: #FF6262;"  ><i
+                                        class="fa fa-trash" aria-hidden="true" ></i></a>
+                                    
+                                </td> 
+                                
+                            </tr>
+                            
+                        </ng-container>
+                        
+                        
+                    </tbody>
+                
+                </table>
+                
+            </div>
+        </div>
+        </div>
+
+    
+</div>
+
+<!-- <ng-template #deleteModal>
+    <div class="modal-confirm">
+        <div class="modal-content modalcolor">
+            <div class="modal-header flex-column">
+                <div class="icon-box">
+                    <i class="material-icons">&#xE5CD;</i>
+                </div>
+                <h4 class="modal-title w-100">Are you sure?</h4>
+        
+            </div>
+            <div class="modal-body">
+                <p>Do you really want to delete these records? This process cannot be undone.</p>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-secondary" (click)="closeModal()">Cancel</button>
+                <button type="button" class="btn btn-danger" (click)="changeValue(deleteId, 1)">Delete</button>
+            </div>
+        </div>
+    </div>
+</ng-template> -->
+<ng-template #reset>
+    <div class="modal-confirm">
+        <div class="modal-content modalcolor">
+         
+            <div class="modal-body">
+               <span style="color:black">Are you sure?</span>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-secondary" (click)="closeModal()">No</button>
+                <button type="button" class="btn btnyes" (click)="resetScheduler(resetFileTypeId)">Yes</button>
+            </div>
+        </div>
+    </div>
+</ng-template>

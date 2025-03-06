@@ -1,0 +1,254 @@
+<notifier-container></notifier-container>
+<div style="padding: 3%; padding-top: 4%;">
+    <div class="row" style="padding-bottom: 10px;">
+        <div class="col-6">
+            <h2 class="page-title">KPI Rule Replication</h2>
+        </div>
+        <div class="col-6 d-flex" style="justify-content: right">
+            <button class="btnlink" style="height: 32px; margin-top: 10px; padding:0" routerLink="/dashboard/view-kpi">Mapped Data</button>
+
+            <button class="btnlink" style="width: 32px; height:32px;border-radius: 50%; margin-top: 10px; margin-left: 20px; color:#ffffff; padding:0"  routerLink="/dashboard/kpi-map" title="go back to upload page">
+                <i class="fa fa-arrow-left" aria-hidden="true" style="color:#ffffff;"></i>
+            </button>
+        </div>
+    </div>
+
+    <div class="row pl-3 pr-3">
+        <div *ngIf="fullreplicationstatus" class="col-2 text-center" style="background: transparent -webkit-linear-gradient( 174deg, rgba(13, 53, 148, .898039), #35d3e1) 0 0 no-repeat padding-box;color:#ffffff;padding:5px; border: 1px solid rgba(0, 0, 0, 0.205) ; border-top-left-radius: 10px; cursor: pointer; border-bottom: none;" (click)="fullreplicationstatus = true">Full Replication</div>
+
+        <div *ngIf="!fullreplicationstatus" class="col-2 text-center" style="background-color: rgb(233, 233, 233);padding:5px; border: 1px solid rgba(0, 0, 0, 0.205) ; border-top-left-radius: 10px; cursor: pointer; border-bottom: none;" (click)="fullreplicationstatus = true">Full Replication</div>
+
+
+
+
+
+        <div *ngIf="fullreplicationstatus" class="col-2 text-center" style="background-color: rgb(233, 233, 233);padding:5px; border: 1px solid rgba(0, 0, 0, 0.205) ; border-top-right-radius: 10px;  cursor: pointer; border-bottom: none;" (click)="fullreplicationstatus = false">Selective Replication</div>
+
+        <div *ngIf="!fullreplicationstatus" class="col-2 text-center" style="background: transparent -webkit-linear-gradient( 174deg, rgba(13, 53, 148, .898039), #35d3e1) 0 0 no-repeat padding-box;color:#ffffff;padding:5px; border: 1px solid rgba(0, 0, 0, 0.205) ; border-top-right-radius: 10px; cursor: pointer; border-bottom: none;" (click)="fullreplicationstatus = false">Selective Replication</div>
+        
+    </div>
+
+
+
+    <!-- for full replication -->
+    <div *ngIf="fullreplicationstatus" class="row" style="padding-top:10px;padding-bottom:30px;padding-left: 20px;padding-right: 20px; background-color: rgb(241, 241, 241); border-radius: 10px; border: 1px solid rgba(0, 0, 0, 0.205) ; ">
+        
+        
+
+        <div class="col-12" style="padding-bottom:20px">
+            <span>Replicalte all data in a single go</span>
+        </div>
+
+        <div class="col-3">
+            <select class="form-control" name="" id="" [(ngModel)]="f_Channel">
+                <option value="all">Select Channel</option>
+                <option value="{{channel.id}}" *ngFor="let channel of channelNewList">{{channel.channelNewName}}</option>
+            </select>
+        </div>
+        <div class="col-3"></div>
+        <div class="col-3"></div>
+        <div class="col-3"></div>
+
+        <div class="col-12" style="padding-top:20px">
+            <label>From</label>
+        </div>
+        <div class="col-2">
+            <select class="form-control" name="" id="" [(ngModel)]="f_fromYear">
+                <option value="" >Select Year</option>
+                <option value={{yr}} *ngFor="let yr of yearList">{{yr}}</option>
+            </select>
+        </div>
+        <div class="col-2">
+            <select class="form-control" name="" id="" [(ngModel)]="f_fromMonth">
+                <option value="">Select Month</option>
+                <option value="{{mon.id}}" *ngFor="let mon of monthList">{{mon.name}}</option>
+            </select>
+        </div>
+
+        <!-- <div class="col-12"><hr></div> -->
+
+        <div class="col-12" style="padding-top:20px">
+
+            <label>To</label>
+        </div>
+        <div class="col-2">
+            <select class="form-control" name="" id="" [(ngModel)]="f_toYear">
+                <option value="">Select Year</option>
+                <option value={{yr}} *ngFor="let yr of yearList">{{yr}}</option>
+            </select>
+        </div>
+        <div class="col-2">
+            <select class="form-control" name="" id="" [(ngModel)]="f_toMonth">
+                <option value="">Select Month</option>
+                <option value="{{mon.id}}" *ngFor="let mon of monthList">{{mon.name}}</option>
+            </select>
+        </div>
+        <div class="col-8" style="display: flex; justify-content: right;">
+            <button class="btnlink" (click)="fullRchecking()">Copy</button>
+        </div>
+        
+    </div>
+
+
+
+
+
+    <!-- for selective replication -->
+    <div *ngIf="!fullreplicationstatus" class="row" style="padding-top:10px;padding-bottom:30px;padding-left: 20px;padding-right: 20px; background-color: rgb(241, 241, 241); border-radius: 10px; border: 1px solid rgba(0, 0, 0, 0.205) ; ">
+
+        <div class="col-12" style="padding-bottom:20px">
+            <span>Replicalte selective data</span>
+        </div>
+
+        <div class="col-3">
+            <select class="form-control" name="" id="" [(ngModel)]="s_Channel" (change)="getVerticals(); getDistParameterList()"  [disabled]="selectedDefaultChannelName != 'all' && userLevel != '4'">
+                <option value="">Select Channel</option>
+                <option value="{{channel.id}}" *ngFor="let channel of channelNewList">{{channel.channelNewName}}</option>
+            </select>
+        </div>
+        <div class="col-3">
+            <select class="form-control" name="" id="" [(ngModel)]="s_Vertical" (change)="getDistParameterList()">
+                <option value="">Select Vertical</option>
+                <option value="{{vertical.id}}" *ngFor="let vertical of verticalList">{{vertical.verticalName}}</option>
+            </select>
+        </div>
+        <div class="col-3">
+            <!-- <select class="form-control" name="" id="" [(ngModel)]="s_ParamChannel">
+                <option value="">Select Parameter Channel</option>
+                <option value="{{paramC.kpiParameterChannelId}}" *ngFor="let paramC of paramChannelList">{{paramC.kpiParameterChannelName}}</option>
+            </select> -->
+
+            <div class="multi">
+                <ng-multiselect-dropdown 
+                [(ngModel)]="s_ParamChannel" 
+                [settings]="dropdownSettings_paramChannel" 
+                [data]="paramChannelList"
+                class="multi"
+                >
+                </ng-multiselect-dropdown>    
+            </div>
+        </div>
+        <div class="col-3">
+            <!-- <select class="form-control" name="" id="" [(ngModel)]="s_designation">
+                <option value="all">Select Designation</option>
+                <option value="{{desig.id}}" *ngFor="let desig of designationList">{{desig.name}}</option>
+            </select> -->
+        </div>
+
+
+        <div class="col-12" style="padding-top:20px">
+            <label>From</label>
+        </div>
+
+
+        <div class="col-2">
+            <select class="form-control" name="" id="" [(ngModel)]="s_fromYear">
+                <option value="">Select Year</option>
+                <option value={{yr}} *ngFor="let yr of yearList">{{yr}}</option>
+            </select>
+        </div>
+        <div class="col-2">
+            <select class="form-control" name="" id="" [(ngModel)]="s_fromMonth">
+                <option value="">Select Month</option>
+                <option value="{{mon.id}}" *ngFor="let mon of monthList">{{mon.name}}</option>
+            </select>
+        </div>
+        <div class="col-3">
+            <!-- <select class="form-control" name="" id="" [(ngModel)]="s_fromChannel">
+                <option value="">Select Channel</option>
+                <option value="{{channel.id}}" *ngFor="let channel of channelNewList">{{channel.channelNewName}}</option>
+            </select> -->
+        </div>
+        <div class="col-3">
+            <!-- <select class="form-control" name="" id="" [(ngModel)]="s_fromVertical">
+                <option value="">Select Vertical</option>
+            </select> -->
+        </div>
+
+
+
+
+        <div class="col-12" style="padding-top:20px">
+            <label>To</label>
+        </div>
+        <div class="col-2">
+            <select class="form-control" name="" id="" [(ngModel)]="s_toYear">
+                <option value="">Select Year</option>
+                <option value={{yr}} *ngFor="let yr of yearList">{{yr}}</option>
+            </select>
+        </div>
+        <div class="col-2">
+            <select class="form-control" name="" id="" [(ngModel)]="s_toMonth">
+                <option value="">Select Month</option>
+                <option value="{{mon.id}}" *ngFor="let mon of monthList">{{mon.name}}</option>
+            </select>
+        </div>
+        <div class="col-3">
+            <!-- <select class="form-control" name="" id="" [(ngModel)]="s_toChannel">
+                <option value="">Select Channel</option>
+                <option value="{{channel.id}}" *ngFor="let channel of channelNewList">{{channel.channelNewName}}</option>
+            </select> -->
+        </div>
+        <div class="col-3">
+            <!-- <select class="form-control" name="" id="" [(ngModel)]="s_tpVertical">
+                <option value="">Select Vertical</option>
+            </select> -->
+        </div>
+        <div class="col-2" style="display: flex; justify-content: right;">
+            <button class="btnlink" (click)="selectiveReplication()">Copy</button>
+        </div>
+        
+    </div>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+<div *ngIf="fullRmonth_checking_status" style="z-index: 11; width: 100%; height:100%; background-color: rgba(0, 0, 0, 0); position: fixed; top:0%; left: 0%">
+    <div class="container" style=" width: 30%; height: 30%; background-color: #ffffff; position: fixed; top:35%; left: 35%; border-radius: 2px; box-shadow: 1px 1px 10px 5px #88888895; padding:0px; overflow: hidden; align-items: center!important;">
+
+        <div class="row" style=" justify-content: right; display: flex; background: transparent -webkit-linear-gradient(174deg, rgba(13, 53, 148, .898039), #35d3e1) 0 0 no-repeat padding-box; min-height: 50px; padding: 10px;align-items: center!important;">
+            <button style="border-radius: 50%; border-style: none;text-align: center;background-color: #ffffff; width:20px; height: 20px;" (click)="fullRmonth_checking_status=false">
+                <span style="color: rgb(0, 65, 109); font-size: 14px; font-weight: 500; cursor: pointer;">X</span>
+            </button>
+            
+        </div>
+        
+
+        <div class="row" style=" justify-content: center; display: flex;padding-top: 5%;">
+            <!-- <span style="color: rgb(0, 167, 0); font-size: bold;font-size: 40px;">
+                
+                <i class="fa fa-check" aria-hidden="true"></i>
+            </span> -->
+            <br>
+        </div>
+
+        <div  class="row text-center" style=" justify-content: center; display: flex;padding-top: 1%;">
+            <span style="color: rgb(0, 26, 43); font-size: 13px;">
+                {{fullRmonth_checking_msg}}
+            </span>
+        </div>
+
+        <div class="row" style=" justify-content: center; display: flex;padding-top: 5%;">
+            <span style="color: rgb(0, 106, 177); font-size: 16px;">
+                
+            </span>
+        </div>
+        
+
+        <div  class="row text-center" style=" justify-content: center; display: flex;padding-top: 0%;padding-bottom:20px">
+            <button *ngIf="fullgrantButtonStatus" class="btnlink" (click)="fullReplication()">Yes</button>
+            
+            <button *ngIf="selectivegrantButtonStatus" class="btnlink" (click)="selectiveRchecking()">Yes</button>
+        </div>
+    </div>
+</div>

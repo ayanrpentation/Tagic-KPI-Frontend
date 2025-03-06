@@ -1,0 +1,541 @@
+
+
+
+
+
+
+<mat-drawer-container class="example-container" autosize>
+    <mat-drawer #drawer class="example-sidenav" mode="side" opened="{{sideNavOpenStatus}}">
+        <div>
+            <a style="text-align: center" class="companyName">
+                <img class="header-logo" src="assets/image/logo-min.png" width="70" >
+            </a>
+        </div>
+        <mat-divider></mat-divider>
+
+        <!-- this one is the previously used code -->
+        <!-- <ng-material-multilevel-menu
+        [configuration]='config'
+        [items]='appitems'
+        >
+        </ng-material-multilevel-menu> -->
+
+        <div class="row">
+            <div class="menuBox" style="width:100%; background-image: linear-gradient( to top, rgba(36, 157, 255, 0.514), #35d3e1a2)">
+                <div *ngFor="let menu of appitems" class="menu" style="width:100%">
+
+                    <div class="main_menu_button" (click)="mainMenuClick(menu.label)" *ngIf="menu.label==main_menu_name" style="color:rgb(21, 0, 112) ; ">
+
+                        <div class="row">
+                            <div class="col-10">
+                                <i class="{{menu.faIcon}}"></i>&nbsp;&nbsp;&nbsp;
+                                <!-- <mat-icon></mat-icon> -->
+                                <span>{{menu.label}}</span>
+                            </div>
+                            <div class="col-2">
+                                <i class="fa fa-chevron-right" style="font-size: 10px; margin-top: 5px;" *ngIf="menu.label!=main_menu_name"></i>
+                                <i class="fa fa-chevron-down" style="font-size: 10px; margin-top: 5px;" *ngIf="menu.label==main_menu_name"></i>
+                                
+                            </div>
+                        </div>
+                        <!-- <i class="fa fa-chevron-right" style="font-size: 12px; margin-top: 5px;" *ngIf="menu.label!=main_menu_name"></i>
+                        <i class="fa fa-chevron-down" style="font-size: 12px; margin-top: 5px;" *ngIf="menu.label==main_menu_name"></i> -->
+                    </div>
+
+                    <div class="main_menu_button" (click)="mainMenuClick(menu.label)" *ngIf="menu.label!=main_menu_name" >
+                        <div class="row">
+                            <div class="col-10">
+                                <i class="{{menu.faIcon}}"></i>&nbsp;&nbsp;&nbsp;
+                                <!-- <mat-icon></mat-icon> -->
+                                <span>{{menu.label}}</span>
+                                <!-- <span>{{menu.label.slice(0,15)}}..</span> -->
+                            </div>
+                            <div class="col-2">
+                                <i class="fa fa-chevron-right" style="font-size: 10px; margin-top: 5px;" *ngIf="menu.label!=main_menu_name"></i>
+                                <i class="fa fa-chevron-down" style="font-size: 10px; margin-top: 5px;" *ngIf="menu.label==main_menu_name"></i>
+                                
+                            </div>
+                        </div>
+                        
+                    </div>
+
+
+
+                    <div id="submenu_button" class="row" style="padding-left:12px"  *ngFor="let submenu of menu.items" >
+                        <ng-container *ngIf="(submenu.label == 'COR Upload' && cor_flag == 1) || (submenu.label != 'COR Upload')">
+
+                        <div class="row" style="width: 100%" *ngIf="current_link_name == submenu.link">
+                        <!-- <div class="row" style="width: 100%" *ngIf="opened_link.includes(submenu.link)==true"> -->
+                            <button class="submenu_button"  (click)="goTodefinedpage(submenu.link)" *ngIf="menu.label==main_menu_name" style="color: rgb(21, 0, 112);background-color: #ffffff00; " title="{{submenu.label}}">
+                                <!-- <mat-icon>{{submenu.faIcon}}</mat-icon> -->
+                                <i class="{{submenu.faIcon}}"></i>&nbsp;&nbsp;&nbsp;
+                                <span  *ngIf="(submenu.label.length<15)">{{submenu.label}}</span>
+                                <span  *ngIf="!(submenu.label.length<15)"  >{{submenu.label.slice(0,15)}}..</span>
+                            </button>
+                        </div>
+
+                        <div class="row" style="width: 100%" *ngIf="!(current_link_name == submenu.link)">
+                        <!-- <div class="row" style="width: 100%" *ngIf="opened_link.includes(submenu.link)==false"> -->
+                            <button class="submenu_button"  (click)="goTodefinedpage(submenu.link)" *ngIf="menu.label==main_menu_name" title="{{submenu.label}}">
+                                <!-- <mat-icon>{{submenu.faIcon}}</mat-icon> -->
+                                <i class="{{submenu.faIcon}}"></i>&nbsp;&nbsp;&nbsp;
+                                <span  *ngIf="(submenu.label.length<15)">{{submenu.label}}</span>
+                                <span  *ngIf="!(submenu.label.length<15)"  >{{submenu.label.slice(0,15)}}..</span>
+                            </button>
+                        </div>
+                    </ng-container>
+                    </div>
+
+                    
+
+
+
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+
+        <!-- <ng-container *ngIf="userType == 1">
+
+            <ng-material-multilevel-menu
+                    [configuration]='config'
+                    [items]='appitems'
+                    >
+            </ng-material-multilevel-menu>
+        </ng-container>
+        <ng-container *ngIf="userType == 2">
+
+            <ng-material-multilevel-menu
+                    [configuration]='config'
+                    [items]='appitems_user'
+                    >
+            </ng-material-multilevel-menu>
+        </ng-container> -->
+
+        <!--<button mat-button class="menu-button">
+            <mat-icon>present_to_all</mat-icon>
+            <span>Premium Register</span>
+        </button>
+        <button mat-button class="menu-button">
+            <mat-icon>info</mat-icon>
+            <span>TDS Report</span>
+        </button>
+        <button mat-button class="menu-button">
+            <mat-icon>present_to_all</mat-icon>
+            <span>Sales Mart</span>
+        </button>-->
+
+
+    </mat-drawer>
+
+
+
+
+    <mat-toolbar style="position: -webkit-sticky;
+    position: sticky;
+    top: 0;">
+        <!-- <div>
+            <a style="text-align: center" class="companyName">
+                <img class="toolbarcomp" src="assets/image/logo-min.png" width="70">
+            </a>
+        </div> -->
+        <button mat-icon-button (click)="drawer.toggle();"> <!-- *ngIf="this.userType==1" -->
+            <mat-icon>
+                menu
+            </mat-icon>
+        </button>
+
+        
+
+        <span class="example-spacer"></span>
+
+        <!-- <div class="dropdown"  *ngFor="let menu of appitems" style="cursor: pointer;"> -->
+            
+            <!-- <i class="{{menu.faIcon}}" style="font-size:12px;"></i>&nbsp;
+            <span class="dropbtn" style="font-size: 14px;">{{menu.label}}</span>&nbsp;
+
+            <i id="droparrow" class="fa fa-caret-down" style="font-size: 12px;"></i>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+            <div class="dropdown-content">
+                <div *ngFor="let submenu of menu.items">
+                    <a  href="" routerLink="{{submenu.link}}">
+                        <i class="{{submenu.faIcon}}" style="font-size:12px;"></i>&nbsp;
+                        {{submenu.label}}
+                    </a>
+                </div>
+            </div> -->
+            
+            <!-- <button mat-icon-button routerLink="/dashboard/usermanual"  title="User Manual" >
+                <mat-icon style="width:22px; height:22px!important;">
+                    help
+                </mat-icon>
+            </button> -->
+            <span style="cursor:default">&nbsp;&nbsp;</span>
+        
+            
+            <button mat-icon-button routerLink="/dashboard/tagickpi" title="quick access" style="background-color: #264a9f;width:22px; height:22px!important; padding: 0;">
+                <i class="fa fa-bolt" style="margin-bottom: 20px; color:#ffffff"></i>    
+            </button>
+            <span style="cursor:default">&nbsp;&nbsp;</span>
+            <!-- <span style="font-size: 14px;cursor: pointer;"> -->
+            
+            <!-- </span> -->
+        
+
+
+        <div class="dropdown"  style="cursor: pointer;">
+
+            <!-- <button routerLink="/dashboard/tagickpi"  style="border:none; background-color: #264a9f;cursor: pointer!important;font-size: 24px;border-radius: 50%;color: #ffffff;height: 20px; width:20px;margin-top:15px">
+                <i class="fa fa-windows" aria-hidden="true" style="font-size: 15px;margin-top: -15px!important;"></i>.
+            </button> -->
+
+            <button mat-icon-button style="background-color: #264a9f;width:22px; height:22px!important; padding: 0;margin-top:14px">
+                <i class="fa fa-windows" style="margin-bottom: 20px; color:#ffffff"></i>    
+            </button>
+                
+            
+            <!-- <span class="dropbtn" style="font-size: 14px;">Menu</span>&nbsp; -->
+            
+            <!-- <i id="droparrow" class="fa fa-caret-down" style="font-size: 12px;"></i> -->
+            
+
+
+            <div class="dropdown-content" style="padding: 16px; padding-top: 10px; padding-bottom: 30px; border-top: 30px solid blue; ">
+                <div id="dropdown" class="row" style="cursor: pointer; height:400px!important; overflow-y: scroll; overflow-x: hidden;">
+                    <div class="col-sm-4" *ngFor="let menu of appitems" style="margin-top: 20px;" id="menu-main">
+
+                        &nbsp;&nbsp;<i id="mainmenuicon" class="{{menu.faIcon}}" style="font: size 20px; "></i>&nbsp;
+                        
+                        <span style="font-size:18px;">{{menu.label}}</span>
+                        
+                        
+                        <!-- <br> -->
+
+                        <!-- <div class="row" style="padding-top: 10px;">
+                            <div class="col-sm-12" *ngFor="let submenu of menu.items">
+                                <a  href="" routerLink="{{submenu.link}}">
+                                    <i class="{{submenu.faIcon}}" style="font-size:12px;"></i>&nbsp;
+                                    {{submenu.label}}
+                                </a>
+                            </div>
+                        </div> -->
+
+                        <div class="row" style="padding-top: 10px;">
+                            <div class="col-sm-12" *ngFor="let submenu of menu.items" >
+                                <a  href="" routerLink="{{submenu.link}}" [ngClass]="current_link_name == submenu.link ? 'submenu_color' : 'normal_color'"  (click)="goTodefinedpage1(submenu.link)">
+                                    <!-- {{current_link_name}} ..{{submenu.link}} -->
+                                    <i class="{{submenu.faIcon}}" style="font-size:12px;"></i>&nbsp;
+                                    {{submenu.label}}
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <br> -->
+                </div>
+            </div>
+            
+        </div>
+        
+
+        
+        <!-- <div fxShow="true" fxHide.lt-md="true" style="margin-right: 5%;"> -->
+            <!-- <span class="icondrop">
+                <a mat-icon-button [matMenuTriggerFor]="menu1" aria-label="Example icon-button with a menu">
+                    <span>Roles</span>
+                    <img src="/assets/image/Icon down.svg" alt="X" class="mb-1" width="25">
+                </a>
+                <mat-menu #menu1="matMenu">
+                    <button mat-menu-item>
+                    <mat-icon>credit_card</mat-icon>
+                    <span>Retail</span>
+                    </button>
+                    <button mat-menu-item>
+                        <mat-icon>credit_card</mat-icon>
+                        <span>Store</span>
+                    </button>
+                </mat-menu>
+            </span> -->
+            <!-- <span class="icondrop mr-3">
+                <a mat-icon-button [matMenuTriggerFor]="menu2" aria-label="Example icon-button with a menu">
+                    <span>Report</span>
+                    <img src="/assets/image/Icon down.svg" alt="X" class=" mb-1" width="25">
+                </a>
+                <mat-menu #menu2="matMenu">
+                <button *ngFor="let item of manulist" mat-menu-item (click)="routePage(item.reportId, item.name)">
+                    <mat-icon>assignment</mat-icon>
+                    <span>{{item.name}}</span>
+                </button>
+                </mat-menu>
+            </span> -->
+            <!-- <span class="icondrop mr-5">
+                <a mat-icon-button aria-label="Example icon-button with a menu">
+                    <span>Preference</span>
+                    <img src="/assets/image/Icon down.svg" alt="X" class=" mb-1" width="25">
+                </a>
+            </span>
+            <a mat-button>Help</a> -->
+        <!-- </div> -->
+        
+        <!-- <span style="cursor:default">&nbsp;&nbsp;</span> -->
+
+        <!-- <button mat-icon-button (click)="cleanUp(confirm)" title="clean up" style="background-color: #264a9f;width:22px; height:22px!important; padding: 0;">
+            <i class="fa fa-trash" style="margin-bottom: 20px; color:#ffffff"></i>    
+        </button> -->
+
+        <!-- <button style="border:none; background-color: transparent;cursor: pointer!important; font-size: 16px; color:#264a9f">
+                  
+        </button> -->
+
+        <!-- <div >
+            <span style="font-size: 15px;cursor: pointer;" (click)="cleanUp(confirm)">Clean Up</span>
+        </div> -->
+        <span style="cursor:default">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+        <span style="font-size: 26px; font-weight: 200;opacity: 0.4;cursor: default;">|</span>
+        <span style="cursor:default">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+
+
+        <div class="mr-1">
+            <span style="font-size: 14px;cursor: default">{{this.userName}}</span>
+        </div>
+        <button mat-icon-button [matMenuTriggerFor]="menu1" aria-label="Example icon-button with a menu">
+            <mat-icon>account_circle</mat-icon>
+        </button>
+        <mat-menu #menu1="matMenu">
+
+            <button mat-menu-item (click)="gotoHome()">
+                <mat-icon>home</mat-icon>
+                <span>Home</span>
+            </button>
+
+            <button mat-menu-item (click)="setting()">
+                <mat-icon>settings</mat-icon>
+                <span>Settings</span>
+            </button>
+            <!-- {{selectedDefaultChannel}}{{selectedDefaultChannelName}} -->
+
+
+            <button mat-menu-item (click)="logout()">
+                <mat-icon>power_settings_new</mat-icon>
+                <span>Logout</span>
+            </button>
+
+            
+
+        </mat-menu>
+
+    </mat-toolbar>
+
+
+    <div style="margin-bottom: 30px;">
+        <router-outlet></router-outlet>
+    </div>
+
+    <!-- <div style="align-items: left !important;"> -->
+        <!-- aaa -->
+        <app-footer></app-footer>
+    <!-- </div> -->
+
+</mat-drawer-container>
+
+
+
+
+<ng-template #confirm>
+    <div class="modal-confirm">
+        <div class="modal-content modalcolor">
+         
+            <div class="modal-body">
+               <span style="color:black">Are you sure?
+                <span class="red">This Process will truncate all the files data and generated kpi scores. Do you want to proceed?</span> </span>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-secondary" (click)="closeModal()">No</button>
+                <button type="button" class="btn btnyes" (click)="truncateAll()">Yes</button>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <mat-drawer-container class="example-container" autosize>
+    <mat-drawer #drawer class="example-sidenav" mode="side">
+        <div>
+            <a style="text-align: center" class="companyName">
+                <img class="header-logo" src="assets/image/logo-min.png" width="70">
+            </a>
+        </div>
+        <mat-divider></mat-divider>
+
+
+        <ng-material-multilevel-menu
+        [configuration]='config'
+        [items]='appitems'
+        >
+        </ng-material-multilevel-menu>
+
+
+
+        
+
+
+    </mat-drawer>
+
+    <mat-toolbar>
+  
+        <button mat-icon-button (click)="drawer.toggle()">
+            <mat-icon>
+                menu
+            </mat-icon>
+        </button>
+        <span class="example-spacer"></span>
+        <div fxShow="true" fxHide.lt-md="true" style="margin-right: 5%;">
+          
+        </div>
+        <div class="mr-1">
+            <span style="font-size: 15px;">{{this.userName}}</span>
+        </div>
+        <button mat-icon-button [matMenuTriggerFor]="menu1" aria-label="Example icon-button with a menu">
+            <mat-icon>account_circle</mat-icon>
+        </button>
+        <mat-menu #menu1="matMenu">
+            <button mat-menu-item (click)="logout()">
+                <mat-icon>exit_to_app</mat-icon>
+                <span>Logout</span>
+            </button>
+
+        </mat-menu>
+
+    </mat-toolbar>
+    <div style="margin-bottom: 30px;">
+        <router-outlet></router-outlet>
+    </div>
+
+    <app-footer></app-footer>
+
+</mat-drawer-container> -->
+
+<div *ngIf="defaultSettingBoxStatus" style="z-index: 11; width: 100%; height:100%; background-color: rgba(0, 0, 0, 0); position: fixed; top:0%; left: 0%" >
+    <div class="container" style=" width: 40%; height: 40%; background-color: #ffffff; position: fixed; top:30%; left: 30%; border-radius: 2px; box-shadow: 1px 1px 10px 5px #88888895; padding:0px; overflow: hidden; align-items: center!important;min-height: 260px;">
+
+        <div class="row" style=" justify-content: right; display: flex; background: transparent -webkit-linear-gradient(174deg, rgba(13, 53, 148, .898039), #35d3e1) 0 0 no-repeat padding-box; min-height: 50px; padding: 10px;align-items: center!important;text-align: left;">
+
+            <span style="color:#ffffff; width:92%; font-size: 16px;font-weight: 500; ">Settings</span>
+
+            <button style="border-radius: 50%; border-style: none;text-align: center;background-color: #ffffff; width:20px; height: 20px;" (click)="closeSettings()">
+                <span style="color: rgb(0, 65, 109); font-size: 14px; font-weight: 500; cursor: pointer;">X</span>
+            </button>
+            
+        </div>
+        
+
+        <div class="row" style=" justify-content: center; display: flex;padding-top: 5%;">
+            <!-- <span style="color: rgb(0, 167, 0); font-size: bold;font-size: 40px;">
+                
+                <i class="fa fa-check" aria-hidden="true"></i>
+            </span> -->
+            <!-- <br> -->
+        </div>
+
+        <div class="row" style="padding-top: 2%;padding-left: 10px;padding-right: 10px">
+
+            <div class="col-6">
+                <span style="color: #264a9f; font-size: 13px;">
+                    Select Default Channel                    
+                </span>
+            </div>
+            <div class="col-6">
+                <!-- {{selectedDefaultChannelName}} {{selectedDefaultChannel}} -->
+                <!-- {{selectedDefaultChannel}} -->
+                <select name="" id="" class="form-control" style="height:32px;margin-top: -5px; font-size: 12px;" [(ngModel)]="selectedDefaultChannel" >
+
+                    <option value="all">Select Channel</option>
+                    <!-- <option value="">Select Channel</option> -->
+                    
+                    <option value="{{channel.id}}" *ngFor="let channel of channelNewList">{{channel.channelNewName}} </option>
+
+                    
+                </select>
+            </div>
+
+
+            <div class="col-6" style="padding-top: 10px;">
+                <span style="color: #264a9f; font-size: 13px;">
+                    Select Default Year                    
+                </span>
+            </div>
+            <div class="col-6" style="padding-top: 10px;">
+                <select name="" id="" class="form-control" style="height:32px;margin-top: -5px; font-size: 12px;" [(ngModel)]="kpi_year">
+                    <option value="">Select Year</option>                    
+                    <option value="{{yr}}" *ngFor="let yr of fYearList">{{yr}}</option>
+                </select>
+            </div>
+
+
+            <div class="col-6" style="padding-top: 10px;">
+                <span style="color: #264a9f; font-size: 13px;">
+                    Select Default Month                    
+                </span>
+            </div>
+            <div class="col-6" style="padding-top: 10px;">
+                <select name="" id="" class="form-control" style="height:32px;margin-top: -5px; font-size: 12px;" [(ngModel)]="kpi_month">
+                    <option value="">Select Month</option>                    
+                    <option value="{{m.id}}" *ngFor="let m of monthList">{{m.name}}</option>
+                </select>
+            </div>
+
+            
+        </div>
+        <div  class="row text-center" style=" justify-content: center; display: flex;padding-top: 5%;">
+            
+            <!-- <span style="color: rgb(0, 26, 43); font-size: 13px;"></span> -->
+            <button class="btnlink" (click)="defaultsetting()"> Save</button>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

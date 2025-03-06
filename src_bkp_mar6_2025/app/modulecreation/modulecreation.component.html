@@ -1,0 +1,728 @@
+<!-- <p>modulecreation works!</p> -->
+<!-- <p>template-upload works!</p> -->
+<notifier-container></notifier-container>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col" style="padding: 1%; margin-left: 5px;">
+            
+            <div class="row" style="padding-top:3%">
+                
+
+
+
+                <div class="col" style="padding:0px !important;">
+                    <h2 class="page-title">Create File Type</h2>
+                </div>
+            </div>
+
+
+
+            <div class="row">
+
+                <!-- <div class="col-3">
+                    <label for="">Year</label>
+                    <select class="form-control" [(ngModel)]="uploadYear" >
+    
+                        <option value='all'>Select Year</option>
+                        <option value="{{year}}" *ngFor="let year of yearList">{{year}}</option>
+    
+    
+                    </select>
+                </div>
+    
+                <div class="col-3">
+                    <label for="">Month</label>
+                    <select class="form-control" [(ngModel)]="uploadMonth"  >
+    
+                        <option value='all'>Select Month</option>
+                        <option value="{{mon.id}}" *ngFor="let mon of monthList">{{mon.name}}</option>
+    
+    
+                    </select>
+                </div>
+                <div class="col-3"></div>
+                <div class="col-3"></div> -->
+
+                <!-- <div class="col-12" style="height: 15px;"></div> -->
+
+                <div class="col-3">
+                    
+                    <div class="row">
+                        <!-- <p style="color: rgb(255, 0, 0);">** this section is not working now. Under construction!</p> -->
+                        <label>Channel Name</label>
+                    </div>
+                    <div class="row">
+                        <select name="" id="" class="form-control" [(ngModel)]="selectedChannel"  (change)="getModule()">
+                            <option value="">Select Channel</option>                            
+                            <option value="{{channel.id}}" *ngFor="let channel of channelNewList">{{channel.channelNewName}} </option>  
+                        </select>
+                    </div>
+
+                </div>
+
+                <div class="col-3">
+                    <div class="row">
+                        <label>File Name</label>
+                    </div>
+                    <div class="row">
+                        <input class="form-control" type="text"  [(ngModel)]="fileTypeName" (change)="fileTypeName_short = fileTypeName" (keyup)="fileTypeName_short = fileTypeName" >
+                    </div>
+                </div>
+
+
+
+                <div class="col-3">
+                    
+                    <div class="row">
+                        <label>File Type</label>
+                    </div>
+                    <div class="row">
+                        <select name="" id="" class="form-control" [(ngModel)]="selectedExactFiletype">
+                            <option value="">Select File Type</option>
+                            <option value="target">Target</option>
+                            <option value="achievement">Achievement</option>
+                            <option value="mapping">Mapping</option>
+
+                        </select>
+                    </div>
+
+                </div>
+
+                <!-- <div class="col-3">
+                    <div class="row">
+                        <label>File Type Short Name</label>
+                    </div>
+                    <div class="row">
+                        <input class="form-control" type="text"  [(ngModel)]="fileTypeName_short" >
+                    </div>
+                </div> -->
+
+                <div class="col-3">
+                    <button class="btnlink" (click)="createFileType()" style="position: absolute; bottom: 2px;">
+                        Create
+                    </button>
+                </div>
+
+            </div>
+            
+
+
+
+
+
+
+            <div class="row" style="padding-top:3%">
+                <div class="col" style="padding:0px !important;">
+                    <h2 class="page-title">Create Module</h2>
+                </div>
+            </div>
+
+
+            <div class="row">
+
+                <div class="col-1">
+                    <label for="">Start Month</label>
+                    <select class="form-control" [(ngModel)]="uploadMonth"  >
+    
+                        <option value='all'>Select Month</option>
+                        <option value="{{mon.id}}" *ngFor="let mon of monthList">{{mon.name}}</option>
+    
+    
+                    </select>
+                </div>
+
+                <div class="col-1">
+                    <label for="">Start Year</label>
+                    <select class="form-control" [(ngModel)]="uploadYear" >
+    
+                        <option value='all'>Select Year</option>
+                        <option value="{{year}}" *ngFor="let year of yearList">{{year}}</option>
+    
+    
+                    </select>
+                </div>
+    
+                
+                <!-- <div class="col-4"></div>
+                <div class="col-4"></div>
+
+                <div class="col-12" style="height: 15px;"></div> -->
+
+
+
+                <div class="col-2">
+                    <div class="row">
+                        <label>Module Name</label>
+                    </div>
+                    <div class="row">
+                        <input class="form-control" type="text"  [(ngModel)]="module_name" (change)="module_details = module_name"  (keyup)="module_details = module_name">
+                    </div>
+                </div>
+                <!-- <div class="col-2">
+                    <div class="row">
+                        <label>Module Details</label>
+                    </div>
+                    <div class="row">
+                        <input class="form-control" type="text" [(ngModel)]="module_details" >
+                    </div>
+                </div> -->
+                <div class="col-2">
+                    <div class="row">
+                        <label>Table Name</label>
+                    </div>
+                    <div class="row">
+                        <input class="form-control" type="text" [(ngModel)]="table_name" (change)="checkTableName()" >
+                        <span style="color:red">{{NameError}}</span>
+                    </div>
+                </div>
+                <div class="col-2" >
+                    <form>
+                        <input  type="file" id="myFile" name="filename" (change)="setfile($event)"  style="position: absolute; bottom: 1px; padding:3px; height:33px; border: 1px solid rgba(189, 189, 189, 0.87); border-radius: 4px; width: 90%!important;">
+                        <!-- <input class="upload" type="submit" > -->
+                        
+                        <!-- <button class="btnlink" (click)="uploadFile($event)">Create</button> -->
+                    </form>
+                </div>
+                <div class="col-2">
+                    <button class="btnlink float-right" (click)="uploadFile($event)"  style="position: absolute; bottom: 2px; right: 15px">Create</button>
+                </div>
+
+            </div>
+            <br>
+
+
+
+            <!-- <div class="row">
+                <div class="col-12">
+                    <form>
+                        <input type="file" id="myFile" name="filename" (change)="setfile($event)">
+                        
+                        <button class="btnlink" (click)="uploadFile($event)">Create</button>
+                    </form>
+                </div>
+            </div> -->
+            
+
+            
+
+            <!-- <div class="row" style="padding-left: 20px;">
+                <div class="col-4" style="background-color: rgba(175, 217, 255, 0.616); padding: 10px; border-top-left-radius: 10px; border-top-right-radius: 10px;;">
+
+                    
+                    <span>Set Table Name &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                    <input class="database_table_name" type="text" name="database_table_name">
+                    
+                    
+                </div>
+            </div> -->
+            <!-- <span style="font-weight: 500; margin-left: 10px;">Add Process</span> -->
+            <h2 class="page-title">Add Process</h2>
+            <div class="row" id="setTable">
+
+                <div class="col-3">
+                    <label for="">Select Module Name</label>
+                    <select class="form-control" name="" id="" [(ngModel)]="module_id" (change)="getColumn()">
+                        <option value="" selected>Select</option>
+                        <option *ngFor="let module of moduleList" value="{{module.id}}">{{module.moduleName}}</option>
+                    </select>
+                </div>
+
+                <div class="col-3">
+                    <div class="row">
+                        <label for="col_name">Process Name</label>
+                        
+                    </div>
+                    <div class="row">
+                        <!-- <span style="color: blue; font-weight: 500;">{{columnName}}</span> -->
+                        <select name="col_name" id="" class="form-control"  [(ngModel)]="validation_id" >
+                            <option value="" selected>Select</option>
+                            <option *ngFor="let validation of validation_list" value="{{validation.id}}">{{validation.validationRuleName}}</option>
+                        </select>
+                    </div> 
+                </div>
+                <div class="col-3">
+                    <div class="row">
+                        <label for="col_name">Column Name</label>
+                        
+                        
+                    </div>
+                    <div class="row">
+                        
+                        <ng-multiselect-dropdown 
+                        [(ngModel)]="selected_column_list" 
+                        [settings]="dropdownSettings" 
+                        [data]="column_name_list"
+                        style="width:100%; background-color: #ffffff;"
+                        (change)="get_selected_list()"
+                        >
+                        </ng-multiselect-dropdown> 
+
+                        <!-- <span (click)="get_selected_list()">click</span> -->
+                        
+                    </div> 
+                </div>
+
+                
+
+
+                <div class="col-3">
+                    <div class="row">
+                    </div>
+                    <div class="row">
+                        <button class="btnlink" style="position:absolute; bottom: 0;" (click)="addValidation()">
+                            Add
+                        </button>
+                    </div> 
+                </div>
+                <div class="col-3"></div>
+                <div class="col-3"></div>
+                <div class="col-3" style=" text-align: right;">
+                    <label for="" style="font-size: 12px; color:blueviolet" (click)="addManualColVisibility()">*Click Here to Add column</label>
+                </div>
+                <div class="col-3"></div>
+            </div>
+
+
+
+            
+            
+
+            <!-- <span style="font-size: 10px; color: rgb(0, 113, 252);">(Add Column Name)</span> -->
+            <span  *ngIf="addCol_visibility" style="font-weight: 500; margin-left: 10px;">Add Column</span>
+
+            <div class="row" id="setTable"  *ngIf="addCol_visibility">
+
+                <div class="col-12">
+                    <span class="float-right" style="cursor:pointer;" (click)="addCol_visibility = false">X</span>
+                </div>
+                
+                <!-- <div class="col-3">
+                    <button class="btnlink" (click)="addManualCol()" > 
+                        <span>Add Column</span>
+                    </button>
+                </div> -->
+                <div class="col-3">
+                    <label for="">Write Column Name</label>
+                    <input class="form-control" type="text" [(ngModel)]="manual_col_name">
+                </div>
+
+                
+                <div class="col-3">
+                    <button class="btnlink" (click)="addNewCol()" style="position:absolute; bottom:0;"> 
+                        <span>Add Column</span>
+                    </button>
+                </div>
+                <div class="col-3"></div>
+                <div class="col-3"></div>
+
+                
+
+                
+            </div>
+
+
+
+            <div class="row" id="setTable" *ngIf="visibility">
+
+                <div class="col-12">
+                    <span class="float-right" style="cursor:pointer;" (click)="visibility = false">X</span>
+                </div>
+
+                <div class="col-6" *ngFor="let param of paramlist">
+                    <label>{{param.paramDisplayName}}</label>
+                    
+                    <div *ngIf="param.paramName!='tableName'">
+                        <input type="text" class="form-control" [(ngModel)]="param.value" *ngIf="param.paramType=='text'">
+                        <input type="number" class="form-control" [(ngModel)]="param.value" *ngIf="param.paramType=='number'">
+                        <!-- <input type="number" class="form-control" [(ngModel)]="keyname.value" *ngIf="keyname.paramType=='colmapping'"> -->
+                    </div>
+
+                    <div *ngIf="param.paramName=='tableName'">
+                        <select class="form-control" name="" id="" (change)="getColumnTable(param.value)" [(ngModel)]="param.value">
+                            <option value="" selected>Select</option>
+                            <option *ngFor="let table of table_list" value="{{table.tablename}}">{{table.tablename}}</option>
+                        </select>
+                    </div>
+                    
+
+                    <br>
+
+
+                    <div *ngIf="param.paramType=='colmapping'">
+                        
+                        <div *ngFor="let col of param.value">
+                            <label>{{col.columnName}}</label>
+                            <!-- <input type="text" class="form-control" [(ngModel)]="col.value" *ngIf="param.valType=='text'">
+                            <input type="number" class="form-control" [(ngModel)]="col.value" *ngIf="param.valType=='number'"> -->
+
+                            <select class="form-control" name="" id="" [(ngModel)]="col.value">
+                                <option value="" selected>Select</option>
+                                <option *ngFor="let tableCol of table_column_list" value="{{tableCol.Field}}">{{tableCol.Field}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <!-- <span (click)="dekhao()">dekhao </span> -->
+                </div>
+
+                <div class="row" style="height: 25px; width: 100%"></div>
+                
+                <div class="col-12" style="height: 40px; width: 100%">
+                    <button class="btnlink"(click)="setValue()"  style="position:absolute; right:10px">
+                        Add
+                    </button>
+                </div>
+            </div>
+
+
+
+
+            <!-- <div class="row" id="setTable">
+                <div class="col-3" style="margin-bottom: 20px;">
+                    <div class="row">
+                        <label for="col_name">Excel Column Names</label>
+                        
+                    </div>
+                    <div class="row">
+                        
+                        <select name="col_name" id="" class="form-control" >
+                            <option *ngFor="let column of column_name_list" value="{{column.id}}">{{column.columnName}}</option>
+                        </select>
+                    </div> 
+                </div>
+
+                <div class="col-3">
+                    <div class="row">
+                        <label for="col_type">Column Type</label>
+                    </div>
+                    <div class="row">
+                        <select name="col_type" id="" class="form-control" >
+                            <option value=""></option>
+                        </select>
+                    </div>
+                    
+                </div>
+
+                
+
+                <div class="col-3">
+                    <div class="row">
+                        <label for="display_name">Set Display Name</label>
+                    </div>
+                    <div class="row">
+                        <input type="text"  class="form-control" name="display_name">
+                    </div>   
+                </div>
+
+                
+
+                <div class="col-3">
+                    <div class="row">
+                        <label for="isnull">Null Value?</label>
+                    </div>
+                    <div class="row">
+                        <select name="isnull" id=""  class="form-control" >
+                            <option value="">Can it be Null</option>
+                            <option value="1">Yes</option>
+                            <option value="0">No</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-3">
+                   
+                </div>
+            </div> -->
+
+            
+            <h2 class="page-title">Add Filter</h2>
+            <div class="row" id="setTable">
+
+                <!-- <div class="col-3">
+                    <label for="">Select Module Name</label>
+                    <select class="form-control" name="" id="" [(ngModel)]="module_id" (change)="getColumn()">
+                        <option value="" selected>Select</option>
+                        <option *ngFor="let module of moduleList" value="{{module.id}}">{{module.moduleName}}</option>
+                    </select>
+                </div> -->
+<!-- 
+                <div class="col-3">
+                    <div class="row">
+                        <label for="col_name">Process Name</label>
+                        
+                    </div>
+                    <div class="row">
+                        <select name="col_name" id="" class="form-control"  [(ngModel)]="validation_id" >
+                            <option value="" selected>Select</option>
+                            <option *ngFor="let validation of validation_list" value="{{validation.id}}">{{validation.validationRuleName}}</option>
+                        </select>
+                    </div> 
+                </div> -->
+                <div class="col-3">
+                    <div class="row">
+                        <label for="col_name">Column Name</label>
+                        
+                        
+                    </div>
+                    <div class="row">
+                        
+                        <select class="form-control" name="" id="" [(ngModel)]="filterColId">
+                            <option value="{{column.id}}" *ngFor="let column of column_name_list">{{column.columnName}}</option>
+                        </select>
+                 
+                        
+                    </div> 
+                </div>
+
+                <div class="col-3">
+                    <div class="row">
+                        <label for="col_name">Operator</label>
+                        
+                        
+                    </div>
+                    <div class="row">
+                        
+                        <select class="form-control" name="" id="" [(ngModel)]="filterOperator">
+                           <option *ngFor="let opr of operatorList" >{{opr}}</option>
+                         
+
+                        </select>
+                 
+                        
+                    </div> 
+                </div>
+                <div class="col-3">
+                    <div class="row">
+                        <label for="col_name">Value</label>
+                        
+                        
+                    </div>
+                    <div class="row">
+                        
+                        <input type="text" [(ngModel)]="filterValue" class="form-control
+                        ">
+                        
+                 
+                        
+                    </div> 
+                </div>
+
+                
+
+                
+
+
+                <div class="col-3">
+                    <div class="row">
+                    </div>
+                    <div class="row">
+                        <button class="btnlink" style="position:absolute; bottom: 0;" (click)="addFilter()">
+                            Add
+                        </button>
+                    </div> 
+                </div>
+
+
+                <!-- <div class="col-3"></div>
+                <div class="col-3"></div>
+                <div class="col-3" style=" text-align: right;">
+                    <label for="" style="font-size: 12px; color:blueviolet" (click)="addManualColVisibility()">*Click Here to Add column</label>
+                </div>
+                <div class="col-3"></div> -->
+                <div class="col-3" style=" text-align: right;">
+                    <label for="" style="font-size: 12px; color:blueviolet" (click)="viewFilter(showFilter)">*Click Here to View Applied Filters</label>
+
+                    <div  *ngIf="filterOperator == 'DATE RANGE'">
+                        <div class="row">
+                            <label for="col_name">dateFormat</label>
+                            
+                            
+                        </div>
+                        <div class="row">
+                            
+                            <input type="text" [(ngModel)]="dateFormat" class="form-control
+                            ">
+                            
+                        </div> 
+                    </div>
+                </div>
+
+
+            </div>
+
+
+        </div>
+    </div>
+
+
+    <div class="col-4"><input type="text"  class="form-control"  [(ngModel)]="searchField" placeholder="search column"> 
+
+    </div>
+    <!-- this section is for table -->
+    <div > 
+        <div class="row" style="padding-top:2%; padding-left:1%; padding-right: 1%;">
+            
+
+            <table class="table">
+                <thead>
+                <tr style="background: transparent -webkit-linear-gradient( 174deg, rgb(13 53 148 / 30%), #35d3e114) 0 0 no-repeat padding-box;">
+                    
+                    <th><input type="checkbox" [(ngModel)]="allcheck" (change)="checkUncheckAll()" [disabled]="!(column_name_list.length > 0)" ></th>
+                    <th>Column Name</th>
+                    <th>Column Display Name</th>
+                    <th>Column Type</th>
+                    <th>Table Column Name</th>
+                    <th>Blank Possible (Yes/ No)</th>
+                
+                    <!-- <th>Action</th> -->
+                    
+
+
+                </tr>
+            </thead>
+                <tbody>
+                    <tr *ngIf="!(column_name_list.length > 0)">No Data To Show</tr>
+                    <!-- <div *ngIf="!(column_name_list.length == 0)">
+                        <span style="margin-left:5px;color:gray">No Data To Show</span>
+                    </div> -->
+                    
+                    <ng-container *ngFor="let column of column_name_list | filter: searchField; let i = index">
+
+                        <tr>
+
+
+                            <td>
+                                <input type="checkbox" [(ngModel)]="column.check " (change)="checkUncheckSingle(column.check)" >
+                            </td>
+                            <td>
+                                <!-- <input class="form-control" type="text" [(ngModel)]="column.columnName"> -->
+                                {{column.columnName}}
+                            </td>
+                            <td>
+                                <input class="form-control" type="text" [(ngModel)]="column.displayName">
+                                <!-- {{column.displayName}} -->
+                            </td>
+                            <td>
+                                <select name="" id="" class="form-control" type="text" [(ngModel)]="column.columnType">
+                                    <option value="null" >Select</option>
+                                    <option value="int">Integer</option>
+                                    <option value="bigint">Bigint</option>
+                                    <option value="varchar(255)">Varchar</option>
+                                    <option value="double">Double</option>
+                                    <option value="datetime">Date Time</option>
+                                    <option value="text">Text</option>
+                                </select>
+                                <!-- {{column.columnType}} -->
+                            </td>
+                            <td>
+                                <input class="form-control" type="text" [(ngModel)]="column.tableColumnName" (click)="checkTableName1(column.tableColumnName,column.id)" [disabled]="!column.check">
+
+                                <!-- <input class="form-control" type="text" [(ngModel)]="column.tableColumnName" (click)="checkTableName1(column.tableColumnName,column.id)" *ngIf="column.id!=checkboxid" disabled > -->
+
+                                <span *ngIf="column.id==errorId" style="color:red">{{Nameerror}}</span>
+                                <!-- {{column.tableColumnName}} -->
+                            </td>
+                            <td>
+                                <select name="" id="" class="form-control" type="text" [(ngModel)]="column.isBlankPossible">
+                                    <option value="1" >Yes</option>
+                                    <option value="0">No</option>
+                                </select>
+                                    
+                                <!-- {{column.isBlankPossible}} -->
+                            </td>
+                            <!-- <td></td> -->
+
+                            
+
+
+
+                            <!-- <td *ngIf="isedit == false || editId != header.id">{{header.header_description}}</td>
+                            <td *ngIf="isedit == true && editId == header.id">
+                                <input type="text"  class="form-control"  [(ngModel)]="edit_header_desc" value="edit_header_desc">
+                            </td>
+                            
+
+
+                            <td>
+                                <a class="mr-4" style="font-size:20px;color: #185EC4;" *ngIf="isedit == false || editId != header.id" (click)="editValue(header.header_code, header.header_description, header.id)" ><i
+                                    class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                                    <a class="mr-4" style="font-size:20px;color: #185EC4;" *ngIf="isedit == true && editId == header.id" (click)="changeValue(header.id, 0)" ><i
+                                        class="fa fa-save" aria-hidden="true"></i></a>
+                                        
+                                        <a style="font-size:20px;color: #FF6262;" (click)="openDeleteModal(deleteModal, header.id)" ><i
+                                    class="fa fa-trash" aria-hidden="true" ></i></a>
+                            </td> -->
+                            
+                        </tr>
+                        
+                    </ng-container>
+                    
+                    
+                </tbody>
+            </table>
+        </div>
+
+        <div class="row" >
+            <div class="col-4">
+                <!-- <input class="submit" type="submit"> -->
+            </div>
+            <div class="col-4">
+                <!-- <input class="submit" type="submit"> -->
+            </div>
+            <div class="col-4" style="justify-content: right; display: flex;">
+                <!-- <input class="submit" type="submit"> -->
+                <button class="btnlink" *ngIf="column_name_list.length >0" (click)="finalSubmit()">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<ng-template #showFilter>
+    <div class="modal-confirm">
+        <div class="modal-content modalcolor">
+         
+            <!-- <div class="modal-body"> -->
+               <!-- <span style="color:black"> View Filter </span> -->
+            <!-- </div> -->
+            <div class="modal-footer justify-content-center">
+                <table class="table">
+                    <thead>
+                    <tr style="background: transparent -webkit-linear-gradient( 174deg, rgb(13 53 148 / 30%), #35d3e114) 0 0 no-repeat padding-box;">
+                        
+                        <th>Column Name</th>
+                        <th>Operator</th>
+                        <th>Value</th>
+                        <!-- <th>Blank Possible (Yes/ No)</th> -->
+                    
+                        <!-- <th>Action</th> -->
+                        
+    
+    
+                    </tr>
+                </thead>
+                    <tbody>
+                        <tr *ngIf="!(filterData.length > 0)">No Data To Show</tr>
+                        <!-- <div *ngIf="!(column_name_list.length == 0)">
+                            <span style="margin-left:5px;color:gray">No Data To Show</span>
+                        </div> -->
+                        
+                        <ng-container *ngFor="let fdata of filterData | filter: searchField; let i = index">
+    
+                            <tr>
+    
+                                <td>{{fdata.columnName}}</td>
+                                <td>{{fdata.operatorDesc}}</td>
+                                <td>{{fdata.operationValue}}</td>
+
+                              
+                            </tr>
+                            
+                        </ng-container>
+                        
+                        
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</ng-template>

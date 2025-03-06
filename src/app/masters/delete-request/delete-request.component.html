@@ -1,0 +1,189 @@
+<!-- <p>delete-request works!</p> -->
+<!-- <p>uploaded-files-new works!</p> -->
+<!-- <p>viewkpi works!</p> -->
+<notifier-container></notifier-container>
+<div class="container-fluid">
+    <div class="row">
+
+        <div class="col" style="padding: 1%; margin-left: 5px;">
+    
+            <div class="row" style="padding-top:3%">
+                <div class="col" style="padding:0px !important;">
+                    <h2 class="page-title">Delete Request Details</h2>
+                    <div class="row">
+    
+                        <!-- <div class="col-3">
+                            <label>User
+                            </label>
+    
+                            <select class="form-control" [(ngModel)]="userId" (change)="onUserChnage()">
+    
+                                <option value="">Select All</option>
+                                <option *ngFor="let user of userList" [value]="user.user_id">{{user.name}}</option>
+                            </select>
+                        </div> -->
+    
+                        <div class="col-3">
+                            <label>Status
+                            </label>
+    
+                            <select class="form-control" [(ngModel)]="status" (change)="getAllDelReq()">
+    
+                                <option value="">Select All</option>
+                                <option value="3">Revoked</option>
+                                <option value="0">Pending</option>
+                                <option value="1">Deleted</option>
+    
+                          
+
+    
+                            </select>
+                        </div>
+
+                        <div class="col-3">
+                            <label>Channel
+                            </label>
+    
+                            <select class="form-control" [(ngModel)]="channelId" (change)="getAllDelReq()" [disabled]="selectedDefaultChannelName != 'all' && userLevel != '4'" [disabled]="selectedDefaultChannelName != 'all'">
+    
+                                <option value="all">Select All</option>
+                                <option value="{{channel.id}}" *ngFor="let channel of channelNewList">{{channel.channelNewName}}</option>
+                            </select>
+                        </div>
+                     
+    
+                    </div>
+    
+                </div>
+            </div>
+            <div class="row " style="padding-top: 2%">
+                <table class="table">
+                    <thead>
+                        <tr
+                            style="color:rgb(94, 93, 93);background: transparent -webkit-linear-gradient( 174deg, rgb(13 53 148 / 30%), #35d3e114) 0 0 no-repeat padding-box;">
+                            <!-- <th>Seq.</th> -->
+                            <th>File Name</th>
+                            <th>File Type</th>
+                            <th>Request Date</th>
+                            <th>Requested By</th>
+                            <th>Approve/Reject Date</th>
+
+                            <!-- <th>Uploaded By</th> -->
+                            <!-- <th>Approval Date</th>
+                            <th>Approved By</th> -->
+                            <!-- <th>Branch Name</th> -->
+    
+                            <th>Status</th>
+    
+    
+                            <!-- <th style="width:10%">Action</th> -->
+    
+    
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+    
+                            <tr *ngFor="let obj of deleteReqList; let i = index;">
+                                <!-- <td>{{offset + (i + 1)}}</td> -->
+                                <td>{{obj.fileName}}</td>
+                                <td>{{obj.fileType}}</td>
+                                <td>{{obj.request_at}}</td>
+                                <td>{{obj.name}}</td>
+                                <td>{{obj.approveReject_at}}</td>
+
+                                <!-- <td>{{obj.userName}}</td> -->
+                                <!-- <td>{{obj.approved_at}}</td>
+                                <td>{{obj.approved_by}}</td> -->
+                                <!-- <td>{{obj.branch}}</td> -->
+    
+                                <td>
+                                    <span *ngIf="obj.request_status == 0">Pending</span>
+    
+                                    <span *ngIf="obj.request_status == 1" style="color:green">Deleted</span>
+                                    <span *ngIf="obj.request_status == 3" style="color:red">Revoked</span>
+
+    
+                                </td>
+    
+                                <!-- <td>
+                                    <a *ngIf="obj.status == 3" style="cursor:pointer;" title="Download Error"
+                                        (click)="onErrorDownload(obj.error_file_name)">
+                                        <i style="font-size: 20px;color: red;" class="fa fa-exclamation-circle"
+                                            aria-hidden="true"></i>
+                                    </a>
+                                
+                                    <a *ngIf="obj.status != 3" style="cursor:pointer;" title="Show"
+                                        (click)="showDetailsData(obj.id, obj.fileTypeId)">
+                                        <i style="font-size: 20px;color: blue;" class="fa fa-eye" aria-hidden="true"></i>
+                                    </a>
+                                    &nbsp;&nbsp;
+                                    <a *ngIf="obj.status == 2 || obj.status == 1" style="cursor:pointer;" (click)="deleteRequestModal(obj.id,deletereq)" title="delete">
+                                        <i style="font-size: 20px;color:red" class="fa fa-trash"
+                                            aria-hidden="true"></i>
+                                    </a>
+                                </td> -->
+                            </tr>
+                        
+                    </tbody>
+                </table>
+                
+            </div>
+            
+    
+            <!-- <div class="text-right">
+                <button class="btn btn-primary">Previous</button>
+                <button class="btn btn-primary ml-3">Next</button>
+            </div>-->
+    
+        </div>
+    </div>
+</div>
+<!-- <ng-template #detailsModal>
+    <div class="modal-confirm">
+        <div class="modal-content modalcolor">
+            <div class="modal-header flex-column">
+                <h2>Modify Audit</h2>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <table class="table">
+                        <tr>
+                            <th>Seq.</th>
+                            <th>User Name</th>
+                            <th>Modify Time</th>
+                        </tr>
+                        <tr *ngFor="let obj of modifyList; let i = index;">
+                            <td>{{i + 1}}</td>
+                            <td>{{obj.userName}}</td>
+                            <td>{{obj.modified_at}}</td>
+                        </tr>
+                        <tr *ngIf="modifyList.length === 0">
+                            <td colspan="3" class="text-center">
+                                No modification data found
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+
+
+
+<ng-template #deletereq>
+    <div class="modal-confirm">
+        <div class="modal-content modalcolor">
+         
+            <div class="modal-body">
+               <span style="color:black">DO you really want to send a delete request?</span>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-secondary" (click)="closeModal()">No</button>
+                <button type="button" class="btn btnyes" (click)="sendDeleteReq(deleteId)">Yes</button>
+            </div>
+        </div>
+    </div>
+</ng-template> -->

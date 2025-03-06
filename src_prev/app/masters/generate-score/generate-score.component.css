@@ -1,0 +1,14 @@
+*{
+    font-size:10pt;
+}
+.disabled{
+    opacity: 0.5;
+}
+label {
+    color :#274a9f;
+}
+
+.btnyes{
+    background: transparent -webkit-linear-gradient(
+        174deg, rgba(13, 53, 148, .898039), #35d3e1) 0 0 no-repeat padding-box !important;
+}

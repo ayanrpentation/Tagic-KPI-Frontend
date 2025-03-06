@@ -1,0 +1,200 @@
+<div class="row">
+    <div class="col-sm-6">
+        <h3>CRS Report</h3>
+    </div>
+    <div class="col-sm-6  text-right">
+        <div class="form-group ">
+            <mat-radio-group aria-label="Select an option" [(ngModel)]="fileOption" class="CustomCard"
+                             style="padding: 10px;">
+                <mat-radio-button value="1">Normal Search</mat-radio-button>
+                <mat-radio-button value="2">Bulk Search</mat-radio-button>
+            </mat-radio-group>
+        </div>
+    </div>
+</div>
+<div>
+    <div class="card-body CustomCard">
+        <div class="row">
+            <div class="col-sm-5">
+                <div class="form-group">
+                    <label class="inputLabel">Select a field</label>
+                    <select class="form-control t_inputsel" [(ngModel)]="searchfor" (change)="callType($event, 0)">
+                        <option *ngFor="let val of search_fields" [value]="val.field_name">{{val.display_name}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-sm-2"></div>
+            <div class="col-sm-5 ">
+                <div class="form-group">
+                    <label class="inputLabel">{{search_Placeholder}}</label>
+                    <input *ngIf="fileOption=='1'" type="text" class="form-control t_input"
+                           [attr.disabled]="CRS_No !='' ||Policy_No!=''||Authorization_No!='' ? 'disabled' : null"
+                           [(ngModel)]="searchText">
+                    <div *ngIf="fileOption=='2'">
+                        <input type="file" id="fileUp" accept=".csv" style="display: none;">
+                        <button class="btnlink col-sm-3" (click)="uploadExisting()">Upload</button>
+
+                        <span class="pl-2 inputLabel">{{uploadedFileName}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-5">
+                <div class="form-group">
+                    <label class="inputLabel">From date</label>
+                    <input type="date" class="form-control t_input" [(ngModel)]="fromDate">
+                </div>
+                <div class="form-group">
+                    <label class="inputLabel">To date</label>
+                    <input type="date" class="form-control t_input" [(ngModel)]="toDate">
+                </div>
+            </div>
+            <div class="col-sm-7 text-center">
+                <label class="inputLabel">Drag & Drop Columns from List</label>
+                <div class="form-group">
+
+                    <div class="row px-0">
+                        <div class="col-sm-6 ">
+                            <div></div>
+                            <div cdkDropList #todoList="cdkDropList" class="example-list CustomCard dragBoxHight"
+                                 [cdkDropListData]="display_fields" [cdkDropListConnectedTo]="[doneList]"
+                                 (cdkDropListDropped)="drop($event)"
+                                 style="background: white;box-shadow: 0 0 white;">
+                                <div class="example-box" *ngFor="let val of display_fields" cdkDrag style="background: linear-gradient(to bottom right,#eff0f3,#e5e6eb);">
+                                    <input type="hidden" [value]="val.field_name">
+                                    <span>{{val.display_name}}</span>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6 px-0">
+                            <div cdkDropList #doneList="cdkDropList" [cdkDropListData]="done"
+                                 [cdkDropListConnectedTo]="[todoList]"
+                                 class="example-list CustomCard dragBoxHight"
+                                 style="background: white;box-shadow: 0 0 white;"
+                                 (cdkDropListDropped)="drop($event)">
+                                <div class="example-box" *ngFor="let item of done" cdkDrag style="background: linear-gradient(to bottom right,#eff0f3,#e5e6eb);">
+                                    <input type="hidden" [value]="item.field_name">
+                                    <span>{{item.display_name}}</span>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+            <!-- <div class="col-sm-7 text-center"></div> -->
+
+            <!-- <div class="container pt-4">
+                <div class="card" style="background-color: rgb(219, 218, 218);">
+                    <div class="card-body">
+                        <h2 style="color: rgb(12, 83, 142);">Please choose the values that you would like to:</h2>
+            
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <h2 style="color: rgb(12, 83, 142);">Available Fields</h2>
+                                <h4>Showing all&nbsp;<span>{{display_fields.length}}</span></h4>
+                            </div>
+                            <div class="col-sm-6">
+                                <h2 style="color: rgb(12, 83, 142);">Selected Fields</h2>
+                                <h4>Showing all&nbsp;<span>{{done.length}}</span></h4>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="card">
+                                    <div class="card-body">
+                                        Fields
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 ">
+                                <div class="card">
+                                    <div class="card-body">
+                                        Fields
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row pt-2"  style="height:100px;">
+            
+                            <div class="col-sm-6">
+                                <div class="card" style="border-color: #1a8aa6;">
+                                    <div class="card-header center"
+                                        style="text-align: center;background: linear-gradient(to right, #0cbaba, #361897);color:white;cursor: pointer;">
+                                        <a (click)="selectLeft()">{{btnTxt}}&nbsp;<span>{{countLeft === 0 ? '':countLeft}}</span>&nbsp;<i class="fa fa-arrow-right"
+                                                aria-hidden="true"></i></a>
+                                    </div>
+                                    <div class="card-body bottom-padding">
+                                        <ul style="list-style-type: none;" *ngFor="let item of display_fields;let i=index">
+                                            <li [ngClass]="{'true' : item.isCheck === true?'true' :  flag === true? true:false}"
+                                                (click)="singleSelectLeft(item.isCheck,i)">{{item.display_name}}</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="card" style="border-color: #1a8aa6;">
+                                    <div class="card-header center"
+                                        style="text-align: center;background: linear-gradient(to right, #0cbaba, #361897);color:white;cursor: pointer;">
+                                        <a (click)="selectRight()"><i class="fa fa-arrow-left"
+                                                aria-hidden="true"></i>&nbsp;&nbsp;{{btnTxtRight}}&nbsp;<span>{{countRight === 0 ? '':countRight}}</span></a>
+                                    </div>
+                                    <div class="card-body bottom-padding">
+                                        <ul style="list-style-type: none;" *ngFor="let item of done;let i=index">
+                                            <li [ngClass]="{'true' : item.isCheck === true?'true' :  flag === true? true:false}"
+                                                (click)="singleSelectRight(item.isCheck,i)">{{item.display_name}}</li>
+                                        </ul>
+            
+                                    </div>
+            
+                                </div>
+            
+                            </div>
+            
+                        </div>
+            
+                    </div>
+            
+            
+                </div>
+            
+            
+            </div> -->
+
+
+            <div class="col-sm-12 text-center mt-3">
+                <button class="col-sm-4 btnlink" *ngIf="fileOption=='1'" (click)="onsubmit()">Submit</button>
+                <button class="col-sm-4 btnlink" *ngIf="fileOption=='2'" (click)="onUpload()">Submit</button>
+            </div>
+            <div class="col-sm-12 text-right mt-3" *ngIf="result.length>0">
+                <button class="col-sm-2 btnlink" *ngIf="fileOption=='1'" (click)="singleSearchDownload()">Download
+                </button>
+                <button class="col-sm-2 btnlink" *ngIf="fileOption=='2'" (click)="bulkSearchDownload()">Download
+                </button>
+            </div>
+            <div class="col-sm-12 mt-3 CustomCard" style="overflow: auto;">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col" *ngFor="let val of tempArr">{{val.display_name}}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let val of result">
+                        <td *ngFor="let key of tempArr">{{val[key.field_name]}}</td>
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+

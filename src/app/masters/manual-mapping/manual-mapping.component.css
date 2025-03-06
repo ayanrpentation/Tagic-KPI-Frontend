@@ -1,0 +1,36 @@
+.col-4, .col-3, .col-5 {
+    padding-top: 20px;
+}
+
+
+i{
+    /* color:rgba(128, 128, 128, 0.712); */
+    color:#27499f57
+}
+label{
+    color: #274a9f;
+}
+*{
+font-size: 10pt;
+}
+
+.logtable thead th, .logtable tbody tr td{
+    font-size: 10pt !important;
+}
+.logtable tbody tr .status i{
+    font-size: 15pt !important;
+}
+.logheader span{
+    font-size: 11pt !important;
+    font-weight: 500;
+}
+.logheader .details{
+    color: #393939 !important;
+    font-weight: 500;
+}
+.logheader .col-2, .col-10{
+    padding-left: 0 !important;
+}
+::ng-deep .selected-item{
+    max-width: none !important;
+}

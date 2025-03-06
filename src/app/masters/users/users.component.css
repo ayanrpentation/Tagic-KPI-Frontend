@@ -1,0 +1,12 @@
+*{
+    font-size: 10pt;
+}
+.customcardcolor{
+    overflow: hidden;
+}
+/* .modalcolor{
+    overflow: scroll;
+    overflow-x:scroll;
+  display: flex;
+  flex-direction: column;
+} */

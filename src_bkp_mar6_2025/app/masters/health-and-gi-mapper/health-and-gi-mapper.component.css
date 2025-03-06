@@ -1,0 +1,21 @@
+.col-4, .col-3, .col-5 {
+    padding-top: 20px;
+}
+
+
+i{
+    /* color:rgba(128, 128, 128, 0.712); */
+    color:#27499f57
+}
+label{
+    color: #274a9f;
+}
+*{
+font-size: 10pt;
+}
+tr td mat-icon.only-show-on-hover {
+    visibility: hidden;
+  }
+tr:hover td mat-icon.only-show-on-hover  {
+visibility: visible;
+}

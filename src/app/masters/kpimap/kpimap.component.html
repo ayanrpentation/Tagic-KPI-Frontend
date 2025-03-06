@@ -1,0 +1,519 @@
+<!-- <p>kpimap works!</p> -->
+<notifier-container></notifier-container>
+<div style="padding: 1%">
+    <div class="row" style="padding-left:0%; padding-top:2%">
+        <div class="col-6">
+            <h2 class="page-title">Map KPI</h2>
+        </div>
+        <div class="col-6 d-flex" style="justify-content: right">
+            <button class="btnlink" style="height: 32px; margin-top: 10px; padding:0"
+                routerLink="/dashboard/rulereplication">Replicate</button>
+        </div>
+    </div>
+
+    <div class="row" style="height:90%;">
+        <div class="col-12" style="padding: 0%;">
+            <!-- <div class="row">
+                <div class="col">
+
+                    <span style="font-weight: bold; color:rgb(94, 93, 93)">KPI Mapping for Year 2022-2023 :</span>
+                </div>
+            </div> -->
+            <div class="row " style="padding-top: 1%">
+                <!-- <div class="col-4">Designation</div> -->
+                <div class="col-4">
+                    <label class="required">Channel New</label>
+
+                    <select class="form-control" [(ngModel)]="channelNew" (change)="getVerticals();getAllChannel();showRoleTypeFlag();"
+                        [disabled]="selectedDefaultChannelName != 'all' && userLevel != '4'">
+                        <option value="">Select Channel New</option>
+
+                        <option value="{{chnl.id}}" *ngFor="let chnl of channelNewList">{{chnl.channelNewName}}</option>
+                    </select>
+                </div>
+
+                <div class="col-4">
+                    <label class="required">Vertical Name</label>
+
+                    <select class="form-control" [(ngModel)]="verticalName">
+                        <option value="{{vertical.id}}" *ngFor="let vertical of verticalList">{{vertical.verticalName}}
+                        </option>
+                    </select>
+
+                </div>
+
+                <div class="col-4">
+                    <label class="required">Role</label>
+
+                    <select class="form-control" [(ngModel)]="role" (change)="getallowedPercentage(role)">
+
+                        <option value="{{role.id}}" *ngFor="let role of roleList">{{role.details_description}}</option>
+                    </select>
+                </div>
+
+            </div>
+
+            <div class="row " style="padding-top: 10px;">
+                <div class="col-4" *ngIf="roleTypeFlag">
+                    <label>Role Type (VP/MS/Both)</label>
+
+                    <select class="form-control" [(ngModel)]="roleType">
+                        <option value= "null">Select Role Type</option>
+                        <option value="VP">VP</option>
+                        <option value="MS">MS</option>
+                        <option value="Both">Both</option>
+
+                    </select>
+                </div>
+
+
+
+
+                <div class="col-4">
+                    <label class="required">KPI Month</label>
+
+                    <select class="form-control" [(ngModel)]="kpi_month" (change)="getAllChannel()">
+                        <option value="1">January</option>
+                        <option value="2">February</option>
+                        <option value="3">March</option>
+                        <option value="4">April</option>
+                        <option value="5">May</option>
+                        <option value="6">June</option>
+                        <option value="7">July</option>
+                        <option value="8">August</option>
+                        <option value="9">September</option>
+                        <option value="10">October</option>
+                        <option value="11">November</option>
+                        <option value="12">December</option>
+
+                        <!-- <option value="{{channel.id}}" *ngFor="let channel of channelList" >{{channel.details_description}}</option> -->
+
+                    </select>
+                </div>
+
+                <div class="col-4">
+                    <label class="required">KPI Year</label>
+
+                    <select class="form-control" [(ngModel)]="kpi_year" (change)="getAllChannel()">
+                        <!-- <option value="2023">2023</option>
+                        <option value="2022">2022</option> -->
+
+                        <option *ngFor="let yr of fYearList">{{yr}}</option>
+
+                    </select>
+                </div>
+
+            </div>
+
+            <div class="row " style="padding-top: 10px;">
+
+                <div class="col-4">
+                    <label class="required">KPI Parameter Channel</label>
+
+                    <select class="form-control" [(ngModel)]="channel" (change)="getAllRuleData();showExtraBoxes()">
+                        <option value=0>Select Parameter Channel</option>
+                        <option value="{{channel.id}}" *ngFor="let channel of channelList">
+                            {{channel.details_description}}</option>
+                    </select>
+                </div>
+
+                <!-- <div class="col-4">           
+                    <label>KPI Parameter Sub-Channel</label>
+
+                    <select class="form-control" [(ngModel)]="subchannel" [disabled]="true">
+                        <option value=""></option>
+                        <option value="1">channel B</option>
+                        <option value="2">channel C</option>
+                    </select>
+                </div> -->
+
+            </div>
+
+            <div class="row " style="padding-top: 10px;">
+
+                <div class="col-4">
+                    <!-- <label>Minimum Target(%) 
+                    </label> -->
+                    <div class="row p-0">
+                        <div class="col-6 p-0">
+                            <label class="required">Base Parameter</label>
+                        </div>
+
+                        <!-- <div class="col-6 p-0" style="text-align: right;">
+                            <label title="Click here to add new Base Parameter"
+                                (click)="addNewBpStatus=true">[+]</label>
+                        </div> -->
+
+                    </div>
+
+
+                    <select name="" id="" class="form-control" [(ngModel)]="baseParam" (change)="clearRuleVarVal()">
+                        <ng-container *ngIf="channel!=0">
+                            <option value="">Select Base Parameter</option>
+                            <option value="{{rule.ruleBaseParam}}" *ngFor="let rule of ruleList">{{rule.ruleName}}</option>
+                        </ng-container>
+                        
+                    </select>
+                </div>
+
+
+                <div class="col-4">
+                    <label class="required">Minimum Value</label>
+
+                    <input type="number" min="0" max="100" class="form-control" placeholder="Enter minimum percentage"
+                        [(ngModel)]="min_per">
+                </div>
+                <div class="col-4">
+                    <label class="required">Maximum Value
+                    </label>
+
+                    <input type="number" min="0" max="100" class="form-control" placeholder="Enter maximum percentage"
+                        [(ngModel)]="max_per">
+                </div>
+
+
+                <ng-container *ngFor="let rule of ruleList">
+                    <ng-container *ngIf="rule.ruleBaseParam == baseParam">
+                        <ng-container *ngFor="let rulevar of rule.ruleVariable">
+
+                            <div class="col-4">
+                                <label>{{rulevar.param}}</label>
+
+                                <input type="number" min="0" max="100" class="form-control" [(ngModel)]="rulevar.value"
+                                    (change)="assignRuleVarVal(rulevar.param, rulevar.value)">
+
+                            </div>
+                        </ng-container>
+
+                    </ng-container>
+                </ng-container>
+
+            </div>
+
+            <!-- aaa{{ruleVarValues}} -->
+
+            <div class="row" style="padding-top: 10px;">
+
+
+                <div class="col-4">
+                    <!-- <label>Maximum Cap(%) 
+                        </label> -->
+
+                    <label class="required">Score Under Range
+                    </label>
+
+                    <select name="" id="" class="form-control" [(ngModel)]="scoreUnder">
+                        <ng-container *ngFor="let rule of ruleList">
+                            <ng-container *ngIf="baseParam != ''">
+
+                                <!-- <option value="score">score</option> -->
+                                <option value="{{param}}" *ngFor="let param of rule.scoreVariable">{{param}}</option>
+                            </ng-container>
+                        </ng-container>
+                    </select>
+                </div>
+
+                <div class="col-4">
+                    <!-- <label>Maximum Cap(%) 
+                        </label> -->
+
+                    <label class="required">Score Within Range
+                    </label>
+
+                    <select name="" id="" class="form-control" [(ngModel)]="scoreWithin">
+                        <ng-container *ngFor="let rule of ruleList">
+                            <ng-container *ngIf="baseParam != ''">
+                                <!-- <option value="score">score</option> -->
+
+
+                                <option value="{{param}}" *ngFor="let param of rule.scoreVariable">{{param}}</option>
+                            </ng-container>
+                        </ng-container>
+                    </select>
+                </div>
+
+                <div class="col-4">
+                    <!-- <label>Maximum Cap(%) 
+                        </label> -->
+
+                    <label class="required">Score Above Range
+                    </label>
+
+                    <select name="" id="" class="form-control" [(ngModel)]="scoreAbove">
+                        <ng-container *ngFor="let rule of ruleList">
+                            <ng-container *ngIf="baseParam != ''">
+
+                                <!-- <option value="score">score</option> -->
+
+                                <option value="{{param}}" *ngFor="let param of rule.scoreVariable">{{param}}</option>
+                            </ng-container>
+                        </ng-container>
+                    </select>
+                </div>
+            </div>
+            <div class="row" style="padding-top: 10px;">
+                <div class="col-4">
+                    <!-- <label>Maximum Cap(%) 
+                        </label> -->
+
+                    <label>Score Under Range (Number)
+                    </label>
+
+                    <input type="number" [(ngModel)]="scoreUnderNumber" class="form-control"
+                        [disabled]="scoreUnder != 'score' && baseParam != ''">
+                </div>
+
+                <div class="col-4">
+                    <!-- <label>Maximum Cap(%) 
+                        </label> -->
+
+                    <label>Score Within Range (Number)
+                    </label>
+
+                    <input type="number" [(ngModel)]="scoreWithinNumber" class="form-control"
+                        [disabled]="scoreWithin != 'score' && baseParam != ''">
+                </div>
+
+                <div class="col-4">
+                    <!-- <label>Maximum Cap(%) 
+                        </label> -->
+
+                    <label>Score Above Range (Number)
+                    </label>
+
+                    <input type="number" [(ngModel)]="scoreAboveNumber" class="form-control"
+                        [disabled]="scoreAbove != 'score' && baseParam != ''">
+                </div>
+            </div>
+
+
+
+
+            <div class="row " style="padding-top: 10px;">
+                <div class="col-12">
+                    <input type="checkbox" (change)="setPreferPer_value()" [(ngModel)]="stateBifurcation"> &nbsp; <label>Apply weightage</label>
+
+                    <!-- <input type="checkbox" [(ngModel)]="stateBifurcation" > &nbsp; <label >Apply State Bifurcation</label> -->
+                </div>
+
+                <div class="col-4">
+                    <input type="number" min="0" max="100" class="form-control" placeholder="Enter percentage"
+                        [(ngModel)]="pref_per" [disabled]="!stateBifurcation">
+                </div>
+                <div class="col-4"> </div>
+                <div class="col-4"> </div>
+                
+            </div>
+            <div class="row " style="padding-top: 10px;">
+                <div class="col-4" *ngIf="extraBoxFlag">
+                    <label>Extra Partner Name</label>
+                    <select class="form-control"  name="" id=""  (change)="getPartner2()" [(ngModel)]="partner2ID">
+                        <option value="">Select Partner Name</option>
+                        <ng-container  *ngFor="let ms of marketShareDropDown">
+                            <option  value="{{ms.id}}" >{{ms.name}}</option>
+                        </ng-container>
+                        
+                    </select>
+
+
+
+                    <!-- <label class="required">Channel New</label>
+                    <select class="form-control" [(ngModel)]="channelNew" (change)="getVerticals()"
+                        [disabled]="selectedDefaultChannelName != 'all' && userLevel != '4'">
+                        <option value="">Select Channel New</option>
+
+                        <option value="{{chnl.id}}" *ngFor="let chnl of channelNewList">{{chnl.channelNewName}}</option>
+                    </select> -->
+                </div>
+                <div class="col-4" *ngIf="extraBoxFlag">
+                    <label >Partner 1: &nbsp;</label>
+                    <label for="">{{partner1name}}</label>
+                    <input type="number" class="form-control" placeholder="Enter weightage" [(ngModel)]="weightage_partner1" (change)="checkWeightageMatch()" (blur)="checkWeightageMatch()">
+                </div>
+                <div class="col-4" *ngIf="extraBoxFlag">
+                    <label>Partner 2: &nbsp;</label>
+                    <label for="">{{partner2name}} weightage</label>
+                    <input type="number" class="form-control" placeholder="Enter weightage" [(ngModel)]="weightage_partner2" (change)="checkWeightageMatch()" (blur)="checkWeightageMatch()">
+                </div>
+
+
+                <!-- <div class="col-4">           
+                    <label>Preferred(%)</label>
+
+                    <input type="number" min="0" max="100" class="form-control" placeholder="Enter percentage" [(ngModel)]="pref_per" [disabled]="!stateBifurcation">
+                </div>
+                <div class="col-4">           
+                    <label>Moderate(%)</label>
+
+                    <input type="number" min="0" max="100" class="form-control" placeholder="Enter percentage" [(ngModel)]="mod_per" [disabled]="!stateBifurcation">
+                </div>
+
+                <div class="col-4">           
+                    <label>Non Preferred(%)</label>
+
+                    <input type="number" min="0" max="100" class="form-control" placeholder="Enter percentage" [(ngModel)]="nonpref_per" [disabled]="!stateBifurcation">
+                </div> -->
+
+
+                <!-- </div>
+
+            <div class="row" style="padding-top:2% "> -->
+                <!-- <div class="col-8 d-flex" style="justify-content: right;"> -->
+                <div class="col-8 d-flex" >
+
+                    <button type="button" class="btnlink" (click)="savekpi()"
+                        style="max-height: 35px!important; margin-top: 35px;">Save</button>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<ng-template #ruleVariableConfigure>
+
+    <div class="modal-confirm">
+        <div class="modal-content modalcolor">
+
+            <div class="modal-body">
+
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-secondary" (click)="closeModal()">No</button>
+                <button type="button" class="btn btnyes">Yes</button>
+            </div>
+        </div>
+    </div>
+
+</ng-template>
+
+
+
+<div *ngIf="addNewBpStatus"
+    style="z-index: 11; width: 100%; height:100%; background-color: rgba(0, 0, 0, 0); position: fixed; top:0%; left: 0%">
+    <div class="container"
+        style=" width: 50%; height:auto; background-color: #ffffff; position: fixed; top:30%; left: 25%; border-radius: 2px; box-shadow: 1px 1px 10px 5px #88888895; padding:0px; overflow: hidden; align-items: center!important;">
+
+        <div class="row"
+            style=" justify-content: right; display: flex; background: transparent -webkit-linear-gradient(174deg, rgba(13, 53, 148, .898039), #35d3e1) 0 0 no-repeat padding-box; min-height: 50px; padding: 10px;align-items: center!important;">
+            <button
+                style="border-radius: 50%; border-style: none;text-align: center;background-color: #ffffff; width:20px; height: 20px;"
+                (click)="addNewBpStatus=!addNewBpStatus">
+                <span style="color: rgb(0, 65, 109); font-size: 14px; font-weight: 500; cursor: pointer;">X</span>
+            </button>
+
+        </div>
+
+        <div class="container" style="padding:10px;">
+
+            <div class="row" style="  display: flex;padding: 2%; background-color: #e7e7e7; border-radius: 10px;">
+
+                <div class="col-6">
+                    <!-- <div class="row">
+                        <label for="">Search Base Param</label>
+                    </div> -->
+
+                    <div class="row">
+                        <input class="form-control" type="text" placeholder="Search Base Parameter Rule Name"
+                            [(ngModel)]="bpSearch" (keyup)="searchBp()" (change)="searchBp()" (click)="searchBp()">
+                    </div>
+
+                </div>
+
+                <div class="col-6">
+                    <!-- <div class="row">
+                        <label for="">Result</label>
+                    </div> -->
+
+                    <div class="row">
+                        <!-- <input class="form-control" type="text" placeholder="search result"  [(ngModel)]="bpResult" disabled> -->
+
+                        <select class="form-control">
+                            <option value="{{result}}" *ngFor="let result of bpResult">{{result}}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="row" style="  display: flex;padding-top: 5%;">
+
+                <div class="col-6">
+                    <div class="row">
+                        <label for="">Rule Name</label>
+                    </div>
+
+                    <div class="row">
+                        <input class="form-control" type="text" [(ngModel)]="ruleName">
+                    </div>
+
+                </div>
+
+                <div class="col-6">
+                    <div class="row">
+                        <label for="">Rule Base Parameter</label>
+                    </div>
+
+                    <div class="row">
+                        <input class="form-control" type="text" [(ngModel)]="ruleBaseParam">
+                    </div>
+
+                </div>
+
+                <div class="col-6">
+                    <div class="row">
+                        <label for="">Score Variable</label>
+                    </div>
+
+                    <div class="row">
+                        <input class="form-control" type="text" [(ngModel)]="scoreVariable">
+                    </div>
+
+                </div>
+
+                <div class="col-6">
+                    <div class="row">
+
+                        <input type="checkbox" name="max" style="padding: 0" [(ngModel)]="maxPerc">
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        <label for="max" style="margin-top: 6px;"> Max Percentage</label>
+                    </div>
+
+                    <div class="row">
+
+                        <input type="checkbox" name="min" [(ngModel)]="minPerc"> &nbsp;&nbsp;&nbsp;&nbsp;
+                        <label for="min" style="margin-top: 6px;"> Min Percentage</label>
+                    </div>
+
+                </div>
+
+                <!-- <div class="col-3">
+                    <div class="row">
+                        <label for="">&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                    </div>
+    
+                    <div class="row" style="display:flex; justify-content: right;">
+                        <button class="btnlink"> Save </button>
+                    </div>
+                    
+                </div> -->
+
+                <div class="col-12" style="display:flex; justify-content: right;">
+                    <button class="btnlink" (click)="addNewBpStatus=!addNewBpStatus"> Cancel </button>&nbsp;&nbsp;
+
+                    <button class="btnlink"> Save </button>
+                </div>
+            </div>
+
+        </div>
+
+
+
+        <!-- <div  class="row text-center" style=" display: flex;padding-top: 1%;"></div> -->
+
+    </div>
+</div>
