@@ -270,17 +270,26 @@ export class ViewkpiComponent implements OnInit, DoCheck, AfterContentInit {
     // }
   }
   getChannelWiseDesignation() {
-    // this.role = 'all'
+    // this is done to avoid any error during search
+    this.role_desig = 'all';
+    this.param_channel_id = 'all';
 
-    if(this.userLevel != 3 && sessionStorage.getItem('roleMappedKPI')== null){
-      this.role_desig = 'all'
 
-      // console.log('11111111111111111111111')
-    }
-    else {
-      this.role_desig = sessionStorage.getItem('roleMappedKPI')
-      // console.log('22222222222222222222')
-    }
+
+
+
+
+
+
+    // if(this.userLevel != 3 && sessionStorage.getItem('roleMappedKPI')== null){
+    //   this.role_desig = 'all'
+    // }
+    // else {
+    //   this.role_desig = sessionStorage.getItem('roleMappedKPI')
+    // }
+
+
+     
 
     const data = {
       channelNewId: this.channelNewId,
@@ -291,17 +300,12 @@ export class ViewkpiComponent implements OnInit, DoCheck, AfterContentInit {
         this.roleList = res.result;
 
 
-        if(sessionStorage.getItem('roleMappedKPI')!= null){
-          this.role_desig = String(sessionStorage.getItem('roleMappedKPI'))
-          // console.log("this.role",this.role)
-        }
-        if(sessionStorage.getItem('paramChannelMappedKPI')!= null){
-          this.param_channel_id = sessionStorage.getItem('paramChannelMappedKPI')
-          // console.log("this.param_channel_id",this.param_channel_id)
-        }
-
-        
-        console.log("role--------------------->> ",this.role_desig)
+        // if(sessionStorage.getItem('roleMappedKPI')!= null){
+        //   this.role_desig = String(sessionStorage.getItem('roleMappedKPI'))
+        // }
+        // if(sessionStorage.getItem('paramChannelMappedKPI')!= null){
+        //   this.param_channel_id = sessionStorage.getItem('paramChannelMappedKPI')
+        // }
       }
     }, (err: any) => {
 
@@ -322,6 +326,7 @@ export class ViewkpiComponent implements OnInit, DoCheck, AfterContentInit {
     this.rest.getChannelWiseKpiParamList(data).subscribe((res: any) => {
       if (res.success) {
         this.kpiParamList = res.result;
+        
       }
     }, (err: any) => {
 
@@ -421,6 +426,15 @@ export class ViewkpiComponent implements OnInit, DoCheck, AfterContentInit {
   }
 
   getVerticals() {
+
+    // this is done to avoid any error in search
+    this.verticalName = 'all';
+    this.role_desig = 'all';
+    this. param_channel_id = 'all';
+
+
+
+
     if(this.userLevel != 3 && sessionStorage.getItem('verticalMappedKPI')== null){
       this.verticalName = 'all'
     }

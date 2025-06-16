@@ -193,6 +193,76 @@ export class GenerateScoreComponent implements OnInit {
     
 
   }
+
+
+
+
+  isModalOpen = false;
+
+  // modalText = "" as any;
+  checkIfScoreIsPresent(){
+    this.closeModal();
+    const data={
+      'userId': this.common.getUserId(),
+      'month': this.month,
+      'emp_code': this.employee_code,
+      'year': this.year,
+      // 'channelNewName': this.channelNew,
+      'channelNewId' : this.channelNew,
+
+      'period': this.periodType,
+      'quarter': this.period,
+      'fYear': this.financialYear
+    }
+
+
+
+    this.rest.checkScoringConfig(data).subscribe((res: any) => {
+
+  
+      if (res.success) {
+
+        if(res.config === "old"){
+          this.isModalOpen = false;
+          this.generateKpiScore();
+        }else{
+          // this.modalText = res.
+          this.isModalOpen = true; // when config is present already
+        }
+        
+
+        // this.loading = false;
+        // this.generated = true;
+        // this.notifier.notify('success', res.message)
+        // setTimeout(() => {
+        //   window.alert(res.message);
+        // }, 200);
+        
+      }else{
+
+        this.isModalOpen = false; // when config is not present 
+      // this.loading = false;
+      // this.notifier.notify('error', res.message)
+      // setTimeout(() => {
+      //   window.alert("Error! " + res.message);
+      // }, 200);
+
+      }
+    }, (err: any) => {
+      // this.loading = false;
+      // this.notifier.notify('error', 'some error occurred')
+      // setTimeout(() => {
+      //   window.alert('some error occurred');
+      // }, 200);
+
+
+      // this.notifier.notify('error', err.error.message);
+      
+
+    });
+  }
+
+
   generateKpiScore(){
     this.closeModal();
     this.loading = true;
@@ -212,6 +282,68 @@ export class GenerateScoreComponent implements OnInit {
     let scoreAPIs = {'KPG-PSU': 'generateKpiScore' };
     // this.rest.generateKpiScore(data).subscribe((res: any) => {
     this.rest.generateKpiScore(data).subscribe((res: any) => {
+
+  
+      if (res.success) {
+        
+        // this.kpiScoreDetails = res.result;
+        this.loading = false;
+        this.generated = true;
+        this.notifier.notify('success', res.message)
+        setTimeout(() => {
+          window.alert(res.message);
+        }, 200);
+        
+      }else{
+      this.loading = false;
+      this.notifier.notify('error', res.message)
+      setTimeout(() => {
+        window.alert("Error! " + res.message);
+      }, 200);
+
+      }
+    }, (err: any) => {
+      this.loading = false;
+      this.notifier.notify('error', 'some error occurred')
+      setTimeout(() => {
+        window.alert('some error occurred');
+      }, 200);
+
+
+      // this.notifier.notify('error', err.error.message);
+      
+
+    });
+
+  }
+
+
+
+
+
+  generateKpiScore_new_reGen(){
+    this.closeModal();
+    this.loading = true;
+
+
+
+    this.isModalOpen = false;
+    const data={
+      'userId': this.common.getUserId(),
+      'month': this.month,
+      'emp_code': this.employee_code,
+      'year': this.year,
+      // 'channelNewName': this.channelNew,
+      'channelNewId' : this.channelNew,
+
+      'period': this.periodType,
+      'quarter': this.period,
+      'fYear': this.financialYear
+
+    }
+    let scoreAPIs = {'KPG-PSU': 'generateKpiScore' };
+    // this.rest.generateKpiScore(data).subscribe((res: any) => {
+    this.rest.generatekpiScore_new(data).subscribe((res: any) => {
 
   
       if (res.success) {

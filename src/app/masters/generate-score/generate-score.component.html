@@ -199,8 +199,43 @@
             </div>
             <div class="modal-footer justify-content-center">
                 <button type="button" class="btn btn-secondary" (click)="closeModal()">No</button>
-                <button type="button" class="btn btnyes" (click)="generateKpiScore()">Yes</button>
+                <!-- <button type="button" class="btn btnyes" (click)="generateKpiScore()">Yes</button> -->
+                <button type="button" class="btn btnyes" (click)="checkIfScoreIsPresent()">Yes</button>
             </div>
         </div>
     </div>
 </ng-template>
+
+
+<ng-template #checkifconfigPresent>
+    <div class="modal-confirm">
+        <div class="modal-content modalcolor">
+         
+            <div class="modal-body">
+               <span style="color:black">Configuration Already Present. Want to generate again?</span>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-secondary" (click)="closeModal()">No</button>
+                <button type="button" class="btn btnyes" (click)="generateKpiScore()">Yes</button>
+                <!-- <button type="button" class="btn btnyes" (click)="checkIfScoreIsPresent()">Yes</button> -->
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+
+
+
+
+
+<div class="modal-confirm" *ngIf="isModalOpen">
+    <div class="modal-content modalcolor">
+        <div class="modal-body">
+            <span style="color: black">This Process will follow KPI Configurator Logics. Please confirm all the configurations are set properly.</span>
+        </div>
+        <div class="modal-footer justify-content-center">
+            <button type="button" class="btn btn-secondary" (click)="isModalOpen=false">No</button>
+            <button type="button" class="btn btnyes" (click)="generateKpiScore_new_reGen()">Yes</button>
+        </div>
+    </div>
+</div>

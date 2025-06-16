@@ -29,8 +29,8 @@ export class RestApiService {
   // file_path = 'http://127.0.0.1:5020/static';
 
   //---Arpan----
-  API_ROOT = 'http://192.168.1.12:5020';
-  file_path = 'http://192.168.1.12:5020/static';
+  // API_ROOT = 'http://192.168.1.7:5020';
+  // file_path = 'http://192.168.1.7:5020/static';
 
   // API_ROOT = 'http://192.168.0.103:5020';
   // file_path = 'http://192.168.0.103:5020/static';
@@ -38,9 +38,11 @@ export class RestApiService {
   // API_ROOT = 'http://192.168.29.164:5020';
   // file_path = 'http://192.168.29.164:5020/static';
 
-  //------tataaig-----
-  // API_ROOT = 'http://10.33.195.171:5000';
-  // file_path = 'http://10.33.195.171:5000/static';
+  //----------------------------------------------------------------tataaig---------------------------------------------
+  API_ROOT = 'http://10.33.195.171:5000';
+  file_path = 'http://10.33.195.171:5000/static';
+
+  
 
   // API_ROOT = 'https://dataondemand.tataaig.com/api';
   // file_path = 'https://dataondemand.tataaig.com/api/static';
@@ -347,6 +349,16 @@ export class RestApiService {
     return this.http.post(this.API_ROOT + '/kpi/generatekpiScore', JSON.stringify(data), httpOptions)
 
   }
+
+  checkScoringConfig(data: any) {
+    return this.http.post(this.API_ROOT + '/kpi/checkScoringConfig', JSON.stringify(data), httpOptions)
+
+  }
+  generatekpiScore_new(data: any) {
+    return this.http.post(this.API_ROOT + '/kpi/generatekpiScore_new', JSON.stringify(data), httpOptions)
+
+  }
+
   approveRejectFile(data: any) {
     return this.http.post(this.API_ROOT + '/audit/approveRejectFile', JSON.stringify(data), httpOptions)
 

@@ -15,3 +15,81 @@ label {
 .multi {
     background-color: #ffffff!important;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* for checking scoring config present or not? */
+.modal-confirm {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6); /* backdrop */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1050; /* high enough to overlay other elements */
+}
+
+.modal-content {
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    width: 400px;
+    max-width: 90%;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.modalcolor {
+    /* apply any extra color styles you had for modalcolor */
+}
+
+.modal-body {
+    margin-bottom: 20px;
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    color: white;
+}
+
+.btnyes {
+    background-color: #28a745;
+    color: white;
+}
+
+.btn:hover {
+    opacity: 0.9;
+}

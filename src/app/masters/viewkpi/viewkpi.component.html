@@ -62,7 +62,7 @@
                             <div class="col">
                                 <label >Role</label>
 
-                                <select class="form-control" name="" id="" [(ngModel)]="role_desig"  (change)="getChannelWiseKpiParamList()">
+                                <select class="form-control" name="" id="" [(ngModel)]="role_desig"  (change)="getChannelWiseKpiParamList(); param_channel_id = 'all';">
                                     <option value="all">Role</option>
                                     <option *ngFor="let role of roleList" value='{{role.designation_type}}'>{{role.designation_type}}</option>
                                 </select>
