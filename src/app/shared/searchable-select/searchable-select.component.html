@@ -1,0 +1,128 @@
+<!-- <div class="position-relative">
+    <div
+      class="form-control d-flex justify-content-between align-items-center"
+      (click)="toggleDropdown()"
+      style="cursor: pointer;"
+    >
+      <span *ngIf="selected">{{ selected }}</span>
+      <span *ngIf="!selected" class="text-muted">{{ placeholder }}</span>
+      <i class="bi bi-caret-down-fill"></i>
+    </div>
+  
+    <div
+      class="dropdown-menu show w-100 mt-1"
+      *ngIf="showDropdown"
+      style="max-height: 200px; overflow-y: auto;"
+      (click)="$event.stopPropagation()"
+    >
+      <input
+        type="text"
+        class="form-control mb-2"
+        [(ngModel)]="searchText"
+        placeholder="Search..."
+      />
+  
+      <button
+        type="button"
+        class="dropdown-item"
+        *ngFor="let item of filteredItems"
+        (click)="selectItem(item)"
+      >
+        {{ item }}
+      </button>
+    </div>
+  </div> -->
+
+
+
+
+  <!-- <div class="position-relative">
+    <div
+      class="form-control d-flex justify-content-between align-items-center"
+      (click)="toggleDropdown()"
+      [ngStyle]="{ height: height }"
+      style="cursor: pointer;"
+    >
+      <span *ngIf="selected">{{ selected }}</span>
+      <span *ngIf="!selected" class="text-muted">{{ placeholder }}</span>
+      <i class="bi bi-caret-down-fill"></i>
+    </div>
+  
+    <div
+      class="dropdown-menu show w-100 mt-1"
+      *ngIf="showDropdown"
+      style="max-height: 200px; overflow-y: auto;"
+    >
+      <input
+        type="text"
+        class="form-control mb-2"
+        [(ngModel)]="searchText"
+        placeholder="Search..."
+      />
+  
+      <button
+        type="button"
+        class="dropdown-item"
+        *ngFor="let item of filteredItems"
+        (click)="selectItem(item)"
+      >
+        {{ item }}
+      </button>
+    </div>
+  </div> -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="position-relative">
+    <div
+      class="form-control d-flex justify-content-between align-items-center"
+      (click)="toggleDropdown()"
+      [ngStyle]="{ height: height }"
+      style="cursor: pointer;"
+    >
+      <span *ngIf="selectedLabel">{{ selectedLabel }}</span>
+      <span *ngIf="!selectedLabel" class="text-muted">{{ placeholder }}</span>
+      <!-- <i class="bi bi-caret-down-fill"></i> -->
+      <!-- <span class="custom-caret"></span> -->
+      <i class="fa-solid fa-chevron-down"></i>
+    </div>
+  
+    <div
+      class="dropdown-menu show w-100 mt-1"
+      *ngIf="showDropdown"
+      style="max-height: 200px; overflow-y: auto;"
+    >
+      <input
+        type="text"
+        class="form-control mb-2"
+        [(ngModel)]="searchText"
+        [placeholder]="'Search...'"
+      />
+  
+      <button
+        type="button"
+        class="dropdown-item"
+        *ngFor="let item of filteredItems"
+        (click)="selectItem(item)"
+      >
+        {{ item[labelKey] }}
+      </button>
+    </div>
+  </div>
+  
+  
+  

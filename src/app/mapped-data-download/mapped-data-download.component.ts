@@ -29,6 +29,7 @@ export class MappedDataDownloadComponent implements OnInit {
   verticalValue = 'all' as any
   vertical_value_list = [] as any
   employee_code = '' as any;
+  downloadType = '' as any;
 
 
   constructor(private ngxService: NgxUiLoaderService,private rest: RestApiService, private router: Router, private notifier: NotifierService, private common: CommonService) { }
@@ -169,6 +170,9 @@ export class MappedDataDownloadComponent implements OnInit {
     // else if(this.employee_code == '' || this.employee_code == null){
     //   window.alert("Enter Employee Code")
     // }
+    else if(this.downloadType === ""){
+      window.alert("Select Download Type")
+    }
     
     else {
       this.ngxService.start(); 
@@ -179,6 +183,7 @@ export class MappedDataDownloadComponent implements OnInit {
         channelId: Number(this.channelNew),
         vertical: this.verticalValue,
         empCode: this.employee_code,
+        downloadType: this.downloadType,
       }
 
       this.rest.getMappedData(data).subscribe((res: any) => {

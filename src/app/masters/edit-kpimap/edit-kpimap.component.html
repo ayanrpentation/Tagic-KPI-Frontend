@@ -37,6 +37,20 @@
                     </select>
                 </div>
 
+                <div class="col-4" *ngIf="showBand_status">
+                    <label class="required">Band</label>
+                    <select class="form-control" [(ngModel)]="band" >
+                        <!-- <option value="{{band.id}}" *ngFor="let band of bandList">{{band.details_description}}</option> -->
+                        <!-- <option value="{{`${band.id}/${band.details_description}`}}" *ngFor="let band of bandList">{{band.details_description}}</option> -->
+                        <option value="">Select Band</option>
+                        
+                        <option *ngFor="let band of bandList" [value]="band.id + '/' + band.details_description">
+                            {{ band.details_description }}
+                          </option>
+                          
+                    </select>
+                </div>
+
                 <div class="col-4">
                     <label class="required">Role</label>
 

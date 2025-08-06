@@ -114,7 +114,7 @@
                         </label>
 
                         <!-- <select class="form-control" [(ngModel)]="channelNew" (change)="getVerticals()" [disabled]="selectedDefaultChannelName != 'all' && userLevel != '4'"> -->
-                        <select class="form-control" [(ngModel)]="channelNew" (change)="getVerticals()">    
+                        <select class="form-control" [(ngModel)]="channelNew" (change)="getVerticals(); checkShowBandStatus(channelNew)">    
                             <option value="all">Select All</option>
                             <option value="{{channel.id}}" *ngFor="let channel of channelNewList">
                                 {{channel.channelNewName}}
@@ -154,6 +154,18 @@
                         (change)="getDesignations()"                       
                         >
                         </ng-multiselect-dropdown>  -->
+                    </div>
+
+                    <div *ngIf="showBand_status" class="col-2" title="Channel Selection Required to get Designation">
+                        <label>Band</label>
+
+                        <select class="form-control" [(ngModel)]="band"
+                            title="Channel Selection Required to get Designation" >
+                            <option value="">Select All</option>
+                            <option [value]="band.id + '/' + band.details_description" *ngFor="let band of bandList">
+                                {{band.details_description}}
+                            </option>
+                        </select>
                     </div>
 
                     <div class="col-2" title="Channel Selection Required to get Designation"
@@ -325,11 +337,10 @@
                     <tr
                         style="color:rgb(94, 93, 93);background: transparent -webkit-linear-gradient( 174deg, rgb(13 53 148 / 30%), #35d3e114) 0 0 no-repeat padding-box;">
 
-                        <th style="width:15%">Employee Code</th>
+                        <!-- <th style="width:15%">Employee Code</th>
                         <th style="width:15%">Employee Name</th>
                         <th style="width:8%">Designation</th>
-                        <!-- <th>Branch</th> -->
-                        <!-- <th>Sub Channel</th> -->
+                        
                         <th style="width:15%">Channel</th>
                         <th style="width:13%">Vertical</th>
 
@@ -339,6 +350,31 @@
                         <th *ngIf="report_period_Type == 'month'" style="width:10%">Month</th>
                         <th *ngIf="report_period_Type == 'ytd'" style="width:10%">YTD Month</th>
                         <th *ngIf="report_period_Type == 'quarter'">Quarter</th>
+
+
+
+
+                        <th style="width:8%; text-align: right;">Score</th>
+                        <th style="width:6%"></th> -->
+
+
+
+
+                        <th style="width:14%" [ngStyle]="{'width': showBand_status ? '14%' : '15%'}">Employee Code</th>
+                        <th [ngStyle]="{'width': showBand_status ? '14%' : '15%'}">Employee Name</th>
+                        <th *ngIf="showBand_status" style="width:8%">Band</th>
+                        <th style="width:8%">Designation</th>
+                        <!-- <th>Branch</th> -->
+                        <!-- <th>Sub Channel</th> -->
+                        <th [ngStyle]="{'width': showBand_status ? '14%' : '15%'}">Channel</th>
+                        <th  [ngStyle]="{'width': showBand_status ? '12%' : '13%'}">Vertical</th>
+
+                        <th *ngIf="report_period_Type != 'month'" style="text-align: left;" [ngStyle]="{'width': showBand_status ? '8%' : '10%'}">F Year</th>
+                        <th *ngIf="report_period_Type == 'month'" style="text-align: left;" [ngStyle]="{'width': showBand_status ? '8%' : '10%'}">Year</th>
+
+                        <th *ngIf="report_period_Type == 'month'"  [ngStyle]="{'width': showBand_status ? '8%' : '10%'}">Month</th>
+                        <th *ngIf="report_period_Type == 'ytd'"  [ngStyle]="{'width': showBand_status ? '8%' : '10%'}">YTD Month</th>
+                        <th *ngIf="report_period_Type == 'quarter'"  [ngStyle]="{'width': showBand_status ? '8%' : '10%'}">Quarter</th>
 
 
 
@@ -366,41 +402,45 @@
 
                     <tr *ngIf="!noDataVsbl && searchBoxes == true"
                         style="position: -webkit-sticky!important; position: sticky!important; top: 163px!important; z-index: 8;background-color: #fafafa;">
-                        <td style="width:15%">
+                        <td  [ngStyle]="{'width': showBand_status ? '14%' : '15%'}">
                             <input class="form-control" type="text" [(ngModel)]="EmpCode" placeholder="Search Code"
                                 (keyup)="searchEmployee()">
                         </td>
-                        <td style="width:15%">
+                        <td  [ngStyle]="{'width': showBand_status ? '14%' : '15%'}">
                             <input class="form-control" type="text" [(ngModel)]="EmpName" placeholder="Search Name"
                                 (keyup)="searchEmployee()">
+                        </td>
+                        <td *ngIf="showBand_status"  style="width:8%">
+                            <input class="form-control" type="text" [(ngModel)]="EmpBand"
+                                placeholder="Search Band" (keyup)="searchEmployee()">
                         </td>
                         <td style="width:8%">
                             <input class="form-control" type="text" [(ngModel)]="EmpDesig"
                                 placeholder="Search Designation" (keyup)="searchEmployee()">
                         </td>
-                        <td style="width:15%">
+                        <td  [ngStyle]="{'width': showBand_status ? '14%' : '15%'}">
                             <input class="form-control" type="text" [(ngModel)]="EmpSubChannel"
                                 placeholder="Search Channel" (keyup)="searchEmployee()">
                         </td>
-                        <td style="width:13%">
+                        <td [ngStyle]="{'width': showBand_status ? '12%' : '13%'}">
                             <input class="form-control" type="text" [(ngModel)]="EmpVertical"
                                 placeholder="Search Vertical" (keyup)="searchEmployee()">
                         </td>
 
-                        <td style="width:10%" *ngIf="report_period_Type == 'month'">
+                        <td  [ngStyle]="{'width': showBand_status ? '8%' : '10%'}" *ngIf="report_period_Type == 'month'">
                             <input class="form-control" type="text" [(ngModel)]="EmpYear" placeholder="Search Year"
                                 (keyup)="searchEmployee()">
                         </td>
-                        <td style="width:10%" *ngIf="report_period_Type != 'month'">
+                        <td   [ngStyle]="{'width': showBand_status ? '8%' : '10%'}" *ngIf="report_period_Type != 'month'">
                             <input class="form-control" type="text" [(ngModel)]="EmpFy"
                                 placeholder="Search Financial Year" (keyup)="searchEmployee()">
                         </td>
-                        <td style="width:10%" *ngIf="report_period_Type != 'quarter'">
+                        <td   [ngStyle]="{'width': showBand_status ? '8%' : '10%'}" *ngIf="report_period_Type != 'quarter'">
                             <input class="form-control" type="text" [(ngModel)]="EmpMonth" placeholder="Search Month"
                                 (keyup)="searchEmployee()">
                         </td>
 
-                        <td style="width:10%" *ngIf="report_period_Type == 'quarter'">
+                        <td   [ngStyle]="{'width': showBand_status ? '8%' : '10%'}" *ngIf="report_period_Type == 'quarter'">
                             <input class="form-control" type="text" [(ngModel)]="EmpQuarter"
                                 placeholder="Search Quarter" (keyup)="searchEmployee()">
                         </td>
@@ -421,6 +461,7 @@
                                 <!-- {{kpiscore}} -->
                                 <td>{{kpiscore.empCode}}</td>
                                 <td>{{kpiscore.empName}}</td>
+                                <td *ngIf="showBand_status" >{{kpiscore.band}}</td>
                                 <td>{{kpiscore.designationType}} {{kpiscore.HOMO_Mapping}}</td>
                                 <!-- <td>{{kpiscore.branchName}}</td> -->
                                 <td> {{kpiscore.channelNewName}}</td>
@@ -470,6 +511,7 @@
 
                                 <td>{{kpiscore.empCode}}</td>
                                 <td>{{kpiscore.empName}}</td>
+                                <td *ngIf="showBand_status" >{{kpiscore.band}}</td>
                                 <td>{{kpiscore.designationType}}</td>
                                 <!-- <td>{{kpiscore.branchName}}</td> -->
                                 <td> {{kpiscore.channelNewName}}</td>

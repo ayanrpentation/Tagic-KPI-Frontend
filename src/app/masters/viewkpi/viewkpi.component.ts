@@ -14,6 +14,15 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 })
 export class ViewkpiComponent implements OnInit, DoCheck, AfterContentInit {
 
+
+
+  showBand_status = false;
+  checkShowBandStatus(channelId:any){
+    this.showBand_status = this.common.checkShowBandStatus(channelId);
+  }
+  band = "" as any;
+  bandList = [] as any;
+
   
   monthList = [{id:'01', name: 'January'},{id:'02', name: 'February'},{id:'03', name: 'March'},{id:'04', name: 'April'},{id:'05', name: 'May'},{id:'06', name: 'June'},{id:'07', name: 'July'},{id:'08', name: 'August'},{id:'09', name: 'September'},{id:'10', name: 'October'},{id:'11', name: 'November'},{id:'12', name: 'December'}];
   searchedMonth = sessionStorage.getItem('defaultMonthForAll') as any
@@ -24,6 +33,11 @@ export class ViewkpiComponent implements OnInit, DoCheck, AfterContentInit {
 
   allkpiDetails= [] as any;
   roleList: any;
+  get roleDesignations(): string[] {
+    return this.roleList.map((r:any) => r.designation_type);
+  }
+
+
   channelList: any;
   isedit = false;
   editId = -1;
@@ -71,6 +85,8 @@ export class ViewkpiComponent implements OnInit, DoCheck, AfterContentInit {
 
 
   constructor(private rest: RestApiService, private notifier: NotifierService, private modalService: NgbModal, private common: CommonService, private router: Router) {
+    
+    this.showBand_status = this.common.showBandDropdown_status()
     let default_cahnnel = sessionStorage.getItem('defaultChannelForAll') as any
     // console.log("default_cahnnel-->", default_cahnnel)
     let stringArray = default_cahnnel.split(',');
@@ -133,7 +149,8 @@ export class ViewkpiComponent implements OnInit, DoCheck, AfterContentInit {
     this.getChannelWiseKpiParamList();
 
     this.getAllChannel();
-    this.viewMappedKpi();
+    this.getAllBand();
+    this.viewMappedKpi_onload();
     // this.getdetailsdata(1);
     // this.getdetailsdata(2);
     for (var i = Number(this.searchedYear) + 5; i >= Number(this.searchedYear)-5; i--) {
@@ -144,33 +161,6 @@ export class ViewkpiComponent implements OnInit, DoCheck, AfterContentInit {
     this.getAllChannelNew();
 
 
-    // if(sessionStorage.getItem('verticalMappedKPI')!= null){
-    //   this.verticalName = String(sessionStorage.getItem('verticalMappedKPI'))
-    //   // console.log("this.verticalName",this.verticalName, typeof(this.verticalName))
-    // }
-    // if(sessionStorage.getItem('roleMappedKPI')!= null){
-    //   this.role = String(sessionStorage.getItem('roleMappedKPI'))
-    //   // console.log("this.role",this.role)
-    // }
-    // if(sessionStorage.getItem('paramChannelMappedKPI')!= null){
-    //   this.param_channel_id = sessionStorage.getItem('paramChannelMappedKPI')
-    //   // console.log("this.param_channel_id",this.param_channel_id)
-    // }
-
-    // setTimeout(() => {
-    //   if (sessionStorage.getItem('verticalMappedKPI') != null) {
-    //     this.verticalName = sessionStorage.getItem('verticalMappedKPI');
-    //     console.log("this.verticalName", this.verticalName, typeof(this.verticalName));
-    //   }
-    //   if (sessionStorage.getItem('roleMappedKPI') != null) {
-    //     this.role = sessionStorage.getItem('roleMappedKPI');
-    //     console.log("this.role", this.role);
-    //   }
-    //   if (sessionStorage.getItem('paramChannelMappedKPI') != null) {
-    //     this.param_channel_id = sessionStorage.getItem('paramChannelMappedKPI');
-    //     console.log("this.param_channel_id", this.param_channel_id);
-    //   }
-    // }, 1500);
     
 
     
@@ -254,7 +244,7 @@ export class ViewkpiComponent implements OnInit, DoCheck, AfterContentInit {
       this.prevDisable = false;
     }
     // this.getallkpi();
-    this.viewMappedKpi();
+    this.viewMappedKpi_filter();
   }
 
   goNext(): any {
@@ -262,13 +252,25 @@ export class ViewkpiComponent implements OnInit, DoCheck, AfterContentInit {
     // console.log("======",this.offset)
     // console.log("-----",this.allkpiDetails.length)
     // this.getallkpi();
-    this.viewMappedKpi();
+    this.viewMappedKpi_filter();
     this.prevDisable = false;
     // if(this.offset -10 > this.allkpiDetails.length){
     //   this.nextDisable = true
       
     // }
   }
+
+  getAllBand() {
+    this.rest.getAllBand().subscribe((res: any) => {
+      if (res.success) {
+        this.bandList = res.details_data;
+      }
+    }, (err: any) => {
+
+    });
+  }
+
+
   getChannelWiseDesignation() {
     // this is done to avoid any error during search
     this.role_desig = 'all';
@@ -435,9 +437,13 @@ export class ViewkpiComponent implements OnInit, DoCheck, AfterContentInit {
 
 
 
-    if(this.userLevel != 3 && sessionStorage.getItem('verticalMappedKPI')== null){
-      this.verticalName = 'all'
-    }
+    if(this.userLevel != 3 && 
+      ((sessionStorage.getItem('verticalMappedKPI') === null && 
+      sessionStorage.getItem('verticalMappedKPI')?.length === 0 ) || 
+      sessionStorage.getItem('verticalMappedKPI') === undefined))
+      {
+        this.verticalName = 'all'
+      }
 
     // if(this.userLevel != 3){
     //   this.verticalName = 'all'
@@ -497,7 +503,7 @@ export class ViewkpiComponent implements OnInit, DoCheck, AfterContentInit {
           // this.getallkpi();
           if (delete_flag == 1) {
             this.modalService.dismissAll();
-            this.viewMappedKpi()
+            this.viewMappedKpi_filter()
           }
 
 
@@ -587,7 +593,26 @@ export class ViewkpiComponent implements OnInit, DoCheck, AfterContentInit {
   //   this.genericFilter()
   // }
 
-  viewMappedKpi(flag: number = 0) {
+  viewMappedKpi_onload(flag: number = 0) {
+
+    if(sessionStorage.getItem('verticalMappedKPI') && sessionStorage.getItem('verticalMappedKPI') !== null && sessionStorage.getItem('verticalMappedKPI') !== ""){
+      this.verticalName = sessionStorage.getItem('verticalMappedKPI')
+    }
+    if(sessionStorage.getItem('roleMappedKPI') && sessionStorage.getItem('roleMappedKPI') !== null && sessionStorage.getItem('roleMappedKPI') !== ""){
+      this.role_desig = sessionStorage.getItem('roleMappedKPI')
+    }
+    if(sessionStorage.getItem('paramChannelMappedKPI') && sessionStorage.getItem('paramChannelMappedKPI') !== null && sessionStorage.getItem('paramChannelMappedKPI') !== ""){
+      this.param_channel_id = sessionStorage.getItem('paramChannelMappedKPI')
+    }
+
+
+
+
+
+
+
+
+
     let accessableChannels = sessionStorage.getItem('accessableChannels') as any
     console.log("accessableChannels---->",accessableChannels)
 
@@ -633,6 +658,105 @@ export class ViewkpiComponent implements OnInit, DoCheck, AfterContentInit {
       'year': this.searchedYear,
       'limit': this.limit,
       'offset': this.offset,
+      'bandStatus': this.showBand_status,
+      'band': this.band,
+      // 'channelNew': this.channelNewId,
+      'channelNew': channel,
+      'vertical': this.verticalName,
+      'role': this.role_desig,
+      'kpi_parameter_channel': this.param_channel_id,
+    }
+
+    // sessionStorage.setItem("verticalMappedKPI", this.verticalName);
+    // sessionStorage.setItem("roleMappedKPI", this.role_desig);
+    // sessionStorage.setItem("paramChannelMappedKPI", this.param_channel_id);
+
+    
+
+
+
+    this.rest.viewMappedKpi(data).subscribe((res: any) => {
+      // console.log("this.previousRowCount---", this.previousRowCount)
+      if (res.success) {
+        if (res.result.length == 0) {
+          this.nextDisable = true;
+          this.allkpiDetails = [];
+          if (this.offset >= this.limit) {
+            this.offset = this.offset - this.limit;
+          }
+          this.prevDisable = this.offset == 0
+        }
+        else {
+          this.allkpiDetails = res.result;
+          this.previousRowCount = res.result.length
+          
+        }
+        // this.reset();
+
+        // console.log("verticalMappedKPI",this.verticalName)
+        // console.log("roleMappedKPI",this.role)
+        // console.log("paramChannelMappedKPI",this.param_channel_id)
+
+        
+
+      } else {
+        this.notifier.notify('error', res.message);
+      }
+    });
+
+  }
+
+
+  viewMappedKpi_filter(flag: number = 0) {
+
+
+    let accessableChannels = sessionStorage.getItem('accessableChannels') as any
+    console.log("accessableChannels---->",accessableChannels)
+
+
+
+    this.nextDisable = false;
+
+    let channel: any;
+    let default_cahnnel = sessionStorage.getItem('defaultChannelForAll') as any 
+    // let default_cahnnel = sessionStorage.getItem('accessableChannels') as any 
+
+    let stringArray = default_cahnnel.split(',');
+    if(this.channelNewId === ''){ this.channelNewId = 'all'}
+    console.log("viewMappedKpi---channelNewId", this.channelNewId)
+
+    // if(this.channelNewId == "all" && stringArray.length>1){
+    if(this.channelNewId == "all" ){
+
+      
+
+      let accessableChannels_list = accessableChannels.split(',');
+
+      console.log("accessableChannels_list---->",accessableChannels_list)
+
+      channel = accessableChannels_list
+
+
+      // channel = stringArray
+    }
+    else{
+      channel = this.channelNewId
+    }
+    
+
+    if (flag == 1) {
+      this.offset = 0;
+      this.prevDisable = true;
+      this.allkpiDetails = [];
+    }
+    this.isedit = false;
+    const data = {
+      'month': this.searchedMonth,
+      'year': this.searchedYear,
+      'limit': this.limit,
+      'offset': this.offset,
+      'bandStatus': this.showBand_status,
+      'band': this.band,
       // 'channelNew': this.channelNewId,
       'channelNew': channel,
       'vertical': this.verticalName,

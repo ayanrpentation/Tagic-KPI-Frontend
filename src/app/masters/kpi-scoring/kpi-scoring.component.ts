@@ -5,7 +5,8 @@ import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {NotifierService} from "angular-notifier";
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { NgxUiLoaderService } from "ngx-ui-loader";
-import { CommonService } from 'src/app/common.service';
+// import { CommonService } from 'src/app/common.service';
+import { CommonService } from '../../common.service';
 
 
 @Component({
@@ -14,6 +15,14 @@ import { CommonService } from 'src/app/common.service';
   styleUrls: ['./kpi-scoring.component.css']
 })
 export class KpiScoringComponent implements OnInit {
+
+
+  showBand_status = false;
+  checkShowBandStatus(channelId:any){
+    this.showBand_status = this.common.checkShowBandStatus(channelId);
+  }
+  band = "" as any;
+  bandList = [] as any;
 
   // channelAccess = '' as any // channeNewName
   defaultVerticalCode = '' as any  //verticalId
@@ -83,7 +92,9 @@ export class KpiScoringComponent implements OnInit {
   months = {'01': 'January','02': 'February','03': 'March','04': 'April','05': 'May','06': 'June','07': 'July','08': 'August','09': 'September','10': 'October','11': 'November','12': 'December'};
 
   monthList = [{id:'01', name: 'January'},{id:'02', name: 'February'},{id:'03', name: 'March'},{id:'04', name: 'April'},{id:'05', name: 'May'},{id:'06', name: 'June'},{id:'07', name: 'July'},{id:'08', name: 'August'},{id:'09', name: 'September'},{id:'10', name: 'October'},{id:'11', name: 'November'},{id:'12', name: 'December'}];
-  periodList = [{id:'Q1', name: 'Quarter 1'},{id:'Q2', name: 'Quarter 2'},{id:'Q3', name: 'Quarter 3'},{id:'Q4', name: 'Quarter 4'}]
+  
+  // month:["01", "02", "03"]
+  periodList = [{id:'Q1', name: 'Quarter 1', lastMonth:['06']},{id:'Q2', name: 'Quarter 2', lastMonth:['09']},{id:'Q3', name: 'Quarter 3', lastMonth:['12']},{id:'Q4', name: 'Quarter 4', lastMonth:['03']}]
   period = '' as any
   yearList = [] as any;
   kpiScoreDetails:any;
@@ -106,6 +117,7 @@ export class KpiScoringComponent implements OnInit {
   // for search
   EmpName = '' as any
   EmpCode = '' as any
+  EmpBand = '' as any
   EmpDesig = '' as any
   EmpSubChannel = '' as any
   EmpVertical = '' as any
@@ -135,6 +147,8 @@ export class KpiScoringComponent implements OnInit {
   
 
   constructor(private rest: RestApiService, private modalService: NgbModal, private notifier: NotifierService, private ngxService: NgxUiLoaderService,private common: CommonService) {
+    
+    this.showBand_status = this.common.showBandDropdown_status();
     let default_cahnnel = sessionStorage.getItem('defaultChannelForAll') as any
     let stringArray = default_cahnnel.split(',');
     if(stringArray.length > 1){
@@ -146,6 +160,8 @@ export class KpiScoringComponent implements OnInit {
   
   ngOnInit(): void {
 
+
+    this.getAllBand();
     if (this.userLevel == 3){
       this.employee = [{"empCode":sessionStorage.getItem('empCode')} ,];
       // console.log(this.employee);
@@ -465,6 +481,8 @@ export class KpiScoringComponent implements OnInit {
       'year': this.year,
       'channelNewName': this.channelName,
       'verticalName': this.vertical,
+      'bandStatus': this.showBand_status,
+      'band': this.band,
       'designationType': this.designation,
       'period': this.periodType,
       'quarter': this.period,
@@ -640,6 +658,7 @@ export class KpiScoringComponent implements OnInit {
       verticalName: verticalName,
       designationType: designationType,
       quarter: quarter,
+      quarter_lastmonth: this.periodList.find((item: any) => item.id == this.period)?.lastMonth || [],
       fYear: fyear,
       period: this.report_period_Type
 
@@ -821,9 +840,12 @@ export class KpiScoringComponent implements OnInit {
       'channelId': channel,
       'channelNewName': this.channelName,
       'verticalName': this.vertical,
+      'bandStatus': this.showBand_status,
+      'band': this.band,
       'designationType': this.designation,
       'period': this.periodType,
       'quarter': this.period,
+      'quarter_lastmonth': this.periodList.find((item: any) => item.id == this.period)?.lastMonth || [],
       'fYear': this.financialYear
 
 
@@ -912,10 +934,11 @@ export class KpiScoringComponent implements OnInit {
     var searchResult = []
     // this.fullResult = this.kpiScoreDetails
     
-    for ( var obj of this.fullResult) {
+    for ( let obj of this.fullResult) {
       // console.log("##",obj.empName) //text.includes("world");
       if(String(obj.empName ).toLowerCase().includes(this.EmpName.toLowerCase()) &&
           String(obj.empCode ).toLowerCase().includes(this.EmpCode.toLowerCase()) &&
+          ((this.showBand_status === true && String(obj.band ).toLowerCase().includes(this.EmpBand.toLowerCase())) || this.showBand_status === false) &&
           (String(obj.designationType ).toLowerCase() + ' ' + String(obj.HOMO_Mapping ).toLowerCase()).includes(this.EmpDesig.toLowerCase()) &&
           String(obj.channelNewName ).toLowerCase().includes(this.EmpSubChannel.toLowerCase()) &&
           String(obj.verticalName ).toLowerCase().includes(this.EmpVertical.toLowerCase()) &&
@@ -933,6 +956,7 @@ export class KpiScoringComponent implements OnInit {
     
     if(this.EmpName== '' &&
     this.EmpCode== '' &&
+    this.EmpBand== '' &&
     this.EmpDesig== '' &&
     this.EmpSubChannel== '' &&
     this.EmpVertical== '' &&
@@ -949,6 +973,7 @@ export class KpiScoringComponent implements OnInit {
   clearSearchFields(){
     this.EmpName = ''
     this.EmpCode = ''
+    this.EmpBand = ''
     this.EmpDesig = ''
     this.EmpSubChannel = ''
     this.EmpVertical = ''
@@ -957,6 +982,17 @@ export class KpiScoringComponent implements OnInit {
     this.EmpFy == ''
     this.EmpQuarter == ''
     this.searchEmployee()
+  }
+
+
+  getAllBand() {
+    this.rest.getAllBand().subscribe((res: any) => {
+      if (res.success) {
+        this.bandList = res.details_data;
+      }
+    }, (err: any) => {
+
+    });
   }
 
   
@@ -1024,6 +1060,7 @@ export class KpiScoringComponent implements OnInit {
       'designationType': this.designation,
       'period': this.periodType,
       'quarter': this.period,
+      'quarter_lastmonth': this.periodList.find((item: any) => item.id == this.period)?.lastMonth || [],
       'fYear': this.financialYear
 
 

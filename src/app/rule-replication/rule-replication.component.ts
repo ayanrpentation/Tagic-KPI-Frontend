@@ -14,6 +14,25 @@ import { CommonService } from 'src/app/common.service';
 export class RuleReplicationComponent implements OnInit {
 
 
+  showBand_status = this.common.showBandDropdown_status();
+  checkShowBandStatus(channelId:any){
+    this.showBand_status = this.common.checkShowBandStatus(channelId);
+  }
+
+  s_fromBand = "" as any;
+  s_toBand = "" as any;
+
+  bandList = [] as any;
+
+
+  s_fromRole = "" as any;
+  s_toRole = "" as any;
+
+  roleList = [] as any;
+
+
+
+
   dropdownSettings_paramChannel:IDropdownSettings = {};
 
   verticalList = [] as any
@@ -69,8 +88,10 @@ export class RuleReplicationComponent implements OnInit {
       this.yearList.push(i);
     }
 
-    this.getAllChannelNew()
-    this.getVerticals()
+    this.getAllChannelNew();
+    this.getVerticals();
+    this.getAllBand();
+    this.getAllRole();
     this.getDistParameterList()
     this.dropdownSettings_paramChannel = { 
       idField: 'kpiParameterChannelId',
@@ -190,11 +211,43 @@ export class RuleReplicationComponent implements OnInit {
 
   selectiveReplication(){   
 
+    const missingFields: string[] = [];
+    // header/common sections
+    if (!this.s_Channel) missingFields.push("Channel");
+    if (!this.s_Vertical) missingFields.push("Vertical");
+    if (!this.s_ParamChannel || this.s_ParamChannel.length === 0) {
+      missingFields.push("Parameter Channel");
+    }
+    // from section
+    if (!this.s_fromMonth) missingFields.push("From Month");
+    if (!this.s_fromYear) missingFields.push("From Year");
+    if (this.showBand_status && !this.s_fromBand) missingFields.push("From Band");
+    if (!this.s_fromRole) missingFields.push("From Role");
+
+    // to section
+    if (!this.s_toMonth) missingFields.push("To Month");
+    if (!this.s_toYear) missingFields.push("To Year");
+    if (this.showBand_status && !this.s_toBand) missingFields.push("To Band");
+    if (!this.s_toRole) missingFields.push("To Role");
+
+    // finally alert is shown here
+    if (missingFields.length > 0) {
+      alert("Please fill the following field(s):\n" + missingFields.join("\n"));
+      return;
+    }
+
+
     const data = {
       fromMonth: this.s_fromMonth,
       fromYear: this.s_fromYear,
       toMonth: this.s_toMonth,
       toYear: this.s_toYear,
+
+      fromRole: this.s_fromRole,
+      fromBand: this.s_fromBand,
+      toRole: this.s_toRole,
+      toBand: this.s_toBand,
+
       channelNewId: this.s_Channel,
       verticalId: this.s_Vertical,
       parameterChannelId: this.s_ParamChannel,
@@ -262,6 +315,26 @@ export class RuleReplicationComponent implements OnInit {
       }
     }, (err: any) => {
       // this.notifier.notify('error', err.error.message);
+    });
+  }
+
+  getAllRole() {
+    this.rest.getAllRole().subscribe((res: any) => {
+      if (res.success) {
+        this.roleList = res.details_data;
+      }
+    }, (err: any) => {
+
+    });
+  }
+
+  getAllBand() {
+    this.rest.getAllBand().subscribe((res: any) => {
+      if (res.success) {
+        this.bandList = res.details_data;
+      }
+    }, (err: any) => {
+
     });
   }
 

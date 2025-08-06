@@ -1,9 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { CommonService } from './common.service';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 };
+
+
+
 
 @Injectable({
   providedIn: 'root'
@@ -12,35 +16,34 @@ export class RestApiService {
 
   // tata aig new redhat server
   // API_ROOT = 'http://10.35.12.201:5000';
-  // file_path = 'http://10.35.12.201:5000/static';
 
   // API_ROOT = 'http://127.0.0.1:5020';
-  // file_path = 'http://127.0.0.1:5020/static';
 
   // API_ROOT = 'http://20.198.5.28:5020';
-  // file_path = 'http://20.198.5.28:5020/static';
 
   //----arbaz----
   // API_ROOT = 'http://172.20.1.24:5000';
-  // file_path = 'http://172.20.1.24:5000/static';
 
   //---Me----
   // API_ROOT = 'http://127.0.0.1:5020';
-  // file_path = 'http://127.0.0.1:5020/static';
 
   //---Arpan----
-  // API_ROOT = 'http://192.168.1.7:5020';
-  // file_path = 'http://192.168.1.7:5020/static';
+  API_ROOT = 'http://192.168.1.9:5020';
 
   // API_ROOT = 'http://192.168.0.103:5020';
-  // file_path = 'http://192.168.0.103:5020/static';
 
   // API_ROOT = 'http://192.168.29.164:5020';
-  // file_path = 'http://192.168.29.164:5020/static';
 
   //----------------------------------------------------------------tataaig---------------------------------------------
-  API_ROOT = 'http://10.33.195.171:5000';
-  file_path = 'http://10.33.195.171:5000/static';
+  // API_ROOT = 'http://10.33.195.171:5000';
+
+
+  // API_ROOT = 'https://helping-chaos-boc-conclude.trycloudflare.com';
+
+
+
+
+  
 
   
 
@@ -48,9 +51,55 @@ export class RestApiService {
   // file_path = 'https://dataondemand.tataaig.com/api/static';
 
 
+  file_path = this.API_ROOT + '/static';
 
-  constructor(private http: HttpClient) {
+
+
+  // passUserId(data:any){
+  //   const kpi_user
+  // }
+
+
+
+  constructor(private http: HttpClient, private common:CommonService) {
   }
+
+
+  private getHttpOptions() {
+    const userId = this.common.getUserId();
+    const headers: any = {
+      'Content-Type': 'application/json'
+    };
+    if (userId) {
+      headers['kpi_user_id'] = userId;
+    }
+    return { headers: new HttpHeaders(headers) };
+  }
+  
+  private attachHeaders(data?: any) {
+    return data ? JSON.stringify(data) : undefined;
+  }
+
+
+
+
+
+
+  login(data: any) {
+    return this.http.post(this.API_ROOT + '/users/login', this.attachHeaders(data), {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+    });
+  }
+  
+
+
+
+
+
+
+
+
+
 
   get_menu_list() {
     return this.http.get(this.API_ROOT + '/users/menu_list');
@@ -103,9 +152,9 @@ export class RestApiService {
 
 
 
-  login(data: any): any {
-    return this.http.post(this.API_ROOT + '/users/login', JSON.stringify(data), httpOptions);
-  }
+  // login(data: any): any {
+  //   return this.http.post(this.API_ROOT + '/users/login', JSON.stringify(data), httpOptions);
+  // }
   getFields(): any {
     return this.http.get(this.API_ROOT + '/search/getFields');
   }
@@ -306,7 +355,13 @@ export class RestApiService {
   }
   getAllRole() {
     return this.http.get(this.API_ROOT + '/kpimap/getAllRole')
-
+  }
+  getAllBand() {
+    return this.http.get(this.API_ROOT + '/kpimap/getAllBand')
+  }
+  
+  addBand(data: any) {
+    return this.http.post(this.API_ROOT + '/kpimap/addBand', JSON.stringify(data), httpOptions)
   }
   getAllChannel(data: any) {
     return this.http.post(this.API_ROOT + '/kpimap/getAllChannel', JSON.stringify(data), httpOptions)

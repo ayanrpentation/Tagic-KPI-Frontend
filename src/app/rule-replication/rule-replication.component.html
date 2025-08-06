@@ -101,7 +101,7 @@
         </div>
 
         <div class="col-3">
-            <select class="form-control" name="" id="" [(ngModel)]="s_Channel" (change)="getVerticals(); getDistParameterList()"  [disabled]="selectedDefaultChannelName != 'all' && userLevel != '4'">
+            <select class="form-control" name="" id="" [(ngModel)]="s_Channel" (change)="getVerticals(); getDistParameterList(); checkShowBandStatus(s_Channel)"  [disabled]="selectedDefaultChannelName != 'all' && userLevel != '4'">
                 <option value="">Select Channel</option>
                 <option value="{{channel.id}}" *ngFor="let channel of channelNewList">{{channel.channelNewName}}</option>
             </select>
@@ -153,17 +153,51 @@
                 <option value="{{mon.id}}" *ngFor="let mon of monthList">{{mon.name}}</option>
             </select>
         </div>
-        <div class="col-3">
-            <!-- <select class="form-control" name="" id="" [(ngModel)]="s_fromChannel">
+        <!-- <div class="col-3">
+            <select class="form-control" name="" id="" [(ngModel)]="s_fromChannel">
                 <option value="">Select Channel</option>
                 <option value="{{channel.id}}" *ngFor="let channel of channelNewList">{{channel.channelNewName}}</option>
-            </select> -->
-        </div>
-        <div class="col-3">
-            <!-- <select class="form-control" name="" id="" [(ngModel)]="s_fromVertical">
+            </select>
+        </div> -->
+        <!-- <div class="col-3">
+            <select class="form-control" name="" id="" [(ngModel)]="s_fromVertical">
                 <option value="">Select Vertical</option>
-            </select> -->
-        </div>
+            </select>
+        </div> -->
+        <ng-container *ngIf="showBand_status">
+            <div class="col-3" >
+                <select class="form-control" name="" id="" [(ngModel)]="s_fromBand">
+                    <option value="">Select Band</option>
+                    <!-- <option value="{{band.id}}" *ngFor="let band of bandList">{{band.details_description}}</option> -->
+                    <option *ngFor="let band of bandList" [value]="band.id + '/' + band.details_description">
+                        {{ band.details_description }}
+                      </option>
+                      
+                </select>
+            </div>
+            <div class="col-3">
+                <select class="form-control" name="" id="" [(ngModel)]="s_fromRole">
+                    <option value="">Select Role</option>
+                    <option value="{{role.id}}" *ngFor="let role of roleList">{{role.details_description}}</option>
+                </select>
+            </div>
+        </ng-container>
+
+        <ng-container *ngIf="!showBand_status">
+            <div class="col-3">
+                <select class="form-control" name="" id="" [(ngModel)]="s_fromRole">
+                    <option value="">Select Role</option>
+                    <option value="{{role.id}}" *ngFor="let role of roleList">{{role.details_description}}</option>
+                </select>
+            </div>
+            <div class="col-3" >
+                
+            </div>
+        </ng-container>
+
+        
+
+        
 
 
 
@@ -183,17 +217,43 @@
                 <option value="{{mon.id}}" *ngFor="let mon of monthList">{{mon.name}}</option>
             </select>
         </div>
-        <div class="col-3">
-            <!-- <select class="form-control" name="" id="" [(ngModel)]="s_toChannel">
-                <option value="">Select Channel</option>
-                <option value="{{channel.id}}" *ngFor="let channel of channelNewList">{{channel.channelNewName}}</option>
-            </select> -->
-        </div>
-        <div class="col-3">
-            <!-- <select class="form-control" name="" id="" [(ngModel)]="s_tpVertical">
-                <option value="">Select Vertical</option>
-            </select> -->
-        </div>
+        
+
+
+        <ng-container *ngIf="showBand_status">
+            <div class="col-3" >
+                <select class="form-control" name="" id="" [(ngModel)]="s_toBand">
+                    <option value="">Select Band</option>
+                    <!-- <option value="{{band.id}}" *ngFor="let band of bandList">{{band.details_description}}</option> -->
+                    <option *ngFor="let band of bandList" [value]="band.id + '/' + band.details_description">
+                        {{ band.details_description }}
+                      </option>
+                </select>
+            </div>
+            <div class="col-3">
+                <select class="form-control" name="" id="" [(ngModel)]="s_toRole">
+                    <option value="">Select Role</option>
+                    <option value="{{role.id}}" *ngFor="let role of roleList">{{role.details_description}}</option>
+                </select>
+            </div>
+        </ng-container>
+
+        <ng-container *ngIf="!showBand_status">
+            <div class="col-3">
+                <select class="form-control" name="" id="" [(ngModel)]="s_toRole">
+                    <option value="">Select Role</option>
+                    <option value="{{role.id}}" *ngFor="let role of roleList">{{role.details_description}}</option>
+                </select>
+            </div>
+            <div class="col-3" >
+                
+            </div>
+        </ng-container>
+
+
+
+
+
         <div class="col-2" style="display: flex; justify-content: right;">
             <button class="btnlink" (click)="selectiveReplication()">Copy</button>
         </div>

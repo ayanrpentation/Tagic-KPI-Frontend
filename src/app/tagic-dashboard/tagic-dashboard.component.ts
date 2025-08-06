@@ -11,7 +11,11 @@ import { CommonService } from '../common.service';
 })
 export class TagicDashboardComponent implements OnInit {
 
-  constructor(private rest: RestApiService, private modalService: NgbModal, private common: CommonService, private notifier: NotifierService) { }
+  constructor(
+    private rest: RestApiService, 
+    private modalService: NgbModal, 
+    private common: CommonService, 
+    private notifier: NotifierService) { }
   
   selectedRow = '' as any
   taskList:any;

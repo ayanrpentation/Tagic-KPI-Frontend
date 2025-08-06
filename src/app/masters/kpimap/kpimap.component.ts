@@ -13,6 +13,52 @@ import { CommonService } from 'src/app/common.service';
 })
 export class KpimapComponent implements OnInit, OnDestroy {
 
+
+
+  addBand_BoxStatus = false;
+  bandName_to_add = "" as any;
+  check_addBandName(){
+    // if(this.bandName_to_add.includes('/')){
+    //   window.alert("Using of / in Band name is prohibited")
+    // }
+  }
+  addBand(){
+    if(this.bandName_to_add.includes('/')){
+      window.alert("Using of / in Band name is prohibited");
+      return
+    }
+    const data = {
+      userId: this.common.getUserId(),
+      month: this.kpi_month,
+      year: this.kpi_year,
+      channelNewId: this.channelNew,
+      bandToadd: this.bandName_to_add,
+    }
+
+    this.rest.addBand(data).subscribe((res: any) => {
+
+      if (res.success) {
+        this.getAllBand();
+        this.bandName_to_add = "";
+        this.notifier.notify('success', res.message);
+        this.addBand_BoxStatus = false;
+      }else{
+        this.notifier.notify('error', res.message);
+      }
+    }, (err: any) => {
+      // this.notifier.notify('error', err.error.message);
+      this.addBand_BoxStatus = false;
+    });
+  }
+
+  showBand_status = this.common.showBandDropdown_status();
+  checkShowBandStatus(channelId:any){
+    this.showBand_status = this.common.checkShowBandStatus(channelId);
+  }
+  band = 0 as any;
+  bandList = [] as any;
+
+
   role = 0 as any;
   channel = 0;
   subchannel = null;
@@ -102,6 +148,8 @@ export class KpimapComponent implements OnInit, OnDestroy {
    }
 
   ngOnInit(): void {
+
+    console.log("showBand_status", this.showBand_status)
     
     
 
@@ -114,6 +162,7 @@ export class KpimapComponent implements OnInit, OnDestroy {
 
     // this.getdetailsdata(1);
     // this.getdetailsdata(2);
+    this.getAllBand();
     this.getAllRole();
     this.getAllChannel();
     this.getChannelNew();
@@ -234,6 +283,18 @@ export class KpimapComponent implements OnInit, OnDestroy {
 
     });
   }
+
+  getAllBand() {
+    this.rest.getAllBand().subscribe((res: any) => {
+      if (res.success) {
+        this.bandList = res.details_data;
+      }
+    }, (err: any) => {
+
+    });
+  }
+
+
   getAllChannel() {
     const data = {
       month: this.kpi_month,
@@ -310,12 +371,30 @@ export class KpimapComponent implements OnInit, OnDestroy {
     if (this.scoreAboveNumber == null && this.scoreAbove == 'score') {
       this.scoreAboveNumber = 0;
     }
-    if (this.channelNew != null && this.verticalName != null && this.role != null && this.role != 0 && this.kpi_month != '' && this.kpi_year != null && this.channel != 0 && this.baseParam != null && this.baseParam != '' && this.min_per != null && this.max_per != null) {
+    if (this.showBand_status == false){
+      this.band = "";
+    }
+    if (this.channelNew != null 
+        && this.verticalName != null 
+
+        // this logic is here to handle band value validation
+        && ((this.showBand_status == true && this.band != null && this.band != 0 && this.band.length != 0) || (this.showBand_status == false))
+
+        && this.role != null 
+        && this.role != 0 
+        && this.kpi_month != '' 
+        && this.kpi_year != null 
+        && this.channel != 0 
+        && this.baseParam != null 
+        && this.baseParam != '' 
+        && this.min_per != null 
+        && this.max_per != null) {
 
       const data = {
         channelNew: this.channelNew,
         verticalName: this.verticalName,
-
+        bandStatus: this.showBand_status,
+        band: this.band,
         role: this.role,
         roleType: this.roleType,
         kpi_parameter_channel: this.channel,

@@ -103,6 +103,11 @@ import { NewParamAddComponent } from './new-param-add/new-param-add.component';
 import { ParameterSequenceComponent } from './parameter-sequence/parameter-sequence.component';
 import { SessionTimeOutInterceptor } from './session-time-out.interceptor';
 // import { CreateNewThingsComponent } from './create-new-things/create-new-things.component';
+import { NgSelectModule } from '@ng-select/ng-select';
+// import { MatSelectModule } from '@angular/material';
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
+import { SearchableSelectComponent } from './shared/searchable-select/searchable-select.component';
+import { PassUserIdInterceptor } from './pass-user-id.interceptor';
 
 
 const notifierDefaultOptions: NotifierOptions = {
@@ -215,6 +220,7 @@ const notifierDefaultOptions: NotifierOptions = {
     ChannelwiseViewMailComponent,
     NewParamAddComponent,
     ParameterSequenceComponent,
+    SearchableSelectComponent,
     // CreateNewThingsComponent,
   ],
   imports: [
@@ -259,9 +265,16 @@ const notifierDefaultOptions: NotifierOptions = {
       innerStrokeColor: "#C7E596",
       animationDuration: 300,
       
-    })
+    }),
+    NgSelectModule,
+    NgxMatSelectSearchModule
   ],
   providers: [DatePipe, {provide: OWL_DATE_TIME_LOCALE, useValue: 'en-IN'},
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: PassUserIdInterceptor,
+      multi: true
+    },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: SessionTimeOutInterceptor,

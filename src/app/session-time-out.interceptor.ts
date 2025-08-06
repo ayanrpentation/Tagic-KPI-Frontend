@@ -7,7 +7,7 @@ import {
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
-import { CommonService } from 'src_prev/app/common.service';
+import { CommonService } from 'src/app/common.service';
 import { RestApiService } from './rest-api.service';
 
 
@@ -99,76 +99,137 @@ export class SessionTimeOutInterceptor implements HttpInterceptor {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// import { Injectable } from '@angular/core';
+// import {
+//   HttpRequest,
+//   HttpHandler,
+//   HttpEvent,
+//   HttpInterceptor
+// } from '@angular/common/http';
+// import { Observable } from 'rxjs';
+// import { Router } from '@angular/router';
+// import { CommonService } from 'src/app/common.service';
+// import { RestApiService } from './rest-api.service';
+
 // @Injectable()
-// export class SessionTimeoutInterceptor implements HttpInterceptor {
-//   private readonly TIMEOUT_DURATION = 15 * 60 * 1000; // 15 minutes
+// export class SessionTimeOutInterceptor implements HttpInterceptor {
+
+//   private readonly TIMEOUT_DURATION = 60 * 60 * 1000; // 1 hour
 //   private hasLoggedOut = false;
 
-//   userAgentId = this.common.getUserAgentId();
+//   constructor(
+//     private router: Router,
+//     private common: CommonService,
+//     private rest: RestApiService
+//   ) {}
 
-//   constructor(private router: Router, private common: CommonService, private rest:RestApiService) {}
+//   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+//     // Skip session timeout and header logic for login requests
+//     if (request.url.includes('/login')) {
+//       console.log('Skipping login API');
+//       return next.handle(request);
+//     }
 
-//   intercept(
-//     req: HttpRequest<any>,
-//     next: HttpHandler
-//   ): Observable<HttpEvent<any>> {
+//     // --- Session Timeout Logic ---
 //     const lastActivityTime = sessionStorage.getItem('lastActivityTime');
-
 //     if (lastActivityTime) {
 //       const currentTime = Date.now();
 //       const timeDifference = currentTime - Number(lastActivityTime);
 
-//       // Check if session expired
 //       if (timeDifference > this.TIMEOUT_DURATION && !this.hasLoggedOut) {
 //         this.hasLoggedOut = true;
 //         this.logout();
 //         sessionStorage.clear();
 //         localStorage.clear();
-//         return next.handle(req); // Prevent API execution after logout
+//         // Optionally, stop further API execution after logout:
+//         // return EMPTY;
+//         return next.handle(request);
 //       }
 //     }
-//     // else{
-//     //   this.logout();
-//     //   sessionStorage.clear();
-//     //   localStorage.clear();
-//     // }
-
-    
+//     // Update last activity time
 //     sessionStorage.setItem('lastActivityTime', Date.now().toString());
 
-//     return next.handle(req);
+//     // --- User ID Header Logic ---
+//     const userId = this.common.getUserId();
+//     let modifiedRequest = request;
+//     if (userId) {
+//       modifiedRequest = request.clone({
+//         setHeaders: {
+//           'kpi_user_id': userId
+//         }
+//       });
+//     }
 
-//     // Update the last activity time on every request
+//     return next.handle(modifiedRequest);
 //   }
 
 //   private logout(): void {
-//     this.deleteDdos();
-
-//     // Clear all session and local storage
-//     sessionStorage.clear();
+//     // Remove specific session/local storage items as needed
+//     sessionStorage.removeItem("columnName");
+//     sessionStorage.removeItem("value");
+//     sessionStorage.removeItem("current_link_name");
+//     sessionStorage.removeItem("firstLoadafterLogin");
+//     sessionStorage.removeItem("defaultChannelNameForAll");
+//     sessionStorage.removeItem("defaultChannelForAll");
+//     sessionStorage.removeItem("defaultMonthForAll");
+//     sessionStorage.removeItem("defaultYearForAll");
+//     sessionStorage.removeItem("aigSessionTime");
+//     sessionStorage.removeItem("moduleName");
+//     sessionStorage.removeItem("tataaigstore");
+//     sessionStorage.removeItem("config");
+//     localStorage.removeItem('credential');
+//     localStorage.removeItem('tataaigstore');
+//     localStorage.removeItem('aigSessionTime');
 //     localStorage.clear();
-
-//     // Navigate to login page
-//     this.router.navigate(['/']);
-//   }
-
-//   // private deleteDdos(): void {
-//   //   // Your DDOS cleanup logic here
-//   //   console.log('DDOS resources cleaned');
-//   // }
-
-//   private deleteDdos() {
-//     const data = {
-//       userAgentId: this.userAgentId    
-//     }
-//     this.rest.delete_ddos(data).subscribe((res:any)=>{
-//       if (res.success) {
-        
-//         sessionStorage.clear();
-//         localStorage.clear();
-//       } else {
-
-//       }
-//     });
+//     sessionStorage.clear();
+//     this.router.navigate(['']);
 //   }
 // }
+
+

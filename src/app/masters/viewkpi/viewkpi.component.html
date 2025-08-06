@@ -41,7 +41,7 @@
                             <div class="col">
                                 <label >Channel</label>
 
-                                <select class="form-control" name="" id="" [(ngModel)]="channelNewId"  (change)=" getVerticals();getAllChannel();getChannelWiseDesignation();getChannelWiseKpiParamList()" [disabled]="selectedDefaultChannelName != 'all' && userLevel != '4'">
+                                <select class="form-control" name="" id="" [(ngModel)]="channelNewId"  (change)="checkShowBandStatus(channelNewId); getVerticals();getAllChannel();getChannelWiseDesignation();getChannelWiseKpiParamList()" [disabled]="selectedDefaultChannelName != 'all' && userLevel != '4'">
                                     <option value="all">Channel</option>
                                     <option value="{{channel.id}}" *ngFor="let channel of channelNewList">{{channel.channelNewName}}</option>
                                 </select>
@@ -59,13 +59,70 @@
 
                             
 
+                            <div class="col" *ngIf="showBand_status">
+                                <label >Band</label>
+
+                                <select class="form-control" name="" id="" [(ngModel)]="band"  >
+                                    <option value="">Select Band</option>
+                                    <option *ngFor="let band of bandList" [value]="band.id + '/' + band.details_description">
+                                        {{ band.details_description }}
+                                    </option>
+                                    
+                                </select>
+                            </div>
+
                             <div class="col">
                                 <label >Role</label>
 
-                                <select class="form-control" name="" id="" [(ngModel)]="role_desig"  (change)="getChannelWiseKpiParamList(); param_channel_id = 'all';">
+                                <!-- <select class="form-control" name="" id="" [(ngModel)]="role_desig"  (change)="getChannelWiseKpiParamList(); param_channel_id = 'all';">
                                     <option value="all">Role</option>
                                     <option *ngFor="let role of roleList" value='{{role.designation_type}}'>{{role.designation_type}}</option>
-                                </select>
+                                </select> -->
+
+
+                                
+
+                                <!-- <searchable-select
+                                [items]="roleDesignations"
+                                placeholder="Role"
+                                (selectionChange)="
+                                    role_desig = $event;
+                                    getChannelWiseKpiParamList();
+                                    param_channel_id = 'all';
+                                "
+                                ></searchable-select> -->
+
+
+                                <searchable-select
+                                [items]="roleList"
+                                labelKey="designation_type"
+                                valueKey="designation_type"
+                                placeholder="Role"
+                                (selectionChange)="
+                                    role_desig = $event;
+                                    getChannelWiseKpiParamList();
+                                    param_channel_id = 'all';
+                                "
+                                ></searchable-select>
+
+
+
+                                <!-- <ng-select
+                                class="custom-ng-select"
+                                [items]="roleList"
+                                bindLabel="designation_type"
+                                bindValue="designation_type"
+                                [(ngModel)]="role_desig"
+                                (change)="getChannelWiseKpiParamList(); param_channel_id = 'all';"
+                                [searchable]="true"
+                                placeholder="Role"
+                                [clearable]="false"
+                                >                                
+                                </ng-select> -->
+
+
+
+
                             </div>
 
                             <div class="col">
@@ -120,7 +177,7 @@
                     <!-- <button type="button" class="btnlink" (click)="downloadKpi(0)">Download</button>
                     &nbsp;&nbsp; -->
                     <!-- <button type="button" class="btnlink" (click)="downloadKpi(1)">Send To Mail</button> -->
-                    <button type="button" class="btnlink" (click)="viewMappedKpi()">Search</button>
+                    <button type="button" class="btnlink" (click)="viewMappedKpi_filter()">Search</button>
 
                 </div>
 
@@ -134,7 +191,10 @@
                         <th>Sr No.</th>
                         <th>Channel New</th>
                         <th>Vertical Name</th>
+                        
+                        <th *ngIf="showBand_status">Band</th>
                         <th>Role</th>
+
                         <th>KPI Parameter Channel</th>
                         <!-- <th >KPI Parameter Sub-Channel</th> -->
                         <th>Month</th>
@@ -162,7 +222,12 @@
                             <td>{{i+ offset + 1}}</td>
                             <td>{{kpi.channelNewName}}</td>
                             <td>{{kpi.finalVerticalName}}</td>
+
+                            <td *ngIf="showBand_status">{{kpi.band_Name}}</td>
+
                             <td *ngIf="isedit == false || editId != kpi.id">{{kpi.designation_type}}</td>
+
+
                             <td *ngIf="isedit == true && editId == kpi.id">
                                 <!-- <input type="text"  class="form-control"  [(ngModel)]="edit_role" value="edit_role"> -->
 
@@ -321,7 +386,7 @@
 <div class="row" style="padding-left: 2%; margin-left: 0px; padding-right: 2%; position:sticky; bottom:15px; background-color: #fafafa;padding-top: 10px;padding-bottom: 10px;">
     <div class="col-6 d-flex">
          <span class="mt-2">Set View Count &nbsp;</span>       
-        <input class="form-control" type="number" [(ngModel)]="limit" (keyup)="viewMappedKpi()" style="width:70px" (change)="viewMappedKpi()">
+        <input class="form-control" type="number" [(ngModel)]="limit" (keyup)="viewMappedKpi_filter()" style="width:70px" (change)="viewMappedKpi_filter()">
         
     </div>
     <div class="col-6 d-flex" style="justify-content: right;">

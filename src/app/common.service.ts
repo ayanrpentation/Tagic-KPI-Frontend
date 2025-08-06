@@ -21,15 +21,29 @@ export class CommonService {
         }, 30000);
     }
 
+    // getUserId(): any {
+    //     var userData = sessionStorage.getItem("tataaigstore");
+    //     if (userData !== undefined && userData !== null && userData != "") {
+    //         let response = JSON.parse(userData);
+    //         return response.user_id;
+    //     } else {
+    //         return null;
+    //     }
+    // }
+
     getUserId(): any {
-        var userData = sessionStorage.getItem("tataaigstore");
-        if (userData !== undefined && userData !== null && userData != "") {
-            let response = JSON.parse(userData);
-            return response.user_id;
-        } else {
-            return null;
+        try {
+          const userData = sessionStorage.getItem("tataaigstore");
+          if (userData) {
+            const parsed = JSON.parse(userData);
+            return parsed.user_id;
+          }
+        } catch (error) {
+          console.error("Error parsing session data", error);
         }
-    }
+        return null;
+      }
+      
 
     getUserName(): any {
         var userData = sessionStorage.getItem("tataaigstore");
@@ -199,7 +213,7 @@ export class CommonService {
         }
     }
     getKpiMappingId():any{
-        var userData = sessionStorage.getItem("moduleName");
+        let userData = sessionStorage.getItem("moduleName");
         // console.log(userData)
         if (userData !== undefined && userData !== null && userData != "") {
             let response = JSON.parse(userData);
@@ -210,7 +224,7 @@ export class CommonService {
      }
     
     getProductMasterId(): any {
-        var userData = sessionStorage.getItem("moduleName");
+        let userData = sessionStorage.getItem("moduleName");
         if (userData !== undefined && userData !== null && userData != "") {
             let response = JSON.parse(userData);
             return response.productMaster;
@@ -219,12 +233,32 @@ export class CommonService {
         }
     }
     getProducerMasterId(): any {
-        var userData = sessionStorage.getItem("moduleName");
+        let userData = sessionStorage.getItem("moduleName");
         if (userData !== undefined && userData !== null && userData != "") {
             let response = JSON.parse(userData);
             return response.producerMaster;
         } else {
             return null;
+        }
+    }
+
+
+    showBandDropdown_status(): any {
+        const permisson_list = [58]
+        let defaultChannel = sessionStorage.getItem("defaultChannelForAll"); // this will throw the channel id
+        if ( permisson_list.includes(Number(defaultChannel))){
+            return true
+        }else{
+            return false
+        }
+        
+    }
+    checkShowBandStatus(channelId:any){
+        const permisson_list = [58];
+        if ( permisson_list.includes(Number(channelId))){
+            return true
+        }else{
+            return false
         }
     }
 

@@ -12,6 +12,14 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./edit-kpimap.component.css']
 })
 export class EditKpimapComponent implements OnInit, OnDestroy {
+
+  showBand_status = false;
+  checkShowBandStatus(channelId:any){
+    this.showBand_status = this.common.checkShowBandStatus(channelId);
+  }
+  band = "" as any;
+  bandList = [] as any;
+
   role = 0;
   userId = '' as any;
   channel = 0;
@@ -93,12 +101,15 @@ export class EditKpimapComponent implements OnInit, OnDestroy {
   // ruleBaseParam = ""
 
 
-  constructor(private ActivatedRoute: ActivatedRoute, private rest: RestApiService, private notifier: NotifierService, private modalService: NgbModal, private router: Router, private common: CommonService) { }
+  constructor(private ActivatedRoute: ActivatedRoute, private rest: RestApiService, private notifier: NotifierService, private modalService: NgbModal, private router: Router, private common: CommonService) { 
+    this.showBand_status = this.common.showBandDropdown_status();
+  }
 
   ngOnInit(): void {
     // console.log("userId>>>",this.userId)
     this.editKpiitemId = this.ActivatedRoute.snapshot.params.id;
     this.channel = this.ActivatedRoute.snapshot.params.channelId;
+    
     // console.log("this.editKpiitemId--",this.editKpiitemId);
     this.fYearList = [];
     for (let yr = Number(this.kpi_year) + 5; yr >= Number(this.kpi_year) - 5; yr--) {
@@ -111,7 +122,19 @@ export class EditKpimapComponent implements OnInit, OnDestroy {
     this.getAllRole();
     this.getAllChannel();
     this.getChannelNew();
+    this.getAllBand();
+    // this.checkShowBandStatus(this.channelNew);
 
+  }
+
+  getAllBand() {
+    this.rest.getAllBand().subscribe((res: any) => {
+      if (res.success) {
+        this.bandList = res.details_data;
+      }
+    }, (err: any) => {
+
+    });
   }
   clearRuleVarVal() {
     this.ruleVarValues = [];
@@ -261,16 +284,21 @@ export class EditKpimapComponent implements OnInit, OnDestroy {
     if (this.scoreAboveNumber == null && this.scoreAbove == 'score') {
       this.scoreAboveNumber = 0;
     }
+    if(this.showBand_status == false){
+      this.band = ""
+    }
 
     // console.log("this.scoreUnder@@@@",this.scoreUnder)
     // console.log("this.scoreWithin@@@@",this.scoreWithin)
     // console.log("this.scoreAbove@@@@",this.scoreAbove)
 
-    if (this.channelNew != null && this.verticalName != null && this.role != null && this.role != 0 && this.kpi_month != '' && this.kpi_year != null && this.channel != 0 && this.baseParam != null && this.baseParam != '' && this.min_per != null && this.max_per != null && this.scoreUnder != '' && this.scoreWithin != '' && this.scoreAbove != '') {
+    if (this.channelNew != null && this.verticalName != null && ((this.showBand_status == true && this.band != "" ) || (this.showBand_status == false))  && this.role != null && this.role != 0 && this.kpi_month != '' && this.kpi_year != null && this.channel != 0 && this.baseParam != null && this.baseParam != '' && this.min_per != null && this.max_per != null && this.scoreUnder != '' && this.scoreWithin != '' && this.scoreAbove != '') {
 
       const data = {
         channelNew: this.channelNew,
         verticalName: this.verticalName,
+        bandStatus: this.showBand_status,
+        band: this.band,
         role: this.role,
         roleType: this.roleType,
         kpi_parameter_channel: this.channel,
@@ -344,8 +372,13 @@ export class EditKpimapComponent implements OnInit, OnDestroy {
       if (res.success) {
         // console.log("res---",res.data);
         this.channelNew = res.data.channelNew;
+        this.checkShowBandStatus(res.data.channelNew);
         this.verticalName = res.data.verticalName;
         this.getVerticals();
+
+        if(res.data.band_Name != null){
+          this.band = String(res.data.band_id) + '/' + res.data.band_Name;
+        }
         this.role = res.data.role;
         this.roleType = res.data.roleType;
         this.kpi_month = res.data.kpi_month;

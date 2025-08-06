@@ -204,6 +204,9 @@
                                         (click)="onErrorDownload(obj.error_file_name)">
                                         <i style="font-size: 10pt;color: red;" class="fa fa-exclamation-circle"
                                             aria-hidden="true"></i>
+                                            <p>
+                                                {{obj.error_message || ""}}
+                                            </p>
                                     </a>
                                     
 

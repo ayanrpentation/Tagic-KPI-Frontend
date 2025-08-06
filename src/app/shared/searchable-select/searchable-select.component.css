@@ -1,0 +1,45 @@
+.dropdown-menu {
+  border: 1px solid #ccc;
+  border-radius: 0.25rem;
+  padding: 0.25rem 0;
+  font-size: 10pt !important;
+}
+
+/* The host element itself */
+:host {
+  font-size: 10pt !important;
+  color: black;
+}
+
+/* Force font size and color in form controls and dropdown items */
+::ng-deep .form-control,
+::ng-deep .form-control-plaintext,
+::ng-deep .form-control-lg,
+::ng-deep .dropdown-item,
+::ng-deep input.form-control {
+  font-size: 10pt !important;
+  color: black !important;
+}
+
+/* Force placeholder color */
+::ng-deep input.form-control::placeholder {
+  color: black !important;
+  opacity: 1 !important;
+  font-size: 10pt !important;
+}
+.custom-caret {
+  display: inline-block;
+  width: 0;
+  height: 0;
+  margin-left: auto;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 6px solid #555;
+}
+
+.fa-chevron-down {
+  font-size: 0.75em;   /* Smaller than text */
+  /* font-weight: 1200; */
+  /* color: #555;          */
+  vertical-align: middle;  /* Aligns better with text */
+}
