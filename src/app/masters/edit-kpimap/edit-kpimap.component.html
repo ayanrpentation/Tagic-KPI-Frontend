@@ -54,10 +54,24 @@
                 <div class="col-4">
                     <label class="required">Role</label>
 
-                    <select class="form-control" [(ngModel)]="role" (change)="getallowedPercentage(role)" (change)="showExtraBoxes()">
+                    <!-- <select class="form-control" [(ngModel)]="role" (change)="getallowedPercentage(role)" (change)="showExtraBoxes()">
 
                         <option value="{{role.id}}" *ngFor="let role of roleList">{{role.details_description}}</option>
-                    </select>
+                    </select> -->
+
+
+                    <searchable-select
+                    [items]="roleList"
+                    labelKey="details_description"
+                    valueKey="id"
+                    placeholder="Role"
+                    (selectionChange)="
+                        role = $event;
+                        getallowedPercentage(role);
+                        
+                    "
+                     [(ngModel)]="role" 
+                    ></searchable-select>
                 </div>
 
             </div>

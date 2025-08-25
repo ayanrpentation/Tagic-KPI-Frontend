@@ -236,6 +236,8 @@ export class EditKpimapComponent implements OnInit, OnDestroy {
 
 
   getallowedPercentage(id: any) {
+    console.log('Selected Role ID:', this.role, 'Selected Role Object:', this.roleList.find((r:any) => r.id === this.role))
+
     const data = {
       role: id
     }

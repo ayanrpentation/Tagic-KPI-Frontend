@@ -105,7 +105,7 @@ const routes: Routes = [{
     component : ReceivableComponent
   },{
     path:'kpi-map',
-    component: KpimapComponent
+    component: KpimapComponent //working--search is presnt here
   },{
     path:'view-kpi',
     component: ViewkpiComponent
@@ -204,7 +204,7 @@ const routes: Routes = [{
   component: AddBancaComponent},
 
   { path: 'editkpimap/:channelId/:id',
-  component: EditKpimapComponent},
+  component: EditKpimapComponent},   // search to be implemented
 
   { path: 'mappermst',
     component: MaperMasterComponent},

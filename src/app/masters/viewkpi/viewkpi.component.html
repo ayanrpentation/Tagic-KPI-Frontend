@@ -74,26 +74,12 @@
                             <div class="col">
                                 <label >Role</label>
 
-                                <!-- <select class="form-control" name="" id="" [(ngModel)]="role_desig"  (change)="getChannelWiseKpiParamList(); param_channel_id = 'all';">
+                                <select class="form-control" name="" id="" [(ngModel)]="role_desig"  (change)="getChannelWiseKpiParamList(); param_channel_id = 'all';">
                                     <option value="all">Role</option>
                                     <option *ngFor="let role of roleList" value='{{role.designation_type}}'>{{role.designation_type}}</option>
-                                </select> -->
-
-
-                                
+                                </select>
 
                                 <!-- <searchable-select
-                                [items]="roleDesignations"
-                                placeholder="Role"
-                                (selectionChange)="
-                                    role_desig = $event;
-                                    getChannelWiseKpiParamList();
-                                    param_channel_id = 'all';
-                                "
-                                ></searchable-select> -->
-
-
-                                <searchable-select
                                 [items]="roleList"
                                 labelKey="designation_type"
                                 valueKey="designation_type"
@@ -103,26 +89,7 @@
                                     getChannelWiseKpiParamList();
                                     param_channel_id = 'all';
                                 "
-                                ></searchable-select>
-
-
-
-                                <!-- <ng-select
-                                class="custom-ng-select"
-                                [items]="roleList"
-                                bindLabel="designation_type"
-                                bindValue="designation_type"
-                                [(ngModel)]="role_desig"
-                                (change)="getChannelWiseKpiParamList(); param_channel_id = 'all';"
-                                [searchable]="true"
-                                placeholder="Role"
-                                [clearable]="false"
-                                >                                
-                                </ng-select> -->
-
-
-
-
+                                ></searchable-select> -->
                             </div>
 
                             <div class="col">
