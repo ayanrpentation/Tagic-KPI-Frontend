@@ -15,7 +15,7 @@ const httpOptions = {
 export class RestApiService {
 
   // tata aig new redhat server
-  // API_ROOT = 'http://10.35.12.201:5000';
+  API_ROOT = 'http://10.35.12.201:5000';
 
   // API_ROOT = 'http://127.0.0.1:5020';
 
@@ -28,7 +28,7 @@ export class RestApiService {
   // API_ROOT = 'http://127.0.0.1:5020';
 
   //---Arpan----
-  API_ROOT = 'http://192.168.1.9:5020';
+  // API_ROOT = 'http://192.168.1.9:5020';
 
   // API_ROOT = 'http://192.168.0.103:5020';
 

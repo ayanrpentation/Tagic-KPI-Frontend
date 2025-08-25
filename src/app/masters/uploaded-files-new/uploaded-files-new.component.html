@@ -200,13 +200,30 @@
                                 </td>
     
                                 <td>
-                                    <a *ngIf="obj.status == 3" style="cursor:pointer;" title="Download Error"
+
+                                    <!-- this was previous code -->
+                                    <!-- <a *ngIf="obj.status == 3" style="cursor:pointer;" title="Download Error"
                                         (click)="onErrorDownload(obj.error_file_name)">
                                         <i style="font-size: 10pt;color: red;" class="fa fa-exclamation-circle"
                                             aria-hidden="true"></i>
                                             <p>
                                                 {{obj.error_message || ""}}
                                             </p>
+                                    </a> -->
+
+
+                                    <!-- new code for above commented code section -->
+                                    <a *ngIf="obj.status == 3 " style="cursor:pointer;" >
+
+                                        <i style="font-size: 20px;color: red;" class="fa fa-exclamation-circle"
+                                        aria-hidden="true"></i>
+
+                                        &nbsp;&nbsp;
+                                        <i *ngIf="obj.error_file_name" style="font-size: 20px;" class="fa fa-download"
+                                        aria-hidden="true" title="Download Error" 
+                                        (click)="onErrorDownload(obj.error_file_name)"></i>
+
+                                        <p>{{obj.error_message || ""}}</p>
                                     </a>
                                     
 
