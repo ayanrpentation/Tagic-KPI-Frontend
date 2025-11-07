@@ -20,11 +20,14 @@ export class GenerateScoreComponent implements OnInit {
   monthList = [{id:'01', name: 'January'},{id:'02', name: 'February'},{id:'03', name: 'March'},{id:'04', name: 'April'},{id:'05', name: 'May'},{id:'06', name: 'June'},{id:'07', name: 'July'},{id:'08', name: 'August'},{id:'09', name: 'September'},{id:'10', name: 'October'},{id:'11', name: 'November'},{id:'12', name: 'December'}];
 
   periodType = 'month' as any
-  periodTypeList = [{id:'month', name: 'Monthly'},{id:'quarter', name: 'Quarterly'},{id:'ytd', name: 'Year to Date'},]
+  periodTypeList = [{id:'month', name: 'Monthly'},{id:'quarter', name: 'Quarterly'},{id:'half', name: 'Half Yearly'},{id:'ytd', name: 'Year to Date'},]
   financialYear = '' as any
   fYList = [] as any
   periodList = [{id:'Q1', name: 'Quarter 1'},{id:'Q2', name: 'Quarter 2'},{id:'Q3', name: 'Quarter 3'},{id:'Q4', name: 'Quarter 4'}]
   period = '' as any
+
+  halfYearlyPeriodList = [{id:'1st_half', name: '1st Half (April Start - September End)'},{id:'2nd_half', name: '2nd Half (October Start - March End)'}]
+  halfYearlyPeriod = '' as any
 
   employee_code = 'all';
   loading = false;
@@ -58,16 +61,20 @@ export class GenerateScoreComponent implements OnInit {
     }
 
     if(this.month == '1' || this.month == '01' || this.month == '2' || this.month == '02' || this.month == '3' || this.month == '03'){
-      this.period = 'Q4'
+      this.period = 'Q4';
+      this.halfYearlyPeriod = '2nd_half';
     }
     else if(this.month == '4' || this.month == '04' || this.month == '5' || this.month == '05' || this.month == '6' || this.month == '06'){
-      this.period = 'Q1'
+      this.period = 'Q1';
+      this.halfYearlyPeriod = '1st_half';
     }
     else if(this.month == '7' || this.month == '07' || this.month == '8' || this.month == '08' || this.month == '9' || this.month == '09'){
-      this.period = 'Q2'
+      this.period = 'Q2';
+      this.halfYearlyPeriod = '1st_half';
     }
     else if(this.month == '10' || this.month == '11' || this.month == '12' ){
-      this.period = 'Q3'
+      this.period = 'Q3';
+      this.halfYearlyPeriod = '2nd_half';
     }
 
 
@@ -202,120 +209,391 @@ export class GenerateScoreComponent implements OnInit {
   // modalText = "" as any;
   checkIfScoreIsPresent(){
     this.closeModal();
-    const data={
-      'userId': this.common.getUserId(),
-      'month': this.month,
-      'emp_code': this.employee_code,
-      'year': this.year,
-      // 'channelNewName': this.channelNew,
-      'channelNewId' : this.channelNew,
-
-      'period': this.periodType,
-      'quarter': this.period,
-      'fYear': this.financialYear
-    }
 
 
+    setTimeout(() => {
 
-    this.rest.checkScoringConfig(data).subscribe((res: any) => {
-
+      let month = this.month;
+      let periodType = this.periodType;
   
-      if (res.success) {
+  
+  
+      if( this.periodType == 'half' && this.halfYearlyPeriod == '1st_half'){
+        month = '09'; // sept
+        periodType = 'ytd'; // period type value will not be changed in frontend, so this is done
+      }
+      if( this.periodType == 'half' && this.halfYearlyPeriod == '2nd_half'){
+        month = '03'; // sept
+        periodType = 'half yearly'; // period type value will not be changed in frontend, so this is done
+      }
 
-        if(res.config === "old"){
-          this.isModalOpen = false;
-          this.generateKpiScore();
+
+      let year = this.year;
+
+      if(this.periodType === 'half' || this.periodType ===  'ytd' || this.periodType === 'quarter'){
+        
+        if (Number(month) < 4){
+          year = this.financialYear.split('-')[1];
         }else{
-          // this.modalText = res.
-          this.isModalOpen = true; // when config is present already
+          year = this.financialYear.split('-')[0];
         }
-        
-
-        // this.loading = false;
-        // this.generated = true;
-        // this.notifier.notify('success', res.message)
-        // setTimeout(() => {
-        //   window.alert(res.message);
-        // }, 200);
-        
-      }else{
-
-        this.isModalOpen = false; // when config is not present 
-      // this.loading = false;
-      // this.notifier.notify('error', res.message)
-      // setTimeout(() => {
-      //   window.alert("Error! " + res.message);
-      // }, 200);
 
       }
-    }, (err: any) => {
-      // this.loading = false;
-      // this.notifier.notify('error', 'some error occurred')
-      // setTimeout(() => {
-      //   window.alert('some error occurred');
-      // }, 200);
-
-
-      // this.notifier.notify('error', err.error.message);
+  
+  
+  
+  
+      const data={
+        'userId': this.common.getUserId(),
+        'emp_code': this.employee_code,
+        // 'year': this.year,
+        'year': year,
+        // 'channelNewName': this.channelNew,
+        'channelNewId' : this.channelNew,
+        
+        'quarter': this.period,
+        'fYear': this.financialYear,
+        
+        'halfYearlyPeriod': this.halfYearlyPeriod,
+        
+        'month': month,
+        'period': periodType,
+  
+      }
+  
       
+  
+  
+  
+      this.rest.checkScoringConfig(data).subscribe((res: any) => {
+  
+    
+        if (res.success) {
+  
+          if(res.config === "old"){
+            this.isModalOpen = false;
+            this.generateKpiScore();
+          }else{
+            // this.modalText = res.
+            this.isModalOpen = true; // when config is present already
+          }
+          
+  
+          // this.loading = false;
+          // this.generated = true;
+          // this.notifier.notify('success', res.message)
+          // setTimeout(() => {
+          //   window.alert(res.message);
+          // }, 200);
+          
+        }else{
+  
+          this.isModalOpen = false; // when config is not present 
+        // this.loading = false;
+        // this.notifier.notify('error', res.message)
+        // setTimeout(() => {
+        //   window.alert("Error! " + res.message);
+        // }, 200);
+  
+        }
+      }, (err: any) => {
+        // this.loading = false;
+        // this.notifier.notify('error', 'some error occurred')
+        // setTimeout(() => {
+        //   window.alert('some error occurred');
+        // }, 200);
+  
+  
+        // this.notifier.notify('error', err.error.message);
+        
+  
+      });
+    })
 
-    });
   }
 
 
-  generateKpiScore(){
+
+
+
+  // checkIfScoreIsPresent() {
+  //   this.closeModal();
+  
+  //   // Ensure model bindings are up-to-date before logic runs
+  //   setTimeout(() => {
+  //     let month = this.month;
+  //     let periodType = this.periodType;
+  
+  //     // ✅ Make sure these values are properly updated before use
+  //     if (this.periodType === 'half' && this.halfYearlyPeriod === '1st_half') {
+  //       month = '09'; // September
+  //       periodType = 'ytd';
+  //     } else if (this.periodType === 'half' && this.halfYearlyPeriod === '2nd_half') {
+  //       month = '03'; // March
+  //       periodType = 'half yearly';
+  //     }
+  
+  //     // ✅ Prepare payload *after* month & periodType are finalized
+  //     const data = {
+  //       userId: this.common.getUserId(),
+  //       emp_code: this.employee_code,
+  //       year: this.year,
+  //       channelNewId: this.channelNew,
+  //       quarter: this.period,
+  //       fYear: this.financialYear,
+  //       halfYearlyPeriod: this.halfYearlyPeriod,
+  //       month,
+  //       period: periodType,
+  //     };
+  
+  //     this.rest.checkScoringConfig(data).subscribe(
+  //       (res: any) => {
+  //         if (res.success) {
+  //           if (res.config === 'old') {
+  //             this.isModalOpen = false;
+  //             this.generateKpiScore();
+  //           } else {
+  //             this.isModalOpen = true; // config already present
+  //           }
+  //         } else {
+  //           this.isModalOpen = false; // config not present
+  //         }
+  //       },
+  //       (err: any) => {
+  //         console.error('Error:', err);
+  //       }
+  //     );
+  //   });
+  // }
+  
+
+
+  // generateKpiScore(){
+  //   this.closeModal();
+  //   this.loading = true;
+
+
+
+  //   // let data={
+  //   //   'userId': this.common.getUserId(),
+  //   //   'month': this.month,
+  //   //   'emp_code': this.employee_code,
+  //   //   'year': this.year,
+  //   //   // 'channelNewName': this.channelNew,
+  //   //   'channelNewId' : this.channelNew,
+
+  //   //   'period': this.periodType,
+  //   //   'quarter': this.period,
+  //   //   'fYear': this.financialYear,
+
+  //   //   'halfYearlyPeriod': this.halfYearlyPeriod
+
+
+  //   // }
+
+  //   // if( this.periodType === 'half' && this.halfYearlyPeriod === '1st_half'){
+  //   //   data.month = '09'; // sept
+  //   //   data.period = 'ytd'; // period type value will not be changed in frontend, so this is done
+  //   // }
+  //   // if( this.periodType === 'half' && this.halfYearlyPeriod === '2nd_half'){
+  //   //   data.month = '03'; // sept
+  //   //   data.period = 'half yearly'; // period type value will not be changed in frontend, so this is done
+  //   // }
+
+
+
+
+
+
+
+
+  //   setTimeout(() => {
+
+      
+  //         let month = this.month;
+  //         let periodType = this.periodType;
+      
+      
+  //         if( this.periodType == 'half' && this.halfYearlyPeriod == '1st_half'){
+  //           month = '09'; // sept
+  //           periodType = 'ytd'; // period type value will not be changed in frontend, so this is done
+  //         }
+  //         if( this.periodType == 'half' && this.halfYearlyPeriod == '2nd_half'){
+  //           month = '03'; // sept
+  //           periodType = 'half yearly'; // period type value will not be changed in frontend, so this is done
+  //         }
+      
+      
+      
+      
+  //         const data={
+  //           'userId': this.common.getUserId(),
+  //           'emp_code': this.employee_code,
+  //           'year': this.year,
+  //           // 'channelNewName': this.channelNew,
+  //           'channelNewId' : this.channelNew,
+            
+  //           'quarter': this.period,
+  //           'fYear': this.financialYear,
+            
+  //           'halfYearlyPeriod': this.halfYearlyPeriod,
+            
+  //           'month': month,
+  //           'period': periodType,
+      
+  //         }
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+          
+  //         let scoreAPIs = {'KPG-PSU': 'generateKpiScore' };
+  //         // this.rest.generateKpiScore(data).subscribe((res: any) => {
+  //         this.rest.generateKpiScore(data).subscribe((res: any) => {
+      
+        
+  //           if (res.success) {
+              
+  //             // this.kpiScoreDetails = res.result;
+  //             this.loading = false;
+  //             this.generated = true;
+  //             this.notifier.notify('success', res.message)
+  //             setTimeout(() => {
+  //               window.alert(res.message);
+  //             }, 200);
+              
+  //           }else{
+  //           this.loading = false;
+  //           this.notifier.notify('error', res.message)
+  //           setTimeout(() => {
+  //             window.alert("Error! " + res.message);
+  //           }, 200);
+      
+  //           }
+  //         }, (err: any) => {
+  //           this.loading = false;
+  //           this.notifier.notify('error', 'some error occurred')
+  //           setTimeout(() => {
+  //             window.alert('some error occurred');
+  //           }, 200);
+      
+      
+  //           // this.notifier.notify('error', err.error.message);
+            
+      
+  //         });
+  //   });
+
+
+
+
+  // }
+
+
+
+
+
+
+
+
+
+
+
+
+  generateKpiScore() {
+    console.log("Generating KPI Score...");
     this.closeModal();
     this.loading = true;
-    const data={
-      'userId': this.common.getUserId(),
-      'month': this.month,
-      'emp_code': this.employee_code,
-      'year': this.year,
-      // 'channelNewName': this.channelNew,
-      'channelNewId' : this.channelNew,
+  
+    // Step 1: Get initial values
+    let month = this.month;
+    let periodType = this.periodType;
+    console.log("Initial month:", month, "Initial periodType:", periodType);
+  
+    // Step 2: Adjust for half-year logic before forming payload
+    if (this.periodType === 'half' && this.halfYearlyPeriod === '1st_half') {
+      month = '09';            // September
+      periodType = 'ytd';      // For first half, YTD until September
+    } else if (this.periodType === 'half' && this.halfYearlyPeriod === '2nd_half') {
+      month = '03';            // March
+      periodType = 'half yearly';
+    }
 
-      'period': this.periodType,
-      'quarter': this.period,
-      'fYear': this.financialYear
+
+    let year = this.year;
+
+    if(this.periodType === 'half' || this.periodType ===  'ytd' || this.periodType === 'quarter'){
+      
+      if (Number(month) < 4){
+        year = this.financialYear.split('-')[1];
+      }else{
+        year = this.financialYear.split('-')[0];
+      }
 
     }
-    let scoreAPIs = {'KPG-PSU': 'generateKpiScore' };
-    // this.rest.generateKpiScore(data).subscribe((res: any) => {
-    this.rest.generateKpiScore(data).subscribe((res: any) => {
+
 
   
-      if (res.success) {
-        
-        // this.kpiScoreDetails = res.result;
+    // Step 3: Form the final payload
+    const data = {
+      userId: this.common.getUserId(),
+      emp_code: this.employee_code,
+      // year: this.year,
+      year: year,
+      channelNewId: this.channelNew,
+      quarter: this.period,
+      fYear: this.financialYear,
+      halfYearlyPeriod: this.halfYearlyPeriod,
+      month: month,
+      period: periodType,
+    };
+  
+    // Debug log (optional)
+    console.log("Payload for KPI Score:", data);
+  
+    // Step 4: API call
+    this.rest.generateKpiScore(data).subscribe({
+      next: (res: any) => {
         this.loading = false;
-        this.generated = true;
-        this.notifier.notify('success', res.message)
-        setTimeout(() => {
-          window.alert(res.message);
-        }, 200);
-        
-      }else{
-      this.loading = false;
-      this.notifier.notify('error', res.message)
-      setTimeout(() => {
-        window.alert("Error! " + res.message);
-      }, 200);
-
+  
+        if (res.success) {
+          this.generated = true;
+          this.notifier.notify('success', res.message);
+          setTimeout(() => window.alert(res.message), 200);
+        } else {
+          this.notifier.notify('error', res.message);
+          setTimeout(() => window.alert("Error! " + res.message), 200);
+        }
+      },
+      error: (err: any) => {
+        this.loading = false;
+        this.notifier.notify('error', 'Some error occurred');
+        setTimeout(() => window.alert('Some error occurred'), 200);
+        console.error('Error generating KPI score:', err);
       }
-    }, (err: any) => {
-      this.loading = false;
-      this.notifier.notify('error', 'some error occurred')
-      setTimeout(() => {
-        window.alert('some error occurred');
-      }, 200);
-
-
-      // this.notifier.notify('error', err.error.message);
-      
-
     });
-
   }
+  
 
 
 
@@ -328,19 +606,71 @@ export class GenerateScoreComponent implements OnInit {
 
 
     this.isModalOpen = false;
-    const data={
-      'userId': this.common.getUserId(),
-      'month': this.month,
-      'emp_code': this.employee_code,
-      'year': this.year,
-      // 'channelNewName': this.channelNew,
-      'channelNewId' : this.channelNew,
 
-      'period': this.periodType,
-      'quarter': this.period,
-      'fYear': this.financialYear
+
+
+
+    // const data={
+    //   'userId': this.common.getUserId(),
+    //   'month': this.month,
+    //   'emp_code': this.employee_code,
+    //   'year': this.year,
+    //   // 'channelNewName': this.channelNew,
+    //   'channelNewId' : this.channelNew,
+
+    //   'period': this.periodType,
+    //   'quarter': this.period,
+    //   'fYear': this.financialYear
+
+    // }
+
+
+
+    // Step 1: Get initial values
+    let month = this.month;
+    let periodType = this.periodType;
+    console.log("Initial month:", month, "Initial periodType:", periodType);
+  
+    // Step 2: Adjust for half-year logic before forming payload
+    if (this.periodType === 'half' && this.halfYearlyPeriod === '1st_half') {
+      month = '09';            // September
+      periodType = 'ytd';      // For first half, YTD until September
+    } else if (this.periodType === 'half' && this.halfYearlyPeriod === '2nd_half') {
+      month = '03';            // March
+      periodType = 'half yearly';
+    }
+
+
+
+
+    let year = this.year;
+
+    if(this.periodType === 'half' || this.periodType ===  'ytd' || this.periodType === 'quarter'){
+      
+      if (Number(month) < 4){
+        year = this.financialYear.split('-')[1];
+      }else{
+        year = this.financialYear.split('-')[0];
+      }
 
     }
+  
+    // Step 3: Form the final payload
+    const data = {
+      userId: this.common.getUserId(),
+      emp_code: this.employee_code,
+      // year: this.year,
+      year: year,
+      channelNewId: this.channelNew,
+      quarter: this.period,
+      fYear: this.financialYear,
+      halfYearlyPeriod: this.halfYearlyPeriod,
+      month: month,
+      period: periodType,
+    };
+  
+    // Debug log (optional)
+    console.log("Payload for KPI Score:", data);
     let scoreAPIs = {'KPG-PSU': 'generateKpiScore' };
     // this.rest.generateKpiScore(data).subscribe((res: any) => {
     this.rest.generatekpiScore_new(data).subscribe((res: any) => {

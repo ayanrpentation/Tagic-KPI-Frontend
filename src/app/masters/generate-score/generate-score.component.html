@@ -74,12 +74,14 @@
                             <span  *ngIf="periodType!='month'"> Financial Year</span>
                         </label>
         
+                        <!-- this will come for Month only -->
                         <select  *ngIf="periodType=='month'" class="form-control" [(ngModel)]="year" >
                            
                             <option value="all">Select All</option>
                             <option value="{{year}}" *ngFor="let year of yearList">{{year}}</option>
                         </select>
 
+                        <!-- this will come for YTD and Quarter and Half Yearly -->
                         <select  *ngIf="periodType!='month'" class="form-control" [(ngModel)]="financialYear" >
    
                             <option value="">Select</option>
@@ -99,9 +101,10 @@
                             <span *ngIf="periodType=='ytd'">Up to Month</span>
                             <span *ngIf="periodType=='quarter'">Quarter</span>
                             <span *ngIf="periodType=='month'">Month</span>
+                            <span *ngIf="periodType=='half'">Half Yearly Period</span>
                         </label>
         
-                        <select class="form-control" [(ngModel)]="month"  *ngIf="periodType!='quarter'" >
+                        <select class="form-control" [(ngModel)]="month"  *ngIf="periodType!='quarter' && periodType != 'half'" >
                             <!-- <option value="all">Select All</option> -->
                            
                             <option value="{{month.id}}" *ngFor="let month of monthList">{{month.name}}</option>
@@ -111,6 +114,14 @@
                         <select class="form-control" [(ngModel)]="period"  *ngIf="periodType =='quarter'"  >
                             <option value="">Select Period</option>
                             <option value="{{period.id}}" *ngFor="let period of periodList">{{period.name}}
+                            </option>
+        
+                        </select> 
+
+
+                        <select class="form-control" [(ngModel)]="halfYearlyPeriod"  *ngIf="periodType =='half'"  >
+                            <option value="">Select Period</option>
+                            <option value="{{period.id}}" *ngFor="let period of halfYearlyPeriodList">{{period.name}}
                             </option>
         
                         </select> 
