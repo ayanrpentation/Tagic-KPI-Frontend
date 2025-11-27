@@ -15,7 +15,7 @@ const httpOptions = {
 export class RestApiService {
 
   // tata aig new redhat server
-  API_ROOT = 'http://10.35.12.201:5000';
+  // API_ROOT = 'http://10.35.12.201:5000';
 
   // API_ROOT = 'http://127.0.0.1:5020';
 
@@ -32,7 +32,7 @@ export class RestApiService {
 
 
   //---Arpan----
-  // API_ROOT = 'http://192.168.1.20:5020';
+  API_ROOT = 'http://192.168.1.20:5020';
 
 
 
@@ -414,6 +414,10 @@ export class RestApiService {
 
   }
 
+  check_score_status(data: any) {
+    return this.http.post(this.API_ROOT + '/kpi/check_score_status', JSON.stringify(data), httpOptions)
+
+  }
   checkScoringConfig(data: any) {
     return this.http.post(this.API_ROOT + '/kpi/checkScoringConfig', JSON.stringify(data), httpOptions)
 

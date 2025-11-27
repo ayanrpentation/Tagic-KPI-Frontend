@@ -4,6 +4,9 @@ import { CommonService } from 'src/app/common.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import {NotifierService} from "angular-notifier";
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
+import { interval, Subscription } from 'rxjs';
+
+
 
 @Component({
   selector: 'app-generate-score',
@@ -11,6 +14,7 @@ import { IDropdownSettings } from 'ng-multiselect-dropdown';
   styleUrls: ['./generate-score.component.css']
 })
 export class GenerateScoreComponent implements OnInit {
+  intervalSubscription!: Subscription;
   // year = new Date().getFullYear();
   // month = (new Date().getMonth() + 1).toString();
   selectedDefaultChannelName = sessionStorage.getItem('defaultChannelNameForAll') as any
@@ -196,7 +200,9 @@ export class GenerateScoreComponent implements OnInit {
     this.modalService.dismissAll();
   }
   checkIfMapped(modal:any){
-    this.modalService.open(modal, {centered: true, size: 'md'});
+    
+    // this.modalService.open(modal, {centered: true, size: 'md'});
+    this.check_score_status(modal);
     
 
   }
@@ -208,6 +214,7 @@ export class GenerateScoreComponent implements OnInit {
 
   // modalText = "" as any;
   checkIfScoreIsPresent(){
+    this.generate_score_status = "";
     this.closeModal();
 
 
@@ -309,6 +316,199 @@ export class GenerateScoreComponent implements OnInit {
   
       });
     })
+
+  }
+
+  generate_score_status = "";
+  last_generationDetails:any;
+
+  check_score_status(modal:any){
+    this.generate_score_status = "";
+
+
+    setTimeout(() => {
+
+      let month = this.month;
+      let periodType = this.periodType;
+  
+  
+  
+      if( this.periodType == 'half' && this.halfYearlyPeriod == '1st_half'){
+        month = '09'; // sept
+        periodType = 'ytd'; // period type value will not be changed in frontend, so this is done
+      }
+      if( this.periodType == 'half' && this.halfYearlyPeriod == '2nd_half'){
+        month = '03'; // sept
+        periodType = 'half yearly'; // period type value will not be changed in frontend, so this is done
+      }
+
+
+      let year = this.year;
+
+      if(this.periodType === 'half' || this.periodType ===  'ytd' || this.periodType === 'quarter'){
+        
+        if (Number(month) < 4){
+          year = this.financialYear.split('-')[1];
+        }else{
+          year = this.financialYear.split('-')[0];
+        }
+
+      }
+  
+  
+  
+  
+      const data={
+        'userId': this.common.getUserId(),
+        'emp_code': this.employee_code,
+        // 'year': this.year,
+        'year': year,
+        // 'channelNewName': this.channelNew,
+        'channelNewId' : this.channelNew,
+        
+        'quarter': this.period,
+        'fYear': this.financialYear,
+        
+        'halfYearlyPeriod': this.halfYearlyPeriod,
+        
+        'month': month,
+        'period': periodType,
+  
+      }
+  
+      
+  
+  
+  
+      this.rest.check_score_status(data).subscribe((res: any) => {
+  
+    
+        if (res.success) {
+          this.last_generationDetails = res.details;
+          this.generate_score_status = res.status;
+          if(res.status == "running"){
+            this.notifier.notify('info', res.message)
+
+
+            this.intervalSubscription = interval(5000).subscribe(() => {
+              this.check_score_status_recall();
+            });
+
+
+          }else if(res.status == "last_processed"){
+            this.notifier.notify('info', 'Score generation last processed on ' + res.details.ended_at)
+
+
+
+          }else if(res.status == "none"){
+            // when you should call the next api || to pop up modal to proceed further
+            this.modalService.open(modal, {centered: true, size: 'md'});
+          }
+  
+          
+          
+        }else{
+          this.generate_score_status = res?.status || '';
+  
+        this.notifier.notify('error', res.message)
+        }
+      }, (err: any) => {
+
+        this.generate_score_status =  "";
+        // this.loading = false;
+        // this.notifier.notify('error', 'some error occurred')
+        // setTimeout(() => {
+        //   window.alert('some error occurred');
+        // }, 200);
+  
+  
+        // this.notifier.notify('error', err.error.message);
+        
+  
+      });
+    })
+
+  }
+
+  check_score_status_recall(){    
+
+      let month = this.month;
+      let periodType = this.periodType;  
+  
+      if( this.periodType == 'half' && this.halfYearlyPeriod == '1st_half'){
+        month = '09'; // sept
+        periodType = 'ytd'; // period type value will not be changed in frontend, so this is done
+      }
+      if( this.periodType == 'half' && this.halfYearlyPeriod == '2nd_half'){
+        month = '03'; // sept
+        periodType = 'half yearly'; // period type value will not be changed in frontend, so this is done
+      }
+
+      let year = this.year;
+
+      if(this.periodType === 'half' || this.periodType ===  'ytd' || this.periodType === 'quarter'){
+        
+        if (Number(month) < 4){
+          year = this.financialYear.split('-')[1];
+        }else{
+          year = this.financialYear.split('-')[0];
+        }
+
+      }  
+  
+      const data={
+        'userId': this.common.getUserId(),
+        'emp_code': this.employee_code,
+        // 'year': this.year,
+        'year': year,
+        // 'channelNewName': this.channelNew,
+        'channelNewId' : this.channelNew,
+        
+        'quarter': this.period,
+        'fYear': this.financialYear,
+        
+        'halfYearlyPeriod': this.halfYearlyPeriod,
+        
+        'month': month,
+        'period': periodType,
+  
+      }
+  
+      
+  
+  
+  
+      this.rest.check_score_status(data).subscribe((res: any) => {
+  
+    
+        if (res.success) {
+          this.generate_score_status = res.status;
+          if(res.status == "running"){           
+
+
+          }else if(res.status == "last_processed"){
+            this.intervalSubscription.unsubscribe();
+            this.notifier.notify('info', 'Score generation completed for Current selection. ' + ' Last processed on ' + res.details.ended_at)
+            
+          }else{
+            this.intervalSubscription.unsubscribe();
+            
+          }
+  
+          
+          
+        }else{
+          this.generate_score_status = res?.status || "";
+          
+          this.notifier.notify('error', res.message)
+        }
+      }, (err: any) => {
+        
+        this.generate_score_status =  "";
+                
+  
+      });
+    
 
   }
 
@@ -587,6 +787,85 @@ export class GenerateScoreComponent implements OnInit {
       },
       error: (err: any) => {
         this.loading = false;
+        this.notifier.notify('error', 'Some error occurred');
+        setTimeout(() => window.alert('Some error occurred'), 200);
+        console.error('Error generating KPI score:', err);
+      }
+    });
+  }
+
+
+
+
+  loading_regenerate = false;
+
+  regenerateKpiScore() {
+    console.log("Re-Generating KPI Score...");
+    this.closeModal();
+    this.loading_regenerate = true;
+  
+    // Step 1: Get initial values
+    let month = this.month;
+    let periodType = this.periodType;
+    console.log("Initial month:", month, "Initial periodType:", periodType);
+  
+    // Step 2: Adjust for half-year logic before forming payload
+    if (this.periodType === 'half' && this.halfYearlyPeriod === '1st_half') {
+      month = '09';            // September
+      periodType = 'ytd';      // For first half, YTD until September
+    } else if (this.periodType === 'half' && this.halfYearlyPeriod === '2nd_half') {
+      month = '03';            // March
+      periodType = 'half yearly';
+    }
+
+
+    let year = this.year;
+
+    if(this.periodType === 'half' || this.periodType ===  'ytd' || this.periodType === 'quarter'){
+      
+      if (Number(month) < 4){
+        year = this.financialYear.split('-')[1];
+      }else{
+        year = this.financialYear.split('-')[0];
+      }
+
+    }
+
+
+  
+    // Step 3: Form the final payload
+    const data = {
+      userId: this.common.getUserId(),
+      emp_code: this.employee_code,
+      // year: this.year,
+      year: year,
+      channelNewId: this.channelNew,
+      quarter: this.period,
+      fYear: this.financialYear,
+      halfYearlyPeriod: this.halfYearlyPeriod,
+      month: month,
+      period: periodType,
+    };
+  
+    // Debug log (optional)
+    console.log("Payload for KPI Score:", data);
+  
+    // Step 4: API call
+    this.rest.generateKpiScore(data).subscribe({
+      next: (res: any) => {
+        this.loading_regenerate = false;
+  
+        if (res.success) {
+          this.generated = true;
+          this.notifier.notify('success', res.message);
+          setTimeout(() => window.alert(res.message), 200);
+        } else {
+          this.notifier.notify('error', res.message);
+          setTimeout(() => window.alert("Error! " + res.message), 200);
+        }
+      },
+      error: (err: any) => {
+        this.loading_regenerate = false;
         this.notifier.notify('error', 'Some error occurred');
         setTimeout(() => window.alert('Some error occurred'), 200);
         console.error('Error generating KPI score:', err);

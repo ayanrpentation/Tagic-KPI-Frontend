@@ -115,7 +115,7 @@ h4{
 }
 
 .btnlink {
-    width: 100px;
+    min-width: 100px;
     border-radius: 10px;
     border: none;
     padding: 8px 10px;

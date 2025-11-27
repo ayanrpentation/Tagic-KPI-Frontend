@@ -30,6 +30,38 @@ label {
 
 
 
+.close-btn {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background: red;
+    color: white;
+    border: none;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  }
+  
+  .close-btn:hover {
+    background: darkred;
+  }
+  
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -62,6 +94,8 @@ label {
 .modalcolor {
     /* apply any extra color styles you had for modalcolor */
 }
+
+
 
 .modal-body {
     margin-bottom: 20px;
