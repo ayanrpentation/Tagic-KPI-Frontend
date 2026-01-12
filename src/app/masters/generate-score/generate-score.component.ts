@@ -482,6 +482,7 @@ export class GenerateScoreComponent implements OnInit {
   
     
         if (res.success) {
+          this.last_generationDetails = res.details;
           this.generate_score_status = res.status;
           if(res.status == "running"){           
 
@@ -851,7 +852,8 @@ export class GenerateScoreComponent implements OnInit {
     console.log("Payload for KPI Score:", data);
   
     // Step 4: API call
-    this.rest.generateKpiScore(data).subscribe({
+    // this.rest.generateKpiScore(data).subscribe({
+    this.rest.generatekpiScore_new(data).subscribe({
       next: (res: any) => {
         this.loading_regenerate = false;
   
@@ -887,21 +889,6 @@ export class GenerateScoreComponent implements OnInit {
     this.isModalOpen = false;
 
 
-
-
-    // const data={
-    //   'userId': this.common.getUserId(),
-    //   'month': this.month,
-    //   'emp_code': this.employee_code,
-    //   'year': this.year,
-    //   // 'channelNewName': this.channelNew,
-    //   'channelNewId' : this.channelNew,
-
-    //   'period': this.periodType,
-    //   'quarter': this.period,
-    //   'fYear': this.financialYear
-
-    // }
 
 
 

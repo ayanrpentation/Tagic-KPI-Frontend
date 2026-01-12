@@ -25,14 +25,14 @@ export class RestApiService {
   // API_ROOT = 'http://172.20.1.24:5000';
 
   //---Me----
-  // API_ROOT = 'http://127.0.0.1:5020';
+  API_ROOT = 'http://127.0.0.1:5020';
 
 
 
 
 
   //---Arpan----
-  API_ROOT = 'http://192.168.1.20:5020';
+  // API_ROOT = 'http://192.168.1.20:5020';
 
 
 

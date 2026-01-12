@@ -233,7 +233,8 @@
                         Last Score Generation Date & Time : <b>{{last_generationDetails.ended_at}}</b>
                     </p> -->
                     <div  style="padding-top:10px">
-                        <button class="btnlink" [disabled]="loading_regenerate" style="width:150px; margin-top: 0%;" (click)="regenerateKpiScore()"  [ngClass]="loading_regenerate == true? 'disabled':''">
+                        <!-- <button class="btnlink" [disabled]="loading_regenerate" style="width:150px; margin-top: 0%;" (click)="regenerateKpiScore()"  [ngClass]="loading_regenerate == true? 'disabled':''"> -->
+                        <button class="btnlink" [disabled]="loading_regenerate" style="width:150px; margin-top: 0%;" (click)="checkIfScoreIsPresent()"  [ngClass]="loading_regenerate == true? 'disabled':''">
                             <span *ngIf="loading_regenerate">Regenerating...</span>
                             <span *ngIf="!loading_regenerate">Regenerate Score</span>
                         </button>
