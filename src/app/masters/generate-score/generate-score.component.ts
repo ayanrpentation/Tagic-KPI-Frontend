@@ -33,7 +33,7 @@ export class GenerateScoreComponent implements OnInit {
   halfYearlyPeriodList = [{id:'1st_half', name: '1st Half (April Start - September End)'},{id:'2nd_half', name: '2nd Half (October Start - March End)'}]
   halfYearlyPeriod = '' as any
 
-  calculate_halfYearly_till_month = '' as any;
+  calculate_halfYearly_till_month = sessionStorage.getItem('defaultMonthForAll') || '' as any;
   halfYearlyMonthList1 = [{id:'04', name: 'April'},{id:'05', name: 'May'},{id:'06', name: 'June'},{id:'07', name: 'July'},{id:'08', name: 'August'},{id:'09', name: 'September'}];
   halfYearlyMonthList2 = [{id:'10', name: 'October'},{id:'11', name: 'November'},{id:'12', name: 'December'},{id:'01', name: 'January'},{id:'02', name: 'February'},{id:'03', name: 'March'}];
 
@@ -213,7 +213,7 @@ export class GenerateScoreComponent implements OnInit {
   }
 
   check_calculate_halfYearly_till_month(){
-    if(this.periodType == 'half' && this.halfYearlyPeriod != '' && this.halfYearlyPeriod == ''){
+    if(this.periodType == 'half' && this.halfYearlyPeriod != '' && this.calculate_halfYearly_till_month == ''){
       this.notifier.notify('error', "Please select 'Calculate till Month'")
     }
   }
@@ -237,7 +237,8 @@ export class GenerateScoreComponent implements OnInit {
   
       if( this.periodType == 'half' && this.halfYearlyPeriod == '1st_half'){
         month = '09'; // sept
-        periodType = 'ytd'; // period type value will not be changed in frontend, so this is done
+        // periodType = 'ytd'; // period type value will not be changed in frontend, so this is done
+        periodType = 'half yearly';
       }
       if( this.periodType == 'half' && this.halfYearlyPeriod == '2nd_half'){
         month = '03'; // sept
@@ -257,7 +258,7 @@ export class GenerateScoreComponent implements OnInit {
 
       }
 
-      if(this.periodType == 'half' && this.halfYearlyPeriod != '' && this.halfYearlyPeriod == ''){
+      if(this.periodType == 'half' && this.halfYearlyPeriod != '' && this.calculate_halfYearly_till_month == ''){
         this.notifier.notify('error', "Please select 'Calculate till Month'")
         return;
       }
@@ -351,7 +352,8 @@ export class GenerateScoreComponent implements OnInit {
   
       if( this.periodType == 'half' && this.halfYearlyPeriod == '1st_half'){
         month = '09'; // sept
-        periodType = 'ytd'; // period type value will not be changed in frontend, so this is done
+        // periodType = 'ytd'; // period type value will not be changed in frontend, so this is done
+        periodType = 'half yearly';
       }
       if( this.periodType == 'half' && this.halfYearlyPeriod == '2nd_half'){
         month = '03'; // sept
@@ -371,7 +373,7 @@ export class GenerateScoreComponent implements OnInit {
 
       }
 
-      if(this.periodType == 'half' && this.halfYearlyPeriod != '' && this.halfYearlyPeriod == ''){
+      if(this.periodType == 'half' && this.halfYearlyPeriod != '' && this.calculate_halfYearly_till_month == ''){
         this.notifier.notify('error', "Please select 'Calculate till Month'")
         return
       }
@@ -464,7 +466,8 @@ export class GenerateScoreComponent implements OnInit {
   
       if( this.periodType == 'half' && this.halfYearlyPeriod == '1st_half'){
         month = '09'; // sept
-        periodType = 'ytd'; // period type value will not be changed in frontend, so this is done
+        // periodType = 'ytd'; // period type value will not be changed in frontend, so this is done
+        periodType = 'half yearly';
       }
       if( this.periodType == 'half' && this.halfYearlyPeriod == '2nd_half'){
         month = '03'; // sept
@@ -483,7 +486,7 @@ export class GenerateScoreComponent implements OnInit {
 
       }  
 
-      if(this.periodType == 'half' && this.halfYearlyPeriod != '' && this.halfYearlyPeriod == ''){
+      if(this.periodType == 'half' && this.halfYearlyPeriod != '' && this.calculate_halfYearly_till_month == ''){
         this.notifier.notify('error', "Please select 'Calculate till Month'")
         return
       }
@@ -767,7 +770,8 @@ export class GenerateScoreComponent implements OnInit {
     // Step 2: Adjust for half-year logic before forming payload
     if (this.periodType === 'half' && this.halfYearlyPeriod === '1st_half') {
       month = '09';            // September
-      periodType = 'ytd';      // For first half, YTD until September
+      // periodType = 'ytd';      // For first half, YTD until September
+      periodType = 'half yearly';
     } else if (this.periodType === 'half' && this.halfYearlyPeriod === '2nd_half') {
       month = '03';            // March
       periodType = 'half yearly';
@@ -846,7 +850,8 @@ export class GenerateScoreComponent implements OnInit {
     // Step 2: Adjust for half-year logic before forming payload
     if (this.periodType === 'half' && this.halfYearlyPeriod === '1st_half') {
       month = '09';            // September
-      periodType = 'ytd';      // For first half, YTD until September
+      // periodType = 'ytd';      // For first half, YTD until September
+      periodType = 'half yearly';
     } else if (this.periodType === 'half' && this.halfYearlyPeriod === '2nd_half') {
       month = '03';            // March
       periodType = 'half yearly';
@@ -866,6 +871,12 @@ export class GenerateScoreComponent implements OnInit {
     }
 
 
+    if(this.periodType == 'half' && this.halfYearlyPeriod != '' && this.calculate_halfYearly_till_month == ''){
+        this.notifier.notify('error', "Please select 'Calculate till Month'")
+        return
+      }
+
+
   
     // Step 3: Form the final payload
     const data = {
@@ -879,6 +890,7 @@ export class GenerateScoreComponent implements OnInit {
       halfYearlyPeriod: this.halfYearlyPeriod,
       month: month,
       period: periodType,
+      calculate_halfYearly_till_month: this.calculate_halfYearly_till_month,
     };
   
     // Debug log (optional)
@@ -933,7 +945,8 @@ export class GenerateScoreComponent implements OnInit {
     // Step 2: Adjust for half-year logic before forming payload
     if (this.periodType === 'half' && this.halfYearlyPeriod === '1st_half') {
       month = '09';            // September
-      periodType = 'ytd';      // For first half, YTD until September
+      // periodType = 'ytd';      // For first half, YTD until September
+      periodType = 'half yearly';
     } else if (this.periodType === 'half' && this.halfYearlyPeriod === '2nd_half') {
       month = '03';            // March
       periodType = 'half yearly';
@@ -953,6 +966,11 @@ export class GenerateScoreComponent implements OnInit {
       }
 
     }
+
+    if(this.periodType == 'half' && this.halfYearlyPeriod != '' && this.calculate_halfYearly_till_month == ''){
+        this.notifier.notify('error', "Please select 'Calculate till Month'")
+        return
+      }
   
     // Step 3: Form the final payload
     const data = {
@@ -966,6 +984,7 @@ export class GenerateScoreComponent implements OnInit {
       halfYearlyPeriod: this.halfYearlyPeriod,
       month: month,
       period: periodType,
+      calculate_halfYearly_till_month: this.calculate_halfYearly_till_month,
     };
   
     // Debug log (optional)
