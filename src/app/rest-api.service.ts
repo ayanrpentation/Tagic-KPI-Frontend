@@ -25,7 +25,7 @@ export class RestApiService {
   // API_ROOT = 'http://172.20.1.24:5000';
 
   //---Me----
-  API_ROOT = 'http://127.0.0.1:5020';
+  // API_ROOT = 'http://127.0.0.1:5020';
 
 
 
@@ -35,19 +35,10 @@ export class RestApiService {
   // API_ROOT = 'http://192.168.1.20:5020';
 
 
+  
 
 
-
-
-  // API_ROOT = 'http://192.168.0.103:5020';
-
-  // API_ROOT = 'http://192.168.29.164:5020';
-
-  //----------------------------------------------------------------tataaig---------------------------------------------
-  // API_ROOT = 'http://10.33.195.171:5000';
-
-
-  // API_ROOT = 'https://helping-chaos-boc-conclude.trycloudflare.com';
+  API_ROOT = 'https://black-priority-remember-cylinder.trycloudflare.com';
 
 
 
@@ -413,6 +404,10 @@ export class RestApiService {
     return this.http.post(this.API_ROOT + '/kpi/generatekpiScore', JSON.stringify(data), httpOptions)
 
   }
+  generatekpiScore_new(data: any) {
+    return this.http.post(this.API_ROOT + '/kpi/generatekpiScore_new', JSON.stringify(data), httpOptions)
+
+  }
 
   check_score_status(data: any) {
     return this.http.post(this.API_ROOT + '/kpi/check_score_status', JSON.stringify(data), httpOptions)
@@ -420,10 +415,6 @@ export class RestApiService {
   }
   checkScoringConfig(data: any) {
     return this.http.post(this.API_ROOT + '/kpi/checkScoringConfig', JSON.stringify(data), httpOptions)
-
-  }
-  generatekpiScore_new(data: any) {
-    return this.http.post(this.API_ROOT + '/kpi/generatekpiScore_new', JSON.stringify(data), httpOptions)
 
   }
 

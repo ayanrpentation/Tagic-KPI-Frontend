@@ -33,6 +33,11 @@ export class GenerateScoreComponent implements OnInit {
   halfYearlyPeriodList = [{id:'1st_half', name: '1st Half (April Start - September End)'},{id:'2nd_half', name: '2nd Half (October Start - March End)'}]
   halfYearlyPeriod = '' as any
 
+  calculate_halfYearly_till_month = '' as any;
+  halfYearlyMonthList1 = [{id:'04', name: 'April'},{id:'05', name: 'May'},{id:'06', name: 'June'},{id:'07', name: 'July'},{id:'08', name: 'August'},{id:'09', name: 'September'}];
+  halfYearlyMonthList2 = [{id:'10', name: 'October'},{id:'11', name: 'November'},{id:'12', name: 'December'},{id:'01', name: 'January'},{id:'02', name: 'February'},{id:'03', name: 'March'}];
+
+
   employee_code = 'all';
   loading = false;
   employeeList:any;
@@ -207,6 +212,11 @@ export class GenerateScoreComponent implements OnInit {
 
   }
 
+  check_calculate_halfYearly_till_month(){
+    if(this.periodType == 'half' && this.halfYearlyPeriod != '' && this.halfYearlyPeriod == ''){
+      this.notifier.notify('error', "Please select 'Calculate till Month'")
+    }
+  }
 
 
 
@@ -246,6 +256,11 @@ export class GenerateScoreComponent implements OnInit {
         }
 
       }
+
+      if(this.periodType == 'half' && this.halfYearlyPeriod != '' && this.halfYearlyPeriod == ''){
+        this.notifier.notify('error', "Please select 'Calculate till Month'")
+        return;
+      }
   
   
   
@@ -265,6 +280,7 @@ export class GenerateScoreComponent implements OnInit {
         
         'month': month,
         'period': periodType,
+        'calculate_halfYearly_till_month': this.calculate_halfYearly_till_month,
   
       }
   
@@ -354,6 +370,11 @@ export class GenerateScoreComponent implements OnInit {
         }
 
       }
+
+      if(this.periodType == 'half' && this.halfYearlyPeriod != '' && this.halfYearlyPeriod == ''){
+        this.notifier.notify('error', "Please select 'Calculate till Month'")
+        return
+      }
   
   
   
@@ -370,9 +391,15 @@ export class GenerateScoreComponent implements OnInit {
         'fYear': this.financialYear,
         
         'halfYearlyPeriod': this.halfYearlyPeriod,
+
+
         
         'month': month,
         'period': periodType,
+
+        'calculate_halfYearly_till_month': this.calculate_halfYearly_till_month,
+
+
   
       }
   
@@ -455,6 +482,11 @@ export class GenerateScoreComponent implements OnInit {
         }
 
       }  
+
+      if(this.periodType == 'half' && this.halfYearlyPeriod != '' && this.halfYearlyPeriod == ''){
+        this.notifier.notify('error', "Please select 'Calculate till Month'")
+        return
+      }
   
       const data={
         'userId': this.common.getUserId(),
@@ -471,6 +503,7 @@ export class GenerateScoreComponent implements OnInit {
         
         'month': month,
         'period': periodType,
+        'calculate_halfYearly_till_month': this.calculate_halfYearly_till_month,
   
       }
   
