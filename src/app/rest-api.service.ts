@@ -32,13 +32,13 @@ export class RestApiService {
 
 
   //---Arpan----
-  // API_ROOT = 'http://192.168.1.20:5020';
+  API_ROOT = 'http://192.168.1.20:5020';
 
 
   
 
 
-  API_ROOT = 'https://black-priority-remember-cylinder.trycloudflare.com';
+  // API_ROOT = 'https://black-priority-remember-cylinder.trycloudflare.com';
 
 
 

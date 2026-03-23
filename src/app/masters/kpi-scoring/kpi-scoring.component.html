@@ -77,25 +77,50 @@
 
 
                             <span *ngIf="periodType=='ytd'">Up to Month</span>
+                            <span *ngIf="periodType=='halfYearly'">Half Yearly Period</span>
                             <span *ngIf="periodType=='quarter'">Quarter</span>
                             <span *ngIf="periodType=='month'">Month</span>
                         </label>
 
-                        <div class="multi" *ngIf="periodType!='quarter'" style="margin-top: -3px;">
+                        <div class="multi" *ngIf="periodType!='quarter' && periodType!='halfYearly'" style="margin-top: -3px;">
                             <ng-multiselect-dropdown [(ngModel)]="month" [settings]="dropdownSettings_month"
                                 [data]="monthList" class="multi">
                             </ng-multiselect-dropdown>
                         </div>
 
 
-                        <select class="form-control" [(ngModel)]="period" *ngIf="periodType =='quarter'"
+                        <select class="form-control" [(ngModel)]="period" *ngIf="periodType =='quarter' && periodType!='halfYearly'"
                             style="margin-top: -3px;">
                             <option value="">Select Quarter</option>
                             <option value="{{period.id}}" *ngFor="let period of periodList">{{period.name}}
                             </option>
+                        </select>
 
+
+                        <select class="form-control" [(ngModel)]="period" *ngIf="periodType =='halfYearly'"
+                            style="margin-top: -3px;">
+                            <option value="">Select Half Yearly Period</option>
+                            <option value="{{period.id}}" *ngFor="let period of halfYearlyPeriodList">{{period.name}}
+                            </option>
                         </select>
                     </div>
+
+                    <div class="col-2" *ngIf="periodType=='halfYearly'">                    
+                        <label>Calculate till Month
+                        </label>
+        
+                        <select class="form-control" [(ngModel)]="calculate_halfYearly_till_month" >
+                            <option value="">Select Month</option>
+                           <ng-container *ngIf="period == '1st_half'">                            
+                               <option value="{{month.id}}" *ngFor="let month of halfYearlyMonthList1">{{month.name}}</option>
+                           </ng-container>
+
+                           <ng-container *ngIf="period == '2nd_half'">
+                               <option value="{{month.id}}" *ngFor="let month of halfYearlyMonthList2">{{month.name}}</option>
+                           </ng-container>
+                        </select>   
+                    </div>
+
 
                     <!-- <div class="col-2" *ngIf="periodical==true">                    
                         <label>Period</label>

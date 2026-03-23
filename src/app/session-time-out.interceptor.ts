@@ -17,7 +17,7 @@ import { EMPTY } from 'rxjs';
 @Injectable()
 export class SessionTimeOutInterceptor implements HttpInterceptor {
 
-  private readonly TIMEOUT_DURATION = 1 * 60 * 60 * 1000; 
+  private readonly TIMEOUT_DURATION = 100 * 60 * 60 * 1000; 
   private hasLoggedOut = false;
   // userAgentId = this.common.getUserAgentId();
 

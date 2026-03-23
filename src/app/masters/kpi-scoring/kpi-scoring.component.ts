@@ -80,9 +80,12 @@ export class KpiScoringComponent implements OnInit {
   year = sessionStorage.getItem('defaultYearForAll') as any
 
   periodType = 'month' as any
-  periodTypeList = [{id:'month', name: 'Monthly'},{id:'quarter', name: 'Quarterly'},{id:'ytd', name: 'Year to Date'},]
+  periodTypeList = [{id:'month', name: 'Monthly'},{id:'quarter', name: 'Quarterly'},{id:'halfYearly', name: 'Half Yearly'},{id:'ytd', name: 'Year to Date'},]
   financialYear = '' as any
   fYList = [] as any
+
+  halfYearlyPeriodList = [{id:'1st_half', name: '1st Half (April Start - September End)'},{id:'2nd_half', name: '2nd Half (October Start - March End)'}]
+  halfYearlyPeriod = '' as any
 
 
 
@@ -144,6 +147,13 @@ export class KpiScoringComponent implements OnInit {
   selectChannelStatus = false
   selectVerticalStatus = false
   // userId = '' as any
+
+
+
+  calculate_halfYearly_till_month = sessionStorage.getItem('defaultMonthForAll') || '' as any;
+  halfYearlyMonthList1 = [{id:'04', name: 'April'},{id:'05', name: 'May'},{id:'06', name: 'June'},{id:'07', name: 'July'},{id:'08', name: 'August'},{id:'09', name: 'September'}];
+  halfYearlyMonthList2 = [{id:'10', name: 'October'},{id:'11', name: 'November'},{id:'12', name: 'December'},{id:'01', name: 'January'},{id:'02', name: 'February'},{id:'03', name: 'March'}];
+
   
 
   constructor(private rest: RestApiService, private modalService: NgbModal, private notifier: NotifierService, private ngxService: NgxUiLoaderService,private common: CommonService) {
@@ -487,7 +497,8 @@ export class KpiScoringComponent implements OnInit {
       'period': this.periodType,
       'quarter': this.period,
       'fYear': this.financialYear,
-      'mailFlag': flag
+      'mailFlag': flag,
+      'calculate_halfYearly_till_month': this.calculate_halfYearly_till_month,
 
     }
     this.ngxService.start();
@@ -582,6 +593,7 @@ export class KpiScoringComponent implements OnInit {
       'fYear': this.financialYear,
       'userId':this.common.getUserId(),
       // 'mailFlag': flag
+      'calculate_halfYearly_till_month': this.calculate_halfYearly_till_month,
 
     }
     //  // this.ngxService.start();
@@ -660,7 +672,8 @@ export class KpiScoringComponent implements OnInit {
       quarter: quarter,
       quarter_lastmonth: this.periodList.find((item: any) => item.id == this.period)?.lastMonth || [],
       fYear: fyear,
-      period: this.report_period_Type
+      period: this.report_period_Type,
+      calculate_halfYearly_till_month: this.calculate_halfYearly_till_month,
 
     }
     this.rest.empwise_getkpiScore(data).subscribe((res: any) => {
@@ -846,7 +859,8 @@ export class KpiScoringComponent implements OnInit {
       'period': this.periodType,
       'quarter': this.period,
       'quarter_lastmonth': this.periodList.find((item: any) => item.id == this.period)?.lastMonth || [],
-      'fYear': this.financialYear
+      'fYear': this.financialYear,
+      'calculate_halfYearly_till_month': this.calculate_halfYearly_till_month,
 
 
     }
@@ -1061,7 +1075,8 @@ export class KpiScoringComponent implements OnInit {
       'period': this.periodType,
       'quarter': this.period,
       'quarter_lastmonth': this.periodList.find((item: any) => item.id == this.period)?.lastMonth || [],
-      'fYear': this.financialYear
+      'fYear': this.financialYear,
+      'calculate_halfYearly_till_month': this.calculate_halfYearly_till_month,
 
 
     }
