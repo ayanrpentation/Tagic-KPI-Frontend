@@ -84,7 +84,7 @@ export class KpiScoringComponent implements OnInit {
   financialYear = '' as any
   fYList = [] as any
 
-  halfYearlyPeriodList = [{id:'1st_half', name: '1st Half (April Start - September End)'},{id:'2nd_half', name: '2nd Half (October Start - March End)'}]
+  halfYearlyPeriodList = [{id:'H1', name: '1st Half (April Start - September End)'},{id:'H2', name: '2nd Half (October Start - March End)'}]
   halfYearlyPeriod = '' as any
 
 
@@ -460,7 +460,7 @@ export class KpiScoringComponent implements OnInit {
       
     // }
 
-    else if(this.periodType == 'quarter'){
+    else if(this.periodType == 'quarter' || this.periodType == 'halfYearly'){
       if (this.channelNew == 'all'){
         this.errormsgstatus = true
         this.errormsg = 'Please Select Channel Name. Single Channel Selection is Allowed.'
@@ -474,7 +474,28 @@ export class KpiScoringComponent implements OnInit {
       //   this.errormsg = 'Please unselect all Employees. This will autometically generate Excel for all Employees'
       //   return
       // }
+
+
+      if(this.periodType == 'halfYearly'){
+        if(this.period != 'H1' && this.period != 'H2'){
+          this.errormsgstatus = true
+          this.errormsg = 'Please select `Half Yearly Period`'
+          return
+        }
+        if(this.calculate_halfYearly_till_month == ''){
+          this.errormsgstatus = true
+          this.errormsg = 'Please select `Calculate till Month`'
+          return
+        }
+      }
+
     }
+    
+
+
+    // if(this.channelName == 'all' || this.channelName == '' || this.channelName == null){
+
+    // }
 
 
 

@@ -119,7 +119,7 @@
                         </select> 
 
 
-                        <select class="form-control" [(ngModel)]="halfYearlyPeriod"  *ngIf="periodType =='half'"  >
+                        <select class="form-control" [(ngModel)]="halfYearlyPeriod"  *ngIf="periodType =='half'" (change)="calculate_halfYearly_till_month = ''" >
                             <option value="">Select Period</option>
                             <option value="{{period.id}}" *ngFor="let period of halfYearlyPeriodList">{{period.name}}
                             </option>

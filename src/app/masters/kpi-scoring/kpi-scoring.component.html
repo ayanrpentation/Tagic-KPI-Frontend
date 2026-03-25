@@ -111,11 +111,11 @@
         
                         <select class="form-control" [(ngModel)]="calculate_halfYearly_till_month" >
                             <option value="">Select Month</option>
-                           <ng-container *ngIf="period == '1st_half'">                            
+                           <ng-container *ngIf="period == 'H1'">                            
                                <option value="{{month.id}}" *ngFor="let month of halfYearlyMonthList1">{{month.name}}</option>
                            </ng-container>
 
-                           <ng-container *ngIf="period == '2nd_half'">
+                           <ng-container *ngIf="period == 'H2'">
                                <option value="{{month.id}}" *ngFor="let month of halfYearlyMonthList2">{{month.name}}</option>
                            </ng-container>
                         </select>   
