@@ -80,7 +80,7 @@ export class KpiScoringComponent implements OnInit {
   year = sessionStorage.getItem('defaultYearForAll') as any
 
   periodType = 'month' as any
-  periodTypeList = [{id:'month', name: 'Monthly'},{id:'quarter', name: 'Quarterly'},{id:'halfYearly', name: 'Half Yearly'},{id:'ytd', name: 'Year to Date'},]
+  periodTypeList = [{id:'month', name: 'Monthly'},{id:'quarter', name: 'Quarterly'},{id:'half yearly', name: 'Half Yearly'},{id:'ytd', name: 'Year to Date'},]
   financialYear = '' as any
   fYList = [] as any
 
@@ -203,6 +203,8 @@ export class KpiScoringComponent implements OnInit {
 
     
 
+    
+
     if(this.month == '1' || this.month == '01' || this.month == '2' || this.month == '02' || this.month == '3' || this.month == '03'){
       this.financialYear = String(Number(this.year)-1) + "-" + this.year
     }
@@ -211,16 +213,20 @@ export class KpiScoringComponent implements OnInit {
     }
 
     if(this.month == '1' || this.month == '01' || this.month == '2' || this.month == '02' || this.month == '3' || this.month == '03'){
-      this.period = 'Q4'
+      this.period = 'Q4';
+      this.halfYearlyPeriod = 'H2';
     }
     else if(this.month == '4' || this.month == '04' || this.month == '5' || this.month == '05' || this.month == '6' || this.month == '06'){
-      this.period = 'Q1'
+      this.period = 'Q1';
+      this.halfYearlyPeriod = 'H1';
     }
     else if(this.month == '7' || this.month == '07' || this.month == '8' || this.month == '08' || this.month == '9' || this.month == '09'){
-      this.period = 'Q2'
+      this.period = 'Q2';
+      this.halfYearlyPeriod = 'H1';
     }
     else if(this.month == '10' || this.month == '11' || this.month == '12' ){
-      this.period = 'Q3'
+      this.period = 'Q3';
+      this.halfYearlyPeriod = 'H2';
     }
     this.refreshMainSearch();
     
@@ -460,7 +466,7 @@ export class KpiScoringComponent implements OnInit {
       
     // }
 
-    else if(this.periodType == 'quarter' || this.periodType == 'halfYearly'){
+    else if(this.periodType == 'quarter' || this.periodType == 'half yearly'){
       if (this.channelNew == 'all'){
         this.errormsgstatus = true
         this.errormsg = 'Please Select Channel Name. Single Channel Selection is Allowed.'
@@ -476,8 +482,8 @@ export class KpiScoringComponent implements OnInit {
       // }
 
 
-      if(this.periodType == 'halfYearly'){
-        if(this.period != 'H1' && this.period != 'H2'){
+      if(this.periodType == 'half yearly'){
+        if(this.halfYearlyPeriod != 'H1' && this.halfYearlyPeriod != 'H2'){
           this.errormsgstatus = true
           this.errormsg = 'Please select `Half Yearly Period`'
           return
@@ -519,6 +525,7 @@ export class KpiScoringComponent implements OnInit {
       'quarter': this.period,
       'fYear': this.financialYear,
       'mailFlag': flag,
+      'halfYearlyPeriod': this.halfYearlyPeriod,
       'calculate_halfYearly_till_month': this.calculate_halfYearly_till_month,
 
     }
@@ -613,7 +620,8 @@ export class KpiScoringComponent implements OnInit {
       'quarter': this.period,
       'fYear': this.financialYear,
       'userId':this.common.getUserId(),
-      // 'mailFlag': flag
+      // 'mailFlag': flag,
+      'halfYearlyPeriod': this.halfYearlyPeriod,
       'calculate_halfYearly_till_month': this.calculate_halfYearly_till_month,
 
     }
@@ -694,6 +702,7 @@ export class KpiScoringComponent implements OnInit {
       quarter_lastmonth: this.periodList.find((item: any) => item.id == this.period)?.lastMonth || [],
       fYear: fyear,
       period: this.report_period_Type,
+      halfYearlyPeriod: this.halfYearlyPeriod,
       calculate_halfYearly_till_month: this.calculate_halfYearly_till_month,
 
     }
@@ -764,7 +773,8 @@ export class KpiScoringComponent implements OnInit {
     
         }else{
 
-          this.employee = 'all'
+          this.employee = 'all';
+          this.employee = [];
         }
         
         this.employeeList = res.employee_details;
@@ -881,6 +891,7 @@ export class KpiScoringComponent implements OnInit {
       'quarter': this.period,
       'quarter_lastmonth': this.periodList.find((item: any) => item.id == this.period)?.lastMonth || [],
       'fYear': this.financialYear,
+      'halfYearlyPeriod': this.halfYearlyPeriod,
       'calculate_halfYearly_till_month': this.calculate_halfYearly_till_month,
 
 
@@ -1097,6 +1108,7 @@ export class KpiScoringComponent implements OnInit {
       'quarter': this.period,
       'quarter_lastmonth': this.periodList.find((item: any) => item.id == this.period)?.lastMonth || [],
       'fYear': this.financialYear,
+      'halfYearlyPeriod': this.halfYearlyPeriod,
       'calculate_halfYearly_till_month': this.calculate_halfYearly_till_month,
 
 
@@ -1191,6 +1203,7 @@ export class KpiScoringComponent implements OnInit {
       
     }else{
       this.employee = 'all';
+      this.employee = [];
 
     }
     if (this.userLevel == 3){
